@@ -244,87 +244,39 @@
 </head>
 <body>
 <style>
-  .tab-row {
-    display: flex;
-    gap: 4px;
-    margin-bottom: 16px;
-  }
-  .tab-btn {
-    padding: 8px 20px;
-    border: 1px solid var(--card-border);
-    border-radius: 8px;
-    background: transparent;
-    color: var(--text-secondary);
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    cursor: pointer;
-    transition: all 0.15s ease;
-  }
-  .tab-btn:hover {
-    border-color: var(--royal-blue);
-    color: var(--text-primary);
-  }
-  .tab-btn.active {
-    background: var(--blue-glow);
-    border-color: var(--royal-blue);
-    color: var(--royal-blue);
-  }
+  .tab-row { display:flex; gap:4px; margin-bottom:16px; }
+  .tab-btn { padding:8px 20px; border:1px solid var(--card-border); border-radius:8px; background:transparent; color:var(--text-secondary); font-family:'Montserrat',sans-serif; font-size:0.75rem; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; cursor:pointer; transition:all 0.15s ease; }
+  .tab-btn:hover { border-color:var(--royal-blue); color:var(--text-primary); }
+  .tab-btn.active { background:var(--blue-glow); border-color:var(--royal-blue); color:var(--royal-blue); }
+  .insight-item { display:flex; align-items:flex-start; gap:12px; padding:12px 0; border-bottom:1px solid var(--card-border); }
+  .insight-item:last-child { border-bottom:none; }
+  .insight-text { font-size:0.85rem; line-height:1.5; color:var(--text-primary); }
 </style><script>
 function sortTable(tableId, sortBy) {
-  const data = window[tableId + '_data'];
+  var data = window[tableId + '_data'];
   if (!data) return;
-
-  // Update active tab button
-  const card = document.getElementById(tableId).closest('.card');
-  const buttons = card.querySelectorAll('.tab-btn');
-  buttons.forEach(btn => {
+  var card = document.getElementById(tableId).closest('.card');
+  card.querySelectorAll('.tab-btn').forEach(function(btn) {
     btn.classList.remove('active');
-    if ((sortBy === 'revenue' && btn.textContent === 'Total Sales') ||
-        (sortBy === 'units' && btn.textContent === 'Units Ordered')) {
-      btn.classList.add('active');
-    }
+    if ((sortBy === 'revenue' && btn.textContent === 'Total Sales') || (sortBy === 'units' && btn.textContent === 'Units Ordered')) btn.classList.add('active');
   });
-
-  // Sort data
-  const sorted = [...data].sort((a, b) => b[sortBy] - a[sortBy]);
-
-  // Render rows
-  const tbody = document.querySelector('#' + tableId + ' tbody');
-  const currency = '£';
+  var sorted = data.slice().sort(function(a, b) { return b[sortBy] - a[sortBy]; });
+  var tbody = document.querySelector('#' + tableId + ' tbody');
+  var currency = '£';
   tbody.innerHTML = sorted.map(function(p) {
-    var revDeltaCls = p.revenueDelta >= 0 ? 'positive' : 'negative';
-    var unitsDeltaCls = p.unitsDelta >= 0 ? 'positive' : 'negative';
-    var revDeltaStr = (p.revenueDelta >= 0 ? '+' : '') + p.revenueDelta.toFixed(1) + '%';
-    var unitsDeltaStr = (p.unitsDelta >= 0 ? '+' : '') + p.unitsDelta.toFixed(1) + '%';
-    var revFmt = currency + p.revenue.toLocaleString('en-GB', {minimumFractionDigits:2, maximumFractionDigits:2});
-    return '<tr>' +
-      '<td>' + p.name + '</td>' +
-      '<td class="text-right">' + revFmt + '</td>' +
-      '<td class="text-right"><span class="' + revDeltaCls + '">' + revDeltaStr + '</span></td>' +
-      '<td class="text-right">' + p.units.toLocaleString('en-GB') + '</td>' +
-      '<td class="text-right"><span class="' + unitsDeltaCls + '">' + unitsDeltaStr + '</span></td>' +
-      '</tr>';
+    var revCls = p.revenueDelta >= 0 ? 'positive' : 'negative';
+    var unitCls = p.unitsDelta >= 0 ? 'positive' : 'negative';
+    var revD = (p.prevRevenue === 0 && p.revenue === 0) ? '-' : (p.revenueDelta >= 0 ? '+' : '') + p.revenueDelta.toFixed(1) + '%';
+    var unitD = (p.prevUnits === 0 && p.units === 0) ? '-' : (p.unitsDelta >= 0 ? '+' : '') + p.unitsDelta.toFixed(1) + '%';
+    return '<tr><td>' + p.name + '</td><td class="text-right">' + currency + p.revenue.toLocaleString('en-GB',{minimumFractionDigits:2,maximumFractionDigits:2}) + '</td><td class="text-right"><span class="' + revCls + '">' + revD + '</span></td><td class="text-right">' + p.units.toLocaleString('en-GB') + '</td><td class="text-right"><span class="' + unitCls + '">' + unitD + '</span></td></tr>';
   }).join('');
-
-  // Add totals row
-  var totalRev = sorted.reduce(function(s,p){return s+p.revenue},0);
-  var totalUnits = sorted.reduce(function(s,p){return s+p.units},0);
-  var prevTotalRev = sorted.reduce(function(s,p){return s+p.prevRevenue},0);
-  var prevTotalUnits = sorted.reduce(function(s,p){return s+p.prevUnits},0);
-  var totalRevDelta = prevTotalRev === 0 ? (totalRev > 0 ? 100 : 0) : ((totalRev - prevTotalRev) / prevTotalRev) * 100;
-  var totalUnitsDelta = prevTotalUnits === 0 ? (totalUnits > 0 ? 100 : 0) : ((totalUnits - prevTotalUnits) / prevTotalUnits) * 100;
-  var revDeltaCls = totalRevDelta >= 0 ? 'positive' : 'negative';
-  var unitsDeltaCls = totalUnitsDelta >= 0 ? 'positive' : 'negative';
-  tbody.innerHTML += '<tr style="font-weight:700; border-top:2px solid var(--divider);">' +
-    '<td>Total</td>' +
-    '<td class="text-right">' + currency + totalRev.toLocaleString('en-GB', {minimumFractionDigits:2, maximumFractionDigits:2}) + '</td>' +
-    '<td class="text-right"><span class="' + revDeltaCls + '">' + (totalRevDelta >= 0 ? '+' : '') + totalRevDelta.toFixed(1) + '%</span></td>' +
-    '<td class="text-right">' + totalUnits.toLocaleString('en-GB') + '</td>' +
-    '<td class="text-right"><span class="' + unitsDeltaCls + '">' + (totalUnitsDelta >= 0 ? '+' : '') + totalUnitsDelta.toFixed(1) + '%</span></td>' +
-    '</tr>';
+  var tR = sorted.reduce(function(s,p){return s+p.revenue},0);
+  var tU = sorted.reduce(function(s,p){return s+p.units},0);
+  var pR = sorted.reduce(function(s,p){return s+p.prevRevenue},0);
+  var pU = sorted.reduce(function(s,p){return s+p.prevUnits},0);
+  var rD = pR===0?(tR>0?100:0):((tR-pR)/pR)*100;
+  var uD = pU===0?(tU>0?100:0):((tU-pU)/pU)*100;
+  tbody.innerHTML += '<tr style="font-weight:700;border-top:2px solid var(--divider);"><td>Total</td><td class="text-right">'+currency+tR.toLocaleString('en-GB',{minimumFractionDigits:2,maximumFractionDigits:2})+'</td><td class="text-right"><span class="'+(rD>=0?'positive':'negative')+'">'+(rD>=0?'+':'')+rD.toFixed(1)+'%</span></td><td class="text-right">'+tU.toLocaleString('en-GB')+'</td><td class="text-right"><span class="'+(uD>=0?'positive':'negative')+'">'+(uD>=0?'+':'')+uD.toFixed(1)+'%</span></td></tr>';
 }
 </script>
 <div class="report-header">
@@ -337,80 +289,889 @@ function sortTable(tableId, sortBy) {
     <div>Pairs Socks</div>
     <div>9 Mar 2026 - 15 Mar 2026</div>
   </div>
-</div><p class="section-desc" style="margin-bottom:8px;">9 Mar 2026 - 15 Mar 2026 vs 2 Mar 2026 - 8 Mar 2026</p>
-<div class="section-label">Overview</div>
-<h1>Pairs Socks</h1>
-<p class="section-desc">Weekly performance snapshot across all channels.</p>
-
-<div class="kpi-row"><div class="kpi-box"><div class="kpi-label">Status</div><div class="kpi-value" style="font-size:1rem;">Awaiting Data</div><div class="kpi-delta negative">Shopify + ad platforms not yet connected</div></div></div><div class="section-label">Product Breakdown</div>
-<div class="section-label">Products</div>
-<h2>Sales by Product</h2>
-<div class="card">
-  <p style="color:var(--text-secondary);font-size:0.85rem;">Shopify not yet connected. Product data will appear here once credentials are configured.</p>
-</div>
-<div class="section-label">Products</div>
+</div><p class="section-desc" style="margin-bottom:8px;">9 Mar 2026 - 15 Mar 2026 vs 2 Mar 2026 - 8 Mar 2026</p><div class="section-label">Overview</div><h1>Pairs Socks</h1><p class="section-desc">Weekly performance snapshot across all channels.</p><div class="kpi-row"><div class="kpi-box">
+    <div class="kpi-label">Revenue</div>
+    <div class="kpi-value">£26,598</div>
+    <div class="kpi-delta negative">-13.5% vs prev</div>
+  </div><div class="kpi-box">
+    <div class="kpi-label">Orders</div>
+    <div class="kpi-value">686</div>
+    <div class="kpi-delta negative">-10.4% vs prev</div>
+  </div><div class="kpi-box">
+    <div class="kpi-label">AOV</div>
+    <div class="kpi-value">£30.59</div>
+    <div class="kpi-delta negative">-1.8% vs prev</div>
+  </div><div class="kpi-box">
+    <div class="kpi-label">New Customers</div>
+    <div class="kpi-value">513</div>
+    <div class="kpi-delta negative">-12.5% vs prev</div>
+  </div><div class="kpi-box">
+    <div class="kpi-label">Blended ROAS</div>
+    <div class="kpi-value">4.59x</div>
+    <div class="kpi-delta negative">-4.3% vs prev</div>
+  </div></div><div class="section-label">Customers</div><h2>New vs Returning</h2><div class="card">
+      <div style="display:flex; gap:4px; height:28px; border-radius:6px; overflow:hidden; margin-bottom:16px;">
+        <div style="width:74.78134110787173%; background:var(--royal-blue); display:flex; align-items:center; justify-content:center; font-size:0.65rem; font-weight:600;">New 75%</div>
+        <div style="width:25.218658892128282%; background:var(--vivid-violet); display:flex; align-items:center; justify-content:center; font-size:0.65rem; font-weight:600;">Returning 25%</div>
+      </div>
+      <table><thead><tr><th>Segment</th><th class="text-right">Customers</th><th class="text-right">Cust &Delta;</th></tr></thead><tbody>
+        <tr><td><span class="badge badge-blue">New</span></td><td class="text-right">513</td><td class="text-right"><span class="negative">-12.5%</span></td></tr>
+        <tr><td><span class="badge badge-violet">Returning</span></td><td class="text-right">173</td><td class="text-right"><span class="negative">-3.9%</span></td></tr>
+        <tr style="font-weight:700; border-top:2px solid var(--divider);"><td>Total</td><td class="text-right">686</td><td class="text-right"><span class="negative">-10.4%</span></td></tr>
+      </tbody></table></div><div class="section-label">Product Breakdown</div>
 <h2>Sales by Product Type</h2>
+<p class="section-desc">7-day performance grouped by product type vs previous period.</p>
 <div class="card">
-  <p style="color:var(--text-secondary);font-size:0.85rem;">Shopify not yet connected. Product data will appear here once credentials are configured.</p>
-</div>
-<div class="section-label">Platform Data</div>
-<h2>Channel Performance</h2>
-<div class="card">
-  <p style="color:var(--text-secondary);font-size:0.85rem;">No ad platforms connected yet. Meta and Google campaign data will appear here once configured.</p>
-</div>
-<h2>Meta Campaigns</h2>
-<div class="card">
-  <p style="color:var(--text-secondary);font-size:0.85rem;">Meta Ads not yet connected.</p>
-</div>
-<h2>Google Campaigns</h2>
-<div class="card">
-  <p style="color:var(--text-secondary);font-size:0.85rem;">Google Ads not yet connected.</p>
-</div>
-<div class="section-label">Email</div>
-<h2>Klaviyo</h2>
-<p class="section-desc">Campaigns sent during the reporting period. 9 this week vs 5 previous week.</p>
-<div class="card">
-  <table>
-    <thead><tr><th>Campaign</th><th class="text-right">Sent</th><th class="text-right">Status</th></tr></thead>
-    <tbody><tr>
-        <td>Week 11 - We Love Colour - Sunday 15th March Email</td>
-        <td class="text-right">11 Mar</td>
-        <td class="text-right"><span class="badge badge-green">Sent</span></td>
-      </tr><tr>
-        <td>Week 11 - We Love Colour - Sunday 15th March Email</td>
-        <td class="text-right">15 Mar</td>
-        <td class="text-right"><span class="badge badge-green">Sent</span></td>
-      </tr><tr>
-        <td>Week 11 - All The Greens - Fri 13th March Email</td>
-        <td class="text-right">13 Mar</td>
-        <td class="text-right"><span class="badge badge-green">Sent</span></td>
-      </tr><tr>
-        <td>Week 11 - Last chance for free shipping - Wed 11th March Email</td>
-        <td class="text-right">11 Mar</td>
-        <td class="text-right"><span class="badge badge-green">Sent</span></td>
-      </tr><tr>
-        <td>Week 10 - For Mother’s Day - Sunday 8th March Email</td>
-        <td class="text-right">10 Mar</td>
-        <td class="text-right"><span class="badge badge-green">Sent</span></td>
-      </tr><tr>
-        <td>Week 10 - For Mother’s Day - Sunday 8th March Email</td>
-        <td class="text-right">10 Mar</td>
-        <td class="text-right"><span class="badge badge-green">Sent</span></td>
-      </tr><tr>
-        <td>Week 10 - For Mother’s Day - Sunday 8th March Email</td>
-        <td class="text-right">10 Mar</td>
-        <td class="text-right"><span class="badge badge-green">Sent</span></td>
-      </tr><tr>
-        <td>Week 10 - For Mother’s Day - Sunday 8th March Email</td>
-        <td class="text-right">10 Mar</td>
-        <td class="text-right"><span class="badge badge-green">Sent</span></td>
-      </tr><tr>
-        <td>Week 10 - For Mother’s Day - Sunday 8th March Email</td>
-        <td class="text-right">10 Mar</td>
-        <td class="text-right"><span class="badge badge-green">Sent</span></td>
-      </tr></tbody>
+  <div class="tab-row">
+    <button class="tab-btn active" onclick="sortTable('product-type-table', 'revenue')">Total Sales</button>
+    <button class="tab-btn" onclick="sortTable('product-type-table', 'units')">Units Ordered</button>
+  </div>
+  <table id="product-type-table">
+    <thead><tr><th>Product Type</th><th class="text-right">Revenue</th><th class="text-right">Rev &Delta;</th><th class="text-right">Units</th><th class="text-right">Units &Delta;</th></tr></thead>
+    <tbody></tbody>
   </table>
 </div>
+<script>window['product-type-table_data'] = [{"name":"Merino bed sock","revenue":4381.49,"units":215,"prevRevenue":3235.29,"prevUnits":170,"revenueDelta":35.4280450902392,"unitsDelta":26.47058823529412},{"name":"Other","revenue":2653.9700000000003,"units":54,"prevRevenue":2388.2900000000004,"prevUnits":31,"revenueDelta":11.124277202517273,"unitsDelta":74.19354838709677},{"name":"Merino","revenue":8034.92,"units":612,"prevRevenue":10085.799999999997,"prevUnits":797,"revenueDelta":-20.334331436276727,"unitsDelta":-23.212045169385195},{"name":"Bamboo","revenue":5873.030000000001,"units":712,"prevRevenue":8258.649999999998,"prevUnits":1041,"revenueDelta":-28.88631919260409,"unitsDelta":-31.60422670509126},{"name":"Ultra Soft - everyday","revenue":777.39,"units":53,"prevRevenue":462.28999999999996,"prevUnits":31,"revenueDelta":68.1606783620671,"unitsDelta":70.96774193548387},{"name":"Ultra Soft - ribbed bed","revenue":1605.61,"units":66,"prevRevenue":1583.3999999999999,"prevUnits":62,"revenueDelta":1.402677781988129,"unitsDelta":6.451612903225806},{"name":"Mohair","revenue":765.2,"units":34,"prevRevenue":809.61,"prevUnits":36,"revenueDelta":-5.485357147268434,"unitsDelta":-5.555555555555555},{"name":"UK alpaca everyday","revenue":1286.4199999999998,"units":71,"prevRevenue":1820.8400000000001,"prevUnits":94,"revenueDelta":-29.35019002218758,"unitsDelta":-24.46808510638298},{"name":"Lambswool","revenue":214.8,"units":20,"prevRevenue":126.6,"prevUnits":11,"revenueDelta":69.66824644549764,"unitsDelta":81.81818181818183},{"name":"Wool knee high","revenue":519.94,"units":31,"prevRevenue":1148.26,"prevUnits":49,"revenueDelta":-54.71931444098026,"unitsDelta":-36.734693877551024},{"name":"Ultra Soft - plain bed","revenue":484.8,"units":23,"prevRevenue":831.67,"prevUnits":38,"revenueDelta":-41.70764846633881,"unitsDelta":-39.473684210526315}]; sortTable('product-type-table', 'revenue');</script>
+<h2>Sales by Product</h2>
+<p class="section-desc">7-day product performance vs previous period. Toggle between revenue and units ordered. Showing top 20 of 129.</p>
+<div class="card">
+  <div class="tab-row">
+    <button class="tab-btn active" onclick="sortTable('product-table', 'revenue')">Total Sales</button>
+    <button class="tab-btn" onclick="sortTable('product-table', 'units')">Units Ordered</button>
+  </div>
+  <table id="product-table">
+    <thead><tr><th>Product</th><th class="text-right">Revenue</th><th class="text-right">Rev &Delta;</th><th class="text-right">Units</th><th class="text-right">Units &Delta;</th></tr></thead>
+    <tbody></tbody>
+  </table>
+</div>
+<script>window['product-table_data'] = [{"name":"The Merino Bed Socks Set Three","revenue":2661,"units":94,"prevRevenue":1758.68,"prevUnits":65,"revenueDelta":51.30666181454272,"unitsDelta":44.61538461538462},{"name":"(No product title)","revenue":2504.96,"units":0,"prevRevenue":2312.69,"prevUnits":0,"revenueDelta":8.313695307196381,"unitsDelta":0},{"name":"The Merino Set - Blues and Greens","revenue":638,"units":17,"prevRevenue":334,"prevUnits":9,"revenueDelta":91.01796407185628,"unitsDelta":88.88888888888889},{"name":"The Merino Set - Pinks and Greys","revenue":551.74,"units":15,"prevRevenue":517.27,"prevUnits":14,"revenueDelta":6.663831268003176,"unitsDelta":7.142857142857142},{"name":"Correct Grey Merino Socks","revenue":533.17,"units":50,"prevRevenue":770.5,"prevUnits":71,"revenueDelta":-30.802076573653476,"unitsDelta":-29.577464788732392},{"name":"The Merino Gift Set Two","revenue":477.75,"units":8,"prevRevenue":188.5,"prevUnits":3,"revenueDelta":153.44827586206898,"unitsDelta":166.66666666666669},{"name":"The Bamboo Set - Classic","revenue":458.41,"units":18,"prevRevenue":619.16,"prevUnits":27,"revenueDelta":-25.962594482847724,"unitsDelta":-33.33333333333333},{"name":"The Merino Set - Classic","revenue":444.07,"units":14,"prevRevenue":1038.01,"prevUnits":28,"revenueDelta":-57.21910193543416,"unitsDelta":-50},{"name":"Dark Plum Bamboo Socks","revenue":436.42,"units":79,"prevRevenue":628.66,"prevUnits":109,"revenueDelta":-30.579327458403583,"unitsDelta":-27.522935779816514},{"name":"The Merino Set - Neutral","revenue":401.44,"units":11,"prevRevenue":614,"prevUnits":17,"revenueDelta":-34.618892508143325,"unitsDelta":-35.294117647058826},{"name":"Dandelion Yellow Ultra Soft Alpaca Socks","revenue":394.89,"units":30,"prevRevenue":241.79,"prevUnits":17,"revenueDelta":63.319409404855456,"unitsDelta":76.47058823529412},{"name":"The Merino Set -  Brights and Pastels","revenue":384,"units":11,"prevRevenue":629.14,"prevUnits":17,"revenueDelta":-38.96430047366246,"unitsDelta":-35.294117647058826},{"name":"Fresh White Merino Socks","revenue":339.92,"units":48,"prevRevenue":249.52,"prevUnits":35,"revenueDelta":36.22956075665277,"unitsDelta":37.142857142857146},{"name":"Blue Jean Merino Socks","revenue":336.14,"units":49,"prevRevenue":437.46,"prevUnits":63,"revenueDelta":-23.16097471768847,"unitsDelta":-22.22222222222222},{"name":"The Ultra Soft Alpaca Ribbed Gift Set Two","revenue":332.5,"units":5,"prevRevenue":70,"prevUnits":1,"revenueDelta":375,"unitsDelta":400},{"name":"Ladybird Red Bamboo Socks","revenue":323.51,"units":57,"prevRevenue":454.4,"prevUnits":80,"revenueDelta":-28.805017605633804,"unitsDelta":-28.749999999999996},{"name":"The Bamboo Set - Neutral","revenue":318.29,"units":12,"prevRevenue":342.41,"prevUnits":15,"revenueDelta":-7.044186793610001,"unitsDelta":-20},{"name":"Golden Yellow Merino Socks","revenue":315,"units":28,"prevRevenue":250.81,"prevUnits":23,"revenueDelta":25.593078425900085,"unitsDelta":21.73913043478261},{"name":"True Black Bamboo Socks","revenue":309.38,"units":39,"prevRevenue":417.36,"prevUnits":59,"revenueDelta":-25.872148744489177,"unitsDelta":-33.89830508474576},{"name":"Golden Yellow Mohair Socks","revenue":303.09,"units":13,"prevRevenue":457.11,"prevUnits":20,"revenueDelta":-33.694296777580895,"unitsDelta":-35}]; sortTable('product-table', 'revenue');</script><div class="section-label">Platform Data</div><h2>Channel Performance</h2><div class="card"><table>
+      <thead><tr><th>Channel</th><th class="text-right">Spend</th><th class="text-right">Revenue</th><th class="text-right">ROAS</th><th class="text-right">Clicks</th><th class="text-right">CPC</th><th class="text-right">Spend &Delta;</th><th class="text-right">ROAS &Delta;</th></tr></thead><tbody><tr>
+    <td><span class="badge badge-blue">Meta</span></td>
+    <td class="text-right">£2,770</td>
+    <td class="text-right">£7,309</td>
+    <td class="text-right val-blue">2.64x</td>
+    <td class="text-right">3,120</td>
+    <td class="text-right">£0.89</td>
+    <td class="text-right"><span class="negative">-1.0%</span></td>
+    <td class="text-right"><span class="positive">+13.2%</span></td>
+  </tr><tr>
+    <td><span class="badge badge-violet">Google</span></td>
+    <td class="text-right">£3,026</td>
+    <td class="text-right">£6,151</td>
+    <td class="text-right val-blue">2.03x</td>
+    <td class="text-right">3,191</td>
+    <td class="text-right">£0.95</td>
+    <td class="text-right"><span class="negative">-16.3%</span></td>
+    <td class="text-right"><span class="negative">-10.1%</span></td>
+  </tr><tr style="font-weight:700; border-top:2px solid var(--divider);"><td>Total</td>
+        <td class="text-right">£5,796</td><td class="text-right">£13,460</td>
+        <td class="text-right val-blue">2.32x</td><td class="text-right">6,311</td>
+        <td class="text-right">£0.92</td>
+        <td class="text-right"><span class="negative">-9.6%</span></td>
+        <td class="text-right"><span class="positive">+1.3%</span></td></tr></tbody></table></div><h2>Meta Campaigns</h2><div class="card"><table><thead><tr><th>Campaign</th><th class="text-right">Spend</th><th class="text-right">Revenue</th><th class="text-right">ROAS</th><th class="text-right">Conv</th><th class="text-right">CPC</th><th class="text-right">CTR</th><th class="text-right">Spend &Delta;</th></tr></thead><tbody><tr>
+      <td>CS | Cold/Warm/Hot | Purchases | Evergreen | Manual Bids</td>
+      <td class="text-right">£1,430</td>
+      <td class="text-right">£4,641</td>
+      <td class="text-right val-blue">3.25x <span class="val-green">(+0.98)</span></td>
+      <td class="text-right">86</td>
+      <td class="text-right">£0.80</td>
+      <td class="text-right">0.94%</td>
+      <td class="text-right"><span class="negative">-2.1%</span></td>
+    </tr><tr>
+      <td>CS | Cold/Warm/Hot | Purchases | Post Rebrand | Evergreen</td>
+      <td class="text-right">£1,200</td>
+      <td class="text-right">£2,373</td>
+      <td class="text-right val-blue">1.98x <span class="val-muted">(-0.52)</span></td>
+      <td class="text-right">55</td>
+      <td class="text-right">£0.97</td>
+      <td class="text-right">1.88%</td>
+      <td class="text-right"><span class="positive">+0.3%</span></td>
+    </tr><tr>
+      <td>CS | Hot | Awareness | Post Rebrand | Retention</td>
+      <td class="text-right">£140</td>
+      <td class="text-right">£295</td>
+      <td class="text-right val-blue">2.10x <span class="val-green">(+0.54)</span></td>
+      <td class="text-right">7</td>
+      <td class="text-right">£1.32</td>
+      <td class="text-right">0.14%</td>
+      <td class="text-right"><span class="positive">+0.6%</span></td>
+    </tr><tr style="font-weight:700; border-top:2px solid var(--divider);">
+    <td>Total</td>
+    <td class="text-right">£2,770</td>
+    <td class="text-right">£7,309</td>
+    <td class="text-right val-blue">2.64x</td>
+    <td class="text-right">148</td>
+    <td class="text-right">£0.89</td>
+    <td class="text-right">0.94%</td>
+    <td class="text-right"><span class="negative">-1.0%</span></td>
+  </tr></tbody></table></div><h2>Meta Ad Sets</h2><div class="card"><table><thead><tr><th>Ad Set</th><th class="text-right">Spend</th><th class="text-right">Revenue</th><th class="text-right">ROAS</th><th class="text-right">Purch</th><th class="text-right">CPC</th><th class="text-right">CTR</th><th class="text-right">Spend &Delta;</th></tr></thead><tbody><tr><td colspan="8" style="padding:12px 12px 6px; font-weight:700; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--vivid-violet); border-bottom:none;">CS | Cold/Warm/Hot | Purchases | Post Rebrand | Evergreen</td></tr><tr>
+        <td style="padding-left:24px;">Ad Set 2 - Broad - Excludes Purchasers 31+ Days Ago</td>
+        <td class="text-right">£989</td>
+        <td class="text-right">£1,951</td>
+        <td class="text-right val-blue">1.97x <span class="val-muted">(-1.18)</span></td>
+        <td class="text-right">47</td>
+        <td class="text-right">£0.97</td>
+        <td class="text-right">1.91%</td>
+        <td class="text-right"><span class="positive">+80.0%</span></td>
+      </tr><tr>
+        <td style="padding-left:24px;">Ad Set 4 - Broad - Excludes Purchasers 31+ Days Ago</td>
+        <td class="text-right">£210</td>
+        <td class="text-right">£422</td>
+        <td class="text-right val-blue">2.01x</td>
+        <td class="text-right">8</td>
+        <td class="text-right">£0.98</td>
+        <td class="text-right">1.74%</td>
+        <td class="text-right">-</td>
+      </tr><tr><td colspan="8" style="padding:12px 12px 6px; font-weight:700; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--vivid-violet); border-bottom:none;">CS | Cold/Warm/Hot | Purchases | Evergreen | Manual Bids</td></tr><tr>
+        <td style="padding-left:24px;">TESTING Ad Set 3 - Broad - Excludes Purchasers 31+ Days Ago</td>
+        <td class="text-right">£830</td>
+        <td class="text-right">£2,731</td>
+        <td class="text-right val-blue">3.29x <span class="val-green">(+1.56)</span></td>
+        <td class="text-right">43</td>
+        <td class="text-right">£0.79</td>
+        <td class="text-right">0.99%</td>
+        <td class="text-right"><span class="negative">-9.0%</span></td>
+      </tr><tr>
+        <td style="padding-left:24px;">Ad Set 2 - Broad - Excludes Purchasers 31+ Days Ago</td>
+        <td class="text-right">£460</td>
+        <td class="text-right">£1,573</td>
+        <td class="text-right val-blue">3.42x <span class="val-green">(+0.26)</span></td>
+        <td class="text-right">38</td>
+        <td class="text-right">£0.85</td>
+        <td class="text-right">0.80%</td>
+        <td class="text-right"><span class="negative">-16.2%</span></td>
+      </tr><tr>
+        <td style="padding-left:24px;">Ad Set 4 - Broad - Excluding Customers 31+ Days Ago</td>
+        <td class="text-right">£140</td>
+        <td class="text-right">£337</td>
+        <td class="text-right val-blue">2.41x</td>
+        <td class="text-right">5</td>
+        <td class="text-right">£0.70</td>
+        <td class="text-right">1.16%</td>
+        <td class="text-right">-</td>
+      </tr><tr><td colspan="8" style="padding:12px 12px 6px; font-weight:700; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--vivid-violet); border-bottom:none;">CS | Hot | Awareness | Post Rebrand | Retention</td></tr><tr>
+        <td style="padding-left:24px;">Ad Set 1 - All Customers</td>
+        <td class="text-right">£140</td>
+        <td class="text-right">£295</td>
+        <td class="text-right val-blue">2.10x <span class="val-green">(+0.54)</span></td>
+        <td class="text-right">7</td>
+        <td class="text-right">£1.32</td>
+        <td class="text-right">0.14%</td>
+        <td class="text-right"><span class="positive">+0.6%</span></td>
+      </tr></tbody></table></div><h2>Meta Ads</h2><div class="card"><p class="section-desc">Top 20 of 116 active ads by spend. Grouped by campaign.</p>
+  <table><thead><tr><th>Ad</th><th class="text-right">Spend</th><th class="text-right">Revenue</th><th class="text-right">ROAS</th><th class="text-right">Purch</th><th class="text-right">CPC</th><th class="text-right">CTR</th></tr></thead><tbody><tr><td colspan="7" style="padding:12px 12px 6px; font-weight:700; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--vivid-violet); border-bottom:none;">CS | Cold/Warm/Hot | Purchases | Evergreen | Manual Bids</td></tr><tr>
+        <td style="padding-left:24px; max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Ad 178 | Image | Static | All Products | two people in loafers and socks, Harper’s Bazaar quote “One of the Best of British” + PP logo | none | OG">Ad 178 | Image | Static | All Products | two people in loafers and socks, Harper’s Bazaar quote “One of the Best of British” + PP logo | none | OG</td>
+        <td class="text-right">£299</td>
+        <td class="text-right">£271</td>
+        <td class="text-right val-blue">0.91x <span class="val-muted">(-0.60)</span></td>
+        <td class="text-right">7</td>
+        <td class="text-right">£0.75</td>
+        <td class="text-right">1.10%</td>
+      </tr><tr>
+        <td style="padding-left:24px; max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Ad 190 | GIF | Static | merino bed socks | Flat lay GIF of all merino bed socks with logo | none | OG - Copy">Ad 190 | GIF | Static | merino bed socks | Flat lay GIF of all merino bed socks with logo | none | OG - Copy</td>
+        <td class="text-right">£176</td>
+        <td class="text-right">£675</td>
+        <td class="text-right val-blue">3.84x <span class="val-green">(+3.14)</span></td>
+        <td class="text-right">15</td>
+        <td class="text-right">£1.15</td>
+        <td class="text-right">0.67%</td>
+      </tr><tr>
+        <td style="padding-left:24px; max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Ad 165 | Image | Static | All Products | crossed legs in pink and red socks with “Pairs” text | none | OG - Copy">Ad 165 | Image | Static | All Products | crossed legs in pink and red socks with “Pairs” text | none | OG - Copy</td>
+        <td class="text-right">£151</td>
+        <td class="text-right">£600</td>
+        <td class="text-right val-blue">3.98x <span class="val-green">(+3.98)</span></td>
+        <td class="text-right">15</td>
+        <td class="text-right">£0.84</td>
+        <td class="text-right">0.74%</td>
+      </tr><tr>
+        <td style="padding-left:24px; max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Ad 194 | Image | Static | alpaca bed socks | legs with red alpaca ribbed bed socks with PR text overlay | none | OG">Ad 194 | Image | Static | alpaca bed socks | legs with red alpaca ribbed bed socks with PR text overlay | none | OG</td>
+        <td class="text-right">£105</td>
+        <td class="text-right">£681</td>
+        <td class="text-right val-blue">6.46x <span class="val-green">(+6.46)</span></td>
+        <td class="text-right">10</td>
+        <td class="text-right">£0.61</td>
+        <td class="text-right">1.36%</td>
+      </tr><tr>
+        <td style="padding-left:24px; max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Ad 190 | GIF | Static | merino bed socks | Flat lay GIF of all merino bed socks with logo | none | OG - Copy">Ad 190 | GIF | Static | merino bed socks | Flat lay GIF of all merino bed socks with logo | none | OG - Copy</td>
+        <td class="text-right">£93</td>
+        <td class="text-right">£544</td>
+        <td class="text-right val-blue">5.86x <span class="val-green">(+5.16)</span></td>
+        <td class="text-right">12</td>
+        <td class="text-right">£1.16</td>
+        <td class="text-right">0.56%</td>
+      </tr><tr>
+        <td style="padding-left:24px; max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Ad 205 | Image | Static | various socks | various socks in a grid with a stack of merino socks in the top right corner with PR text overlay | none | OG">Ad 205 | Image | Static | various socks | various socks in a grid with a stack of merino socks in the top right corner with PR text overlay | none | OG</td>
+        <td class="text-right">£89</td>
+        <td class="text-right">£1,024</td>
+        <td class="text-right val-blue">11.51x <span class="val-green">(+7.93)</span></td>
+        <td class="text-right">10</td>
+        <td class="text-right">£0.67</td>
+        <td class="text-right">0.88%</td>
+      </tr><tr>
+        <td style="padding-left:24px; max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Ad 191 | Image | Static | Merino Socks | Correct Grey merino socks with gold shoes with PR text overlay | none | OG">Ad 191 | Image | Static | Merino Socks | Correct Grey merino socks with gold shoes with PR text overlay | none | OG</td>
+        <td class="text-right">£80</td>
+        <td class="text-right">£0</td>
+        <td class="text-right val-blue">0.00x <span class="val-muted">(-2.86)</span></td>
+        <td class="text-right">0</td>
+        <td class="text-right">£0.83</td>
+        <td class="text-right">1.05%</td>
+      </tr><tr>
+        <td style="padding-left:24px; max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Ad 261 | Video | All Products | Seasonal | Studio Lifestyle | No Offer | OG - Copy">Ad 261 | Video | All Products | Seasonal | Studio Lifestyle | No Offer | OG - Copy</td>
+        <td class="text-right">£64</td>
+        <td class="text-right">£32</td>
+        <td class="text-right val-blue">0.51x</td>
+        <td class="text-right">1</td>
+        <td class="text-right">£0.69</td>
+        <td class="text-right">1.42%</td>
+      </tr><tr>
+        <td style="padding-left:24px; max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Ad 205 | Image | Static | various socks | various socks in a grid with a stack of merino socks in the top right corner with PR text overlay | none | OG">Ad 205 | Image | Static | various socks | various socks in a grid with a stack of merino socks in the top right corner with PR text overlay | none | OG</td>
+        <td class="text-right">£47</td>
+        <td class="text-right">£48</td>
+        <td class="text-right val-blue">1.02x <span class="val-muted">(-2.56)</span></td>
+        <td class="text-right">2</td>
+        <td class="text-right">£0.68</td>
+        <td class="text-right">0.90%</td>
+      </tr><tr>
+        <td style="padding-left:24px; max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Ad 192 | Image | Static | Alpaca socks | Treacle brown alpaca socks with crossed legs with PR text overlay | none | OG">Ad 192 | Image | Static | Alpaca socks | Treacle brown alpaca socks with crossed legs with PR text overlay | none | OG</td>
+        <td class="text-right">£38</td>
+        <td class="text-right">£0</td>
+        <td class="text-right val-blue">0.00x <span class="val-green">(+0.00)</span></td>
+        <td class="text-right">0</td>
+        <td class="text-right">£0.90</td>
+        <td class="text-right">1.18%</td>
+      </tr><tr><td colspan="7" style="padding:12px 12px 6px; font-weight:700; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--vivid-violet); border-bottom:none;">CS | Cold/Warm/Hot | Purchases | Post Rebrand | Evergreen</td></tr><tr>
+        <td style="padding-left:24px; max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Ad 178 | Image | Static | All Products | two people in loafers and socks, Harper’s Bazaar quote “One of the Best of British” + PP logo | none | OG">Ad 178 | Image | Static | All Products | two people in loafers and socks, Harper’s Bazaar quote “One of the Best of British” + PP logo | none | OG</td>
+        <td class="text-right">£279</td>
+        <td class="text-right">£431</td>
+        <td class="text-right val-blue">1.55x <span class="val-green">(+0.04)</span></td>
+        <td class="text-right">9</td>
+        <td class="text-right">£1.18</td>
+        <td class="text-right">1.57%</td>
+      </tr><tr>
+        <td style="padding-left:24px; max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Ad 205 | Image | Static | various socks | various socks in a grid with a stack of merino socks in the top right corner with PR text overlay | none | OG">Ad 205 | Image | Static | various socks | various socks in a grid with a stack of merino socks in the top right corner with PR text overlay | none | OG</td>
+        <td class="text-right">£213</td>
+        <td class="text-right">£568</td>
+        <td class="text-right val-blue">2.67x <span class="val-muted">(-0.91)</span></td>
+        <td class="text-right">13</td>
+        <td class="text-right">£0.78</td>
+        <td class="text-right">2.19%</td>
+      </tr><tr>
+        <td style="padding-left:24px; max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Ad 194 | Image | Static | alpaca bed socks | legs with red alpaca ribbed bed socks with PR text overlay | none | OG">Ad 194 | Image | Static | alpaca bed socks | legs with red alpaca ribbed bed socks with PR text overlay | none | OG</td>
+        <td class="text-right">£178</td>
+        <td class="text-right">£541</td>
+        <td class="text-right val-blue">3.04x <span class="val-green">(+3.04)</span></td>
+        <td class="text-right">11</td>
+        <td class="text-right">£0.76</td>
+        <td class="text-right">2.36%</td>
+      </tr><tr>
+        <td style="padding-left:24px; max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Ad 191 | Image | Static | Merino Socks | Correct Grey merino socks with gold shoes with PR text overlay | none | OG">Ad 191 | Image | Static | Merino Socks | Correct Grey merino socks with gold shoes with PR text overlay | none | OG</td>
+        <td class="text-right">£155</td>
+        <td class="text-right">£186</td>
+        <td class="text-right val-blue">1.20x <span class="val-muted">(-1.66)</span></td>
+        <td class="text-right">7</td>
+        <td class="text-right">£1.14</td>
+        <td class="text-right">1.78%</td>
+      </tr><tr>
+        <td style="padding-left:24px; max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Ad 261 | Video | All Products | Seasonal | Studio Lifestyle | No Offer | OG">Ad 261 | Video | All Products | Seasonal | Studio Lifestyle | No Offer | OG</td>
+        <td class="text-right">£124</td>
+        <td class="text-right">£340</td>
+        <td class="text-right val-blue">2.75x</td>
+        <td class="text-right">6</td>
+        <td class="text-right">£0.99</td>
+        <td class="text-right">1.89%</td>
+      </tr><tr>
+        <td style="padding-left:24px; max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Ad 192 | Image | Static | Alpaca socks | Treacle brown alpaca socks with crossed legs with PR text overlay | none | OG">Ad 192 | Image | Static | Alpaca socks | Treacle brown alpaca socks with crossed legs with PR text overlay | none | OG</td>
+        <td class="text-right">£49</td>
+        <td class="text-right">£43</td>
+        <td class="text-right val-blue">0.89x <span class="val-green">(+0.89)</span></td>
+        <td class="text-right">1</td>
+        <td class="text-right">£1.11</td>
+        <td class="text-right">2.37%</td>
+      </tr><tr>
+        <td style="padding-left:24px; max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Ad 251 | Image | All Products | Everyday Luxury | Studio Lifestyle | No Offer | OG">Ad 251 | Image | All Products | Everyday Luxury | Studio Lifestyle | No Offer | OG</td>
+        <td class="text-right">£39</td>
+        <td class="text-right">£0</td>
+        <td class="text-right val-blue">0.00x</td>
+        <td class="text-right">0</td>
+        <td class="text-right">£0.98</td>
+        <td class="text-right">1.53%</td>
+      </tr><tr>
+        <td style="padding-left:24px; max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Ad 177 | Image | Static | All Products | multiple people wearing cream socks, PP logo, “One of life’s little luxuries” Condé Nast Traveller quote | none | OG">Ad 177 | Image | Static | All Products | multiple people wearing cream socks, PP logo, “One of life’s little luxuries” Condé Nast Traveller quote | none | OG</td>
+        <td class="text-right">£30</td>
+        <td class="text-right">£0</td>
+        <td class="text-right val-blue">0.00x <span class="val-muted">(-4.85)</span></td>
+        <td class="text-right">0</td>
+        <td class="text-right">£1.88</td>
+        <td class="text-right">1.42%</td>
+      </tr><tr><td colspan="7" style="padding:12px 12px 6px; font-weight:700; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--vivid-violet); border-bottom:none;">CS | Hot | Awareness | Post Rebrand | Retention</td></tr><tr>
+        <td style="padding-left:24px; max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Ad 178 | Image | Static | All Products | two people in loafers and socks, Harper’s Bazaar quote “One of the Best of British” + PP logo | none | OG">Ad 178 | Image | Static | All Products | two people in loafers and socks, Harper’s Bazaar quote “One of the Best of British” + PP logo | none | OG</td>
+        <td class="text-right">£64</td>
+        <td class="text-right">£97</td>
+        <td class="text-right val-blue">1.51x <span class="val-green">(+0.01)</span></td>
+        <td class="text-right">2</td>
+        <td class="text-right">£1.14</td>
+        <td class="text-right">0.17%</td>
+      </tr><tr>
+        <td style="padding-left:24px; max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Ad 177 | Image | Static | All Products | multiple people wearing cream socks, PP logo, “One of life’s little luxuries” Condé Nast Traveller quote | none | OG">Ad 177 | Image | Static | All Products | multiple people wearing cream socks, PP logo, “One of life’s little luxuries” Condé Nast Traveller quote | none | OG</td>
+        <td class="text-right">£36</td>
+        <td class="text-right">£112</td>
+        <td class="text-right val-blue">3.12x <span class="val-muted">(-1.74)</span></td>
+        <td class="text-right">2</td>
+        <td class="text-right">£1.90</td>
+        <td class="text-right">0.10%</td>
+      </tr></tbody></table></div><h2>Google Campaigns</h2><div class="card"><table><thead><tr><th>Campaign</th><th class="text-right">Spend</th><th class="text-right">Revenue</th><th class="text-right">ROAS</th><th class="text-right">Conv</th><th class="text-right">CPC</th><th class="text-right">CTR</th><th class="text-right">Spend &Delta;</th></tr></thead><tbody><tr>
+      <td>CS | Shopping | High | All Products 25</td>
+      <td class="text-right">£1,798</td>
+      <td class="text-right">£2,538</td>
+      <td class="text-right val-blue">1.41x <span class="val-muted">(-0.19)</span></td>
+      <td class="text-right">69</td>
+      <td class="text-right">£1.04</td>
+      <td class="text-right">0.82%</td>
+      <td class="text-right"><span class="negative">-24.8%</span></td>
+    </tr><tr>
+      <td>CS | Performance Max | All Products Post Rebrand</td>
+      <td class="text-right">£695</td>
+      <td class="text-right">£979</td>
+      <td class="text-right val-blue">1.41x <span class="val-muted">(-0.59)</span></td>
+      <td class="text-right">24</td>
+      <td class="text-right">£1.16</td>
+      <td class="text-right">1.30%</td>
+      <td class="text-right"><span class="negative">-1.6%</span></td>
+    </tr><tr>
+      <td>CS | Search | All Fibres</td>
+      <td class="text-right">£399</td>
+      <td class="text-right">£431</td>
+      <td class="text-right val-blue">1.08x <span class="val-muted">(-0.52)</span></td>
+      <td class="text-right">14</td>
+      <td class="text-right">£1.16</td>
+      <td class="text-right">6.80%</td>
+      <td class="text-right"><span class="positive">+2.4%</span></td>
+    </tr><tr>
+      <td>CS | Search | Brand</td>
+      <td class="text-right">£134</td>
+      <td class="text-right">£2,203</td>
+      <td class="text-right val-blue">16.44x <span class="val-muted">(-1.31)</span></td>
+      <td class="text-right">47</td>
+      <td class="text-right">£0.26</td>
+      <td class="text-right">54.93%</td>
+      <td class="text-right"><span class="positive">+3.3%</span></td>
+    </tr><tr style="font-weight:700; border-top:2px solid var(--divider);">
+    <td>Total</td>
+    <td class="text-right">£3,026</td>
+    <td class="text-right">£6,151</td>
+    <td class="text-right val-blue">2.03x</td>
+    <td class="text-right">153.823115</td>
+    <td class="text-right">£0.95</td>
+    <td class="text-right">1.21%</td>
+    <td class="text-right"><span class="negative">-16.3%</span></td>
+  </tr></tbody></table></div><h2>Google Ad Groups</h2><div class="card"><table><thead><tr><th>Ad Group</th><th class="text-right">Spend</th><th class="text-right">Revenue</th><th class="text-right">ROAS</th><th class="text-right">Conv</th><th class="text-right">CPC</th><th class="text-right">CTR</th><th class="text-right">Spend &Delta;</th></tr></thead><tbody><tr><td colspan="8" style="padding:12px 12px 6px; font-weight:700; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--vivid-violet); border-bottom:none;">CS | Shopping | High | All Products 25</td></tr><tr>
+        <td style="padding-left:24px;">Merino</td>
+        <td class="text-right">£784</td>
+        <td class="text-right">£1,199</td>
+        <td class="text-right val-blue">1.53x <span class="val-muted">(-0.18)</span></td>
+        <td class="text-right">30</td>
+        <td class="text-right">£0.99</td>
+        <td class="text-right">0.80%</td>
+        <td class="text-right"><span class="negative">-29.5%</span></td>
+      </tr><tr>
+        <td style="padding-left:24px;">Bamboo</td>
+        <td class="text-right">£365</td>
+        <td class="text-right">£431</td>
+        <td class="text-right val-blue">1.18x <span class="val-muted">(-0.47)</span></td>
+        <td class="text-right">14</td>
+        <td class="text-right">£1.04</td>
+        <td class="text-right">0.76%</td>
+        <td class="text-right"><span class="negative">-42.1%</span></td>
+      </tr><tr>
+        <td style="padding-left:24px;">Bed Socks</td>
+        <td class="text-right">£348</td>
+        <td class="text-right">£524</td>
+        <td class="text-right val-blue">1.50x <span class="val-green">(+0.99)</span></td>
+        <td class="text-right">14</td>
+        <td class="text-right">£1.15</td>
+        <td class="text-right">0.89%</td>
+        <td class="text-right"><span class="positive">+261.2%</span></td>
+      </tr><tr>
+        <td style="padding-left:24px;">Alpaca</td>
+        <td class="text-right">£191</td>
+        <td class="text-right">£285</td>
+        <td class="text-right val-blue">1.50x <span class="val-green">(+0.04)</span></td>
+        <td class="text-right">9</td>
+        <td class="text-right">£1.08</td>
+        <td class="text-right">0.88%</td>
+        <td class="text-right"><span class="negative">-5.7%</span></td>
+      </tr><tr>
+        <td style="padding-left:24px;">Wool</td>
+        <td class="text-right">£82</td>
+        <td class="text-right">£99</td>
+        <td class="text-right val-blue">1.21x <span class="val-muted">(-0.22)</span></td>
+        <td class="text-right">2</td>
+        <td class="text-right">£1.11</td>
+        <td class="text-right">1.02%</td>
+        <td class="text-right"><span class="negative">-17.6%</span></td>
+      </tr><tr>
+        <td style="padding-left:24px;">Mohair</td>
+        <td class="text-right">£29</td>
+        <td class="text-right">£0</td>
+        <td class="text-right val-blue">0.00x <span class="val-green">(+0.00)</span></td>
+        <td class="text-right">0</td>
+        <td class="text-right">£1.15</td>
+        <td class="text-right">0.68%</td>
+        <td class="text-right"><span class="positive">+4.4%</span></td>
+      </tr><tr><td colspan="8" style="padding:12px 12px 6px; font-weight:700; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--vivid-violet); border-bottom:none;">CS | Search | All Fibres</td></tr><tr>
+        <td style="padding-left:24px;">Alpaca Socks</td>
+        <td class="text-right">£151</td>
+        <td class="text-right">£193</td>
+        <td class="text-right val-blue">1.28x <span class="val-muted">(-0.92)</span></td>
+        <td class="text-right">6</td>
+        <td class="text-right">£1.19</td>
+        <td class="text-right">7.37%</td>
+        <td class="text-right"><span class="positive">+20.6%</span></td>
+      </tr><tr>
+        <td style="padding-left:24px;">Bed Socks</td>
+        <td class="text-right">£103</td>
+        <td class="text-right">£144</td>
+        <td class="text-right val-blue">1.40x <span class="val-green">(+0.89)</span></td>
+        <td class="text-right">4</td>
+        <td class="text-right">£1.13</td>
+        <td class="text-right">8.72%</td>
+        <td class="text-right"><span class="positive">+6.8%</span></td>
+      </tr><tr>
+        <td style="padding-left:24px;">Bamboo Socks</td>
+        <td class="text-right">£84</td>
+        <td class="text-right">£43</td>
+        <td class="text-right val-blue">0.51x <span class="val-muted">(-1.93)</span></td>
+        <td class="text-right">2</td>
+        <td class="text-right">£1.17</td>
+        <td class="text-right">6.38%</td>
+        <td class="text-right"><span class="positive">+4.7%</span></td>
+      </tr><tr>
+        <td style="padding-left:24px;">Merino Socks</td>
+        <td class="text-right">£61</td>
+        <td class="text-right">£51</td>
+        <td class="text-right val-blue">0.84x <span class="val-muted">(-0.32)</span></td>
+        <td class="text-right">2</td>
+        <td class="text-right">£1.13</td>
+        <td class="text-right">4.65%</td>
+        <td class="text-right"><span class="negative">-30.6%</span></td>
+      </tr><tr><td colspan="8" style="padding:12px 12px 6px; font-weight:700; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--vivid-violet); border-bottom:none;">CS | Search | Brand</td></tr><tr>
+        <td style="padding-left:24px;">Brand (new URL)</td>
+        <td class="text-right">£134</td>
+        <td class="text-right">£2,203</td>
+        <td class="text-right val-blue">16.44x <span class="val-muted">(-1.31)</span></td>
+        <td class="text-right">47</td>
+        <td class="text-right">£0.26</td>
+        <td class="text-right">54.93%</td>
+        <td class="text-right"><span class="positive">+3.3%</span></td>
+      </tr></tbody></table></div><h2>Google Shopping Products</h2><div class="card"><p class="section-desc">Top 20 of 91 shopping products by spend.</p>
+  <table><thead><tr><th>Product</th><th class="text-right">Spend</th><th class="text-right">Revenue</th><th class="text-right">ROAS</th><th class="text-right">Conv</th><th class="text-right">Clicks</th><th class="text-right">Spend &Delta;</th><th class="text-right">Rev &Delta;</th><th class="text-right">ROAS &Delta;</th></tr></thead><tbody><tr>
+    <td style="max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Merino Wool Socks | Pairs Socks">Merino Wool Socks | Pairs Socks</td>
+    <td class="text-right">£329</td>
+    <td class="text-right">£639</td>
+    <td class="text-right val-blue">1.94x</td>
+    <td class="text-right">13</td>
+    <td class="text-right">212</td>
+    <td class="text-right"><span class="negative">-28.7%</span></td>
+    <td class="text-right"><span class="negative">-28.3%</span></td>
+    <td class="text-right"><span class="positive">+0.5%</span></td>
+  </tr><tr>
+    <td style="max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Alpaca Socks Dandelion Yellow | Pairs Socks">Alpaca Socks Dandelion Yellow | Pairs Socks</td>
+    <td class="text-right">£157</td>
+    <td class="text-right">£246</td>
+    <td class="text-right val-blue">1.57x</td>
+    <td class="text-right">8</td>
+    <td class="text-right">162</td>
+    <td class="text-right"><span class="negative">-2.1%</span></td>
+    <td class="text-right"><span class="positive">+75.6%</span></td>
+    <td class="text-right"><span class="positive">+79.3%</span></td>
+  </tr><tr>
+    <td style="max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Bamboo Socks | Pairs Socks">Bamboo Socks | Pairs Socks</td>
+    <td class="text-right">£143</td>
+    <td class="text-right">£75</td>
+    <td class="text-right val-blue">0.52x</td>
+    <td class="text-right">3</td>
+    <td class="text-right">74</td>
+    <td class="text-right"><span class="negative">-43.5%</span></td>
+    <td class="text-right"><span class="negative">-81.0%</span></td>
+    <td class="text-right"><span class="negative">-66.4%</span></td>
+  </tr><tr>
+    <td style="max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Merino Wool Socks Grass Green | Pairs Socks">Merino Wool Socks Grass Green | Pairs Socks</td>
+    <td class="text-right">£128</td>
+    <td class="text-right">£50</td>
+    <td class="text-right val-blue">0.39x</td>
+    <td class="text-right">2</td>
+    <td class="text-right">150</td>
+    <td class="text-right"><span class="negative">-29.3%</span></td>
+    <td class="text-right"><span class="negative">-88.6%</span></td>
+    <td class="text-right"><span class="negative">-83.9%</span></td>
+  </tr><tr>
+    <td style="max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Merino Bed Socks Frosting Pink | Pairs Socks">Merino Bed Socks Frosting Pink | Pairs Socks</td>
+    <td class="text-right">£106</td>
+    <td class="text-right">£180</td>
+    <td class="text-right val-blue">1.70x</td>
+    <td class="text-right">5</td>
+    <td class="text-right">99</td>
+    <td class="text-right"><span class="positive">+52.6%</span></td>
+    <td class="text-right"><span class="positive">+5.3%</span></td>
+    <td class="text-right"><span class="negative">-31.0%</span></td>
+  </tr><tr>
+    <td style="max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Merino Wool Socks Deep Forest Green | Pairs Socks">Merino Wool Socks Deep Forest Green | Pairs Socks</td>
+    <td class="text-right">£85</td>
+    <td class="text-right">£68</td>
+    <td class="text-right val-blue">0.80x</td>
+    <td class="text-right">2</td>
+    <td class="text-right">103</td>
+    <td class="text-right"><span class="negative">-6.2%</span></td>
+    <td class="text-right"><span class="negative">-61.9%</span></td>
+    <td class="text-right"><span class="negative">-59.4%</span></td>
+  </tr><tr>
+    <td style="max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Merino Wool Socks Red | Pairs Socks">Merino Wool Socks Red | Pairs Socks</td>
+    <td class="text-right">£78</td>
+    <td class="text-right">£251</td>
+    <td class="text-right val-blue">3.24x</td>
+    <td class="text-right">8</td>
+    <td class="text-right">83</td>
+    <td class="text-right"><span class="negative">-5.7%</span></td>
+    <td class="text-right"><span class="positive">+272.5%</span></td>
+    <td class="text-right"><span class="positive">+295.2%</span></td>
+  </tr><tr>
+    <td style="max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Bamboo Socks Grass Green | Pairs Socks">Bamboo Socks Grass Green | Pairs Socks</td>
+    <td class="text-right">£73</td>
+    <td class="text-right">£69</td>
+    <td class="text-right val-blue">0.94x</td>
+    <td class="text-right">2</td>
+    <td class="text-right">79</td>
+    <td class="text-right"><span class="negative">-31.7%</span></td>
+    <td class="text-right"><span class="negative">-76.8%</span></td>
+    <td class="text-right"><span class="negative">-66.0%</span></td>
+  </tr><tr>
+    <td style="max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Merino Bed Socks | Pairs Socks">Merino Bed Socks | Pairs Socks</td>
+    <td class="text-right">£73</td>
+    <td class="text-right">£38</td>
+    <td class="text-right val-blue">0.52x</td>
+    <td class="text-right">1</td>
+    <td class="text-right">39</td>
+    <td class="text-right"><span class="positive">+32.6%</span></td>
+    <td class="text-right"><span class="negative">-20.9%</span></td>
+    <td class="text-right"><span class="negative">-40.3%</span></td>
+  </tr><tr>
+    <td style="max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Merino Wool Socks Sugar Pink | Pairs Socks">Merino Wool Socks Sugar Pink | Pairs Socks</td>
+    <td class="text-right">£72</td>
+    <td class="text-right">£112</td>
+    <td class="text-right val-blue">1.55x</td>
+    <td class="text-right">3</td>
+    <td class="text-right">110</td>
+    <td class="text-right"><span class="negative">-32.4%</span></td>
+    <td class="text-right"><span class="negative">-54.0%</span></td>
+    <td class="text-right"><span class="negative">-31.9%</span></td>
+  </tr><tr>
+    <td style="max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Alpaca Bed Socks | Pairs Socks">Alpaca Bed Socks | Pairs Socks</td>
+    <td class="text-right">£41</td>
+    <td class="text-right">£262</td>
+    <td class="text-right val-blue">6.44x</td>
+    <td class="text-right">4</td>
+    <td class="text-right">24</td>
+    <td class="text-right"><span class="positive">+32.4%</span></td>
+    <td class="text-right"><span class="positive">+100.0%</span></td>
+    <td class="text-right"><span class="positive">+100.0%</span></td>
+  </tr><tr>
+    <td style="max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Merino Wool Socks Parma Violet | Pairs Socks">Merino Wool Socks Parma Violet | Pairs Socks</td>
+    <td class="text-right">£37</td>
+    <td class="text-right">£74</td>
+    <td class="text-right val-blue">2.00x</td>
+    <td class="text-right">2</td>
+    <td class="text-right">40</td>
+    <td class="text-right"><span class="negative">-27.4%</span></td>
+    <td class="text-right"><span class="positive">+98.3%</span></td>
+    <td class="text-right"><span class="positive">+173.0%</span></td>
+  </tr><tr>
+    <td style="max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Merino Bed Socks Village Green | Pairs Socks">Merino Bed Socks Village Green | Pairs Socks</td>
+    <td class="text-right">£37</td>
+    <td class="text-right">£20</td>
+    <td class="text-right val-blue">0.54x</td>
+    <td class="text-right">1</td>
+    <td class="text-right">48</td>
+    <td class="text-right"><span class="negative">-26.7%</span></td>
+    <td class="text-right"><span class="negative">-81.2%</span></td>
+    <td class="text-right"><span class="negative">-74.4%</span></td>
+  </tr><tr>
+    <td style="max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Bamboo Socks Dark Plum | Pairs Socks">Bamboo Socks Dark Plum | Pairs Socks</td>
+    <td class="text-right">£35</td>
+    <td class="text-right">£0</td>
+    <td class="text-right val-blue">0.00x</td>
+    <td class="text-right">0</td>
+    <td class="text-right">51</td>
+    <td class="text-right"><span class="negative">-48.7%</span></td>
+    <td class="text-right"><span class="negative">-100.0%</span></td>
+    <td class="text-right"><span class="negative">-100.0%</span></td>
+  </tr><tr>
+    <td style="max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Alpaca Bed Socks Smoke Grey | Pairs Socks">Alpaca Bed Socks Smoke Grey | Pairs Socks</td>
+    <td class="text-right">£31</td>
+    <td class="text-right">£23</td>
+    <td class="text-right val-blue">0.74x</td>
+    <td class="text-right">1</td>
+    <td class="text-right">36</td>
+    <td class="text-right"><span class="negative">-22.7%</span></td>
+    <td class="text-right"><span class="negative">-56.5%</span></td>
+    <td class="text-right"><span class="negative">-43.8%</span></td>
+  </tr><tr>
+    <td style="max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Alpaca Bed Socks Hare Grey | Pairs Socks">Alpaca Bed Socks Hare Grey | Pairs Socks</td>
+    <td class="text-right">£29</td>
+    <td class="text-right">£62</td>
+    <td class="text-right val-blue">2.11x</td>
+    <td class="text-right">2</td>
+    <td class="text-right">24</td>
+    <td class="text-right"><span class="positive">+101.8%</span></td>
+    <td class="text-right"><span class="positive">+100.0%</span></td>
+    <td class="text-right"><span class="positive">+100.0%</span></td>
+  </tr><tr>
+    <td style="max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Bamboo Socks Strong Blue | Pairs Socks">Bamboo Socks Strong Blue | Pairs Socks</td>
+    <td class="text-right">£26</td>
+    <td class="text-right">£69</td>
+    <td class="text-right val-blue">2.66x</td>
+    <td class="text-right">2</td>
+    <td class="text-right">31</td>
+    <td class="text-right"><span class="negative">-59.3%</span></td>
+    <td class="text-right"><span class="negative">-45.6%</span></td>
+    <td class="text-right"><span class="positive">+33.8%</span></td>
+  </tr><tr>
+    <td style="max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Bamboo Socks Ladybird Red | Pairs Socks">Bamboo Socks Ladybird Red | Pairs Socks</td>
+    <td class="text-right">£25</td>
+    <td class="text-right">£73</td>
+    <td class="text-right val-blue">2.91x</td>
+    <td class="text-right">1</td>
+    <td class="text-right">26</td>
+    <td class="text-right"><span class="negative">-44.9%</span></td>
+    <td class="text-right"><span class="positive">+21.2%</span></td>
+    <td class="text-right"><span class="positive">+120.0%</span></td>
+  </tr><tr>
+    <td style="max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Alpaca Bed Socks Sherbet Pink | Pairs Socks">Alpaca Bed Socks Sherbet Pink | Pairs Socks</td>
+    <td class="text-right">£20</td>
+    <td class="text-right">£70</td>
+    <td class="text-right val-blue">3.44x</td>
+    <td class="text-right">2</td>
+    <td class="text-right">10</td>
+    <td class="text-right"><span class="positive">+148.3%</span></td>
+    <td class="text-right"><span class="positive">+97.1%</span></td>
+    <td class="text-right"><span class="negative">-20.6%</span></td>
+  </tr><tr>
+    <td style="max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Alpaca Socks | Pairs Socks">Alpaca Socks | Pairs Socks</td>
+    <td class="text-right">£20</td>
+    <td class="text-right">£18</td>
+    <td class="text-right val-blue">0.89x</td>
+    <td class="text-right">0</td>
+    <td class="text-right">7</td>
+    <td class="text-right"><span class="negative">-28.2%</span></td>
+    <td class="text-right"><span class="positive">+100.0%</span></td>
+    <td class="text-right"><span class="positive">+100.0%</span></td>
+  </tr><tr style="font-weight:700; border-top:2px solid var(--divider);">
+    <td>Total (91 products)</td>
+    <td class="text-right">£2,028</td>
+    <td class="text-right">£2,881</td>
+    <td class="text-right val-blue">1.42x</td>
+    <td class="text-right">77</td>
+    <td class="text-right">1,923</td>
+    <td class="text-right"><span class="negative">-22.2%</span></td>
+    <td class="text-right"><span class="negative">-34.7%</span></td>
+    <td class="text-right"><span class="negative">-16.1%</span></td>
+  </tr></tbody></table></div><div class="section-label">Email</div><h2>Klaviyo Campaigns</h2><p class="section-desc">9 campaigns sent this period with performance metrics.</p><div class="card"><table>
+        <thead><tr><th>Campaign</th><th class="text-right">Recipients</th><th class="text-right">Open Rate</th><th class="text-right">Click Rate</th><th class="text-right">CTOR</th><th class="text-right">Revenue</th><th class="text-right">Conv</th><th class="text-right">Unsubs</th></tr></thead><tbody><tr>
+          <td>Week 10 - For Mother’s Day - Sunday 8th March Email</td>
+          <td class="text-right">6,404</td>
+          <td class="text-right">69.9%</td>
+          <td class="text-right">2.1%</td>
+          <td class="text-right">3.0%</td>
+          <td class="text-right val-blue">£716.80</td>
+          <td class="text-right">17</td>
+          <td class="text-right">18</td>
+        </tr><tr>
+          <td>Week 10 - For Mother’s Day - Sunday 8th March Email</td>
+          <td class="text-right">2,976</td>
+          <td class="text-right">54.3%</td>
+          <td class="text-right">0.5%</td>
+          <td class="text-right">1.0%</td>
+          <td class="text-right val-blue">£153.00</td>
+          <td class="text-right">2</td>
+          <td class="text-right">8</td>
+        </tr><tr>
+          <td>Week 10 - For Mother’s Day - Sunday 8th March Email</td>
+          <td class="text-right">2,517</td>
+          <td class="text-right">36.3%</td>
+          <td class="text-right">0.3%</td>
+          <td class="text-right">0.8%</td>
+          <td class="text-right val-blue">£0.00</td>
+          <td class="text-right">0</td>
+          <td class="text-right">4</td>
+        </tr><tr>
+          <td>Week 10 - For Mother’s Day - Sunday 8th March Email</td>
+          <td class="text-right">1,638</td>
+          <td class="text-right">21.6%</td>
+          <td class="text-right">0.6%</td>
+          <td class="text-right">2.8%</td>
+          <td class="text-right val-blue">£12.00</td>
+          <td class="text-right">1</td>
+          <td class="text-right">3</td>
+        </tr><tr>
+          <td>Week 10 - For Mother’s Day - Sunday 8th March Email</td>
+          <td class="text-right">8,604</td>
+          <td class="text-right">8.7%</td>
+          <td class="text-right">0.2%</td>
+          <td class="text-right">2.2%</td>
+          <td class="text-right val-blue">£0.00</td>
+          <td class="text-right">0</td>
+          <td class="text-right">9</td>
+        </tr><tr>
+          <td>Week 11 - Last chance for free shipping - Wed 11th March Email</td>
+          <td class="text-right">8,017</td>
+          <td class="text-right">70.4%</td>
+          <td class="text-right">2.0%</td>
+          <td class="text-right">2.8%</td>
+          <td class="text-right val-blue">£1,494.66</td>
+          <td class="text-right">38</td>
+          <td class="text-right">49</td>
+        </tr><tr>
+          <td>Week 11 - All The Greens - Fri 13th March Email</td>
+          <td class="text-right">9,468</td>
+          <td class="text-right">66.2%</td>
+          <td class="text-right">1.7%</td>
+          <td class="text-right">2.5%</td>
+          <td class="text-right val-blue">£360.34</td>
+          <td class="text-right">11</td>
+          <td class="text-right">31</td>
+        </tr><tr>
+          <td>Week 11 - We Love Colour - Sunday 15th March Email</td>
+          <td class="text-right">11,730</td>
+          <td class="text-right">52.6%</td>
+          <td class="text-right">1.4%</td>
+          <td class="text-right">2.7%</td>
+          <td class="text-right val-blue">£349.71</td>
+          <td class="text-right">6</td>
+          <td class="text-right">37</td>
+        </tr><tr>
+          <td>Week 11 - We Love Colour - Sunday 15th March Email</td>
+          <td class="text-right">2</td>
+          <td class="text-right">50.0%</td>
+          <td class="text-right">50.0%</td>
+          <td class="text-right">100.0%</td>
+          <td class="text-right val-blue">£0.00</td>
+          <td class="text-right">0</td>
+          <td class="text-right">0</td>
+        </tr><tr style="font-weight:700; border-top:2px solid var(--divider);">
+        <td>Total</td><td class="text-right">51,356</td><td></td><td></td><td></td>
+        <td class="text-right val-blue">£3,086.51</td>
+        <td class="text-right">75</td><td class="text-right">159</td>
+      </tr></tbody></table></div><h2>Klaviyo Flows</h2><p class="section-desc">Automated flow performance for the reporting period.</p><div class="card"><table>
+        <thead><tr><th>Flow</th><th class="text-right">Recipients</th><th class="text-right">Open Rate</th><th class="text-right">Click Rate</th><th class="text-right">Revenue</th><th class="text-right">Rev/Recipient</th></tr></thead><tbody><tr>
+          <td>Welcome flow | Rebrand | Sep 2025</td>
+          <td class="text-right">1,469</td>
+          <td class="text-right">61.5%</td>
+          <td class="text-right">5.3%</td>
+          <td class="text-right val-blue">£3,399.47</td>
+          <td class="text-right">£2.31</td>
+        </tr><tr>
+          <td>Browse Abandonment  | Rebrand | Sep 2025 | Littledata</td>
+          <td class="text-right">303</td>
+          <td class="text-right">59.9%</td>
+          <td class="text-right">9.6%</td>
+          <td class="text-right val-blue">£399.07</td>
+          <td class="text-right">£1.32</td>
+        </tr><tr>
+          <td>Abandoned Checkout | Rebrand | Sep 2025 | Littledata</td>
+          <td class="text-right">797</td>
+          <td class="text-right">30.7%</td>
+          <td class="text-right">2.8%</td>
+          <td class="text-right val-blue">£333.93</td>
+          <td class="text-right">£0.42</td>
+        </tr><tr>
+          <td>Post Purchase Flow | Rebrand 2025</td>
+          <td class="text-right">1,801</td>
+          <td class="text-right">61.9%</td>
+          <td class="text-right">3.1%</td>
+          <td class="text-right val-blue">£322.02</td>
+          <td class="text-right">£0.18</td>
+        </tr><tr>
+          <td>Week 10 - Sunday 8th March - Flow</td>
+          <td class="text-right">3,445</td>
+          <td class="text-right">93.0%</td>
+          <td class="text-right">1.2%</td>
+          <td class="text-right val-blue">£231.50</td>
+          <td class="text-right">£0.07</td>
+        </tr><tr>
+          <td>Week 11 - Tuesday 10th March - Flow</td>
+          <td class="text-right">8,043</td>
+          <td class="text-right">90.3%</td>
+          <td class="text-right">1.5%</td>
+          <td class="text-right val-blue">£225.50</td>
+          <td class="text-right">£0.03</td>
+        </tr><tr>
+          <td>Abandoned Cart  | Rebrand | Sep 2025 | Littledata</td>
+          <td class="text-right">254</td>
+          <td class="text-right">51.6%</td>
+          <td class="text-right">5.9%</td>
+          <td class="text-right val-blue">£167.27</td>
+          <td class="text-right">£0.66</td>
+        </tr><tr>
+          <td>Week 11 - Sunday 15th March - Flow</td>
+          <td class="text-right">3,355</td>
+          <td class="text-right">84.3%</td>
+          <td class="text-right">1.9%</td>
+          <td class="text-right val-blue">£31.40</td>
+          <td class="text-right">£0.01</td>
+        </tr><tr>
+          <td>Churn series</td>
+          <td class="text-right">435</td>
+          <td class="text-right">52.1%</td>
+          <td class="text-right">2.5%</td>
+          <td class="text-right val-blue">£0.00</td>
+          <td class="text-right">£0.00</td>
+        </tr></tbody></table></div><div class="section-label">Analysis</div><h2>Key Findings</h2>
+<p class="section-desc">Automated analysis of this week's performance. Items flagged for attention based on WoW changes and performance thresholds.</p>
+<div class="card"><div class="insight-item">
+      <span class="badge badge-green" style="min-width:fit-content;">Product Growth</span>
+      <span class="insight-text">The Merino Bed Socks Set Three revenue up +51.3% (£2,661 vs £1,759).</span>
+    </div><div class="insight-item">
+      <span class="badge badge-green" style="min-width:fit-content;">Product Growth</span>
+      <span class="insight-text">The Merino Set - Blues and Greens revenue up +91.0% (£638 vs £334).</span>
+    </div><div class="insight-item">
+      <span class="badge badge-green" style="min-width:fit-content;">Product Growth</span>
+      <span class="insight-text">The Merino Gift Set Two revenue up +153.4% (£478 vs £189).</span>
+    </div><div class="insight-item">
+      <span class="badge badge-green" style="min-width:fit-content;">Category</span>
+      <span class="insight-text">Ultra Soft - everyday category up +68.2% (£777 vs £462).</span>
+    </div><div class="insight-item">
+      <span class="badge badge-green" style="min-width:fit-content;">Meta Ad</span>
+      <span class="insight-text">Ad 205 | Image | Static | various socks | various socks in a grid with a stack of merino socks in the top right corner with PR text overlay | none | OG delivering 11.51x ROAS on £89 spend (10 purchases).</span>
+    </div><div class="insight-item">
+      <span class="badge badge-green" style="min-width:fit-content;">Meta Ad</span>
+      <span class="insight-text">Ad 194 | Image | Static | alpaca bed socks | legs with red alpaca ribbed bed socks with PR text overlay | none | OG delivering 6.46x ROAS on £105 spend (10 purchases).</span>
+    </div><div class="insight-item">
+      <span class="badge badge-green" style="min-width:fit-content;">Meta Ad</span>
+      <span class="insight-text">Ad 190 | GIF | Static | merino bed socks | Flat lay GIF of all merino bed socks with logo | none | OG - Copy delivering 5.86x ROAS on £93 spend (12 purchases).</span>
+    </div><div class="insight-item">
+      <span class="badge badge-green" style="min-width:fit-content;">Meta Ad Shift</span>
+      <span class="insight-text">Ad 205 | Image | Static | various socks | various socks in a grid with a stack of merino socks in the top right corner with PR text overlay | none | OG ROAS improved from 3.58x to 11.51x WoW.</span>
+    </div><div class="insight-item">
+      <span class="badge badge-green" style="min-width:fit-content;">Meta Ad Shift</span>
+      <span class="insight-text">Ad 190 | GIF | Static | merino bed socks | Flat lay GIF of all merino bed socks with logo | none | OG - Copy ROAS improved from 0.70x to 5.86x WoW.</span>
+    </div><div class="insight-item">
+      <span class="badge badge-green" style="min-width:fit-content;">Meta Campaign</span>
+      <span class="insight-text">CS | Cold/Warm/Hot | Purchases | Evergreen | Manual Bids ROAS up from 2.27x to 3.25x. Spend: £1,430.</span>
+    </div><div class="insight-item">
+      <span class="badge badge-green" style="min-width:fit-content;">Meta Campaign</span>
+      <span class="insight-text">CS | Hot | Awareness | Post Rebrand | Retention ROAS up from 1.56x to 2.10x. Spend: £140.</span>
+    </div><div class="insight-item">
+      <span class="badge badge-green" style="min-width:fit-content;">Shopping</span>
+      <span class="insight-text">Alpaca Bed Socks | Pairs Socks achieving 6.44x ROAS on £41 spend. Consider increasing bids.</span>
+    </div><div class="insight-item">
+      <span class="badge badge-green" style="min-width:fit-content;">Shopping Shift</span>
+      <span class="insight-text">Alpaca Bed Socks | Pairs Socks ROAS improved from 0.00x to 6.44x WoW (spend: £41 vs £31).</span>
+    </div><div class="insight-item">
+      <span class="badge badge-green" style="min-width:fit-content;">Shopping Shift</span>
+      <span class="insight-text">Merino Wool Socks Red | Pairs Socks ROAS improved from 0.82x to 3.24x WoW (spend: £78 vs £82).</span>
+    </div><div class="insight-item">
+      <span class="badge badge-green" style="min-width:fit-content;">Email</span>
+      <span class="insight-text">Week 11 - Last chance for free shipping - Wed 11th March Email generated £1,494.66 revenue from 8,017 recipients (2.0% CTR).</span>
+    </div></div>
 <div class="report-footer">
   <span>Nova Commerce Collective</span>
   <span>Confidential</span>
