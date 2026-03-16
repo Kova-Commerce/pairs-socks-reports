@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pairs Socks - Weekly Report - 2026-03-15</title>
+  <style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
+
+  :root {
+    --obsidian-black:   #131316;
+    --royal-blue:       #4A6CF7;
+    --vivid-violet:     #8B5CF6;
+    --neon-lime:        #34D399;
+    --card-bg:          #1A1A1F;
+    --card-border:      #262630;
+    --text-primary:     #EAEAEA;
+    --text-secondary:   #888888;
+    --text-muted:       #555555;
+    --divider:          #2A2A30;
+    --positive-glow:    rgba(52,211,153,0.15);
+    --blue-glow:        rgba(74,108,247,0.25);
+    --violet-glow:      rgba(139,92,246,0.20);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    background: var(--obsidian-black);
+    color: var(--text-primary);
+    line-height: 1.6;
+    padding: 40px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── HEADER BAR ── */
+  .report-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 32px;
+    margin-bottom: 32px;
+    border-bottom: 1px solid var(--divider);
+  }
+  .report-header .brand-name {
+    font-weight: 800;
+    font-size: 1.1rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+  }
+  .report-header .brand-sub {
+    font-weight: 500;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+  }
+  .report-header .report-meta {
+    text-align: right;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+  }
+
+  /* ── SECTION TITLES ── */
+  h1, h2, h3 {
+    font-family: 'Montserrat', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--text-primary);
+  }
+  h1 {
+    font-size: 2.4rem;
+    font-weight: 800;
+    margin-bottom: 6px;
+    line-height: 1.15;
+  }
+  h2 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--royal-blue);
+    display: inline-block;
+  }
+  h3 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--text-secondary);
+    letter-spacing: 0.18em;
+  }
+
+  /* ── HEADLINE + DESCRIPTION PAIRING ── */
+  .section-desc {
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 24px;
+    text-transform: none;
+    letter-spacing: normal;
+    max-width: 640px;
+  }
+  h1 + .section-desc { margin-top: 4px; }
+  h2 + .section-desc { margin-top: -8px; }
+
+  /* ── SECTION LABELS (small category markers) ── */
+  .section-label {
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--vivid-violet);
+    margin-bottom: 12px;
+    margin-top: 40px;
+  }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 32px;
+  }
+
+  /* ── KPI ROW ── */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .kpi-box {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+  }
+  .kpi-box .kpi-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+  }
+  .kpi-box .kpi-value {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--royal-blue);
+  }
+  .kpi-box .kpi-delta {
+    font-size: 0.75rem;
+    margin-top: 4px;
+  }
+  .kpi-delta.positive { color: var(--neon-lime); }
+  .kpi-delta.negative { color: var(--text-secondary); }
+
+  /* ── TABLES ── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+  }
+  thead th {
+    text-align: left;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-secondary);
+    padding: 10px 12px;
+    border-bottom: 2px solid var(--divider);
+  }
+  tbody td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--card-border);
+    color: var(--text-primary);
+  }
+  tbody tr:hover { background: rgba(255,255,255,0.02); }
+
+  /* Accent values in tables */
+  .val-blue   { color: var(--royal-blue); font-weight: 600; }
+  .val-violet { color: var(--vivid-violet); font-weight: 600; }
+  .val-green  { color: var(--neon-lime); font-weight: 600; }
+  .val-muted  { color: var(--text-secondary); font-weight: 600; }
+
+  /* ── BADGES / TAGS ── */
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .badge-blue   { background: var(--blue-glow); color: var(--royal-blue); }
+  .badge-violet { background: var(--violet-glow); color: var(--vivid-violet); }
+  .badge-green  { background: var(--positive-glow); color: var(--neon-lime); }
+  .badge-muted  { background: rgba(255,255,255,0.05); color: var(--text-secondary); }
+
+  /* ── UTILITY ── */
+  .text-blue    { color: var(--royal-blue); }
+  .text-violet  { color: var(--vivid-violet); }
+  .text-green   { color: var(--neon-lime); }
+  .text-muted   { color: var(--text-muted); }
+  .text-right   { text-align: right; }
+  .mt-1 { margin-top: 8px; }
+  .mt-2 { margin-top: 16px; }
+  .mt-3 { margin-top: 24px; }
+  .mb-1 { margin-bottom: 8px; }
+  .mb-2 { margin-bottom: 16px; }
+  .mb-3 { margin-bottom: 24px; }
+
+  /* ── FOOTER ── */
+  .report-footer {
+    margin-top: 48px;
+    padding-top: 16px;
+    border-top: 1px solid var(--divider);
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* ── NEON GLOW EFFECTS ── */
+  .glow-blue   { text-shadow: 0 0 10px rgba(74,108,247,0.6); }
+  .glow-violet { text-shadow: 0 0 8px rgba(139,92,246,0.6); }
+
+  /* ── PRINT / PDF ── */
+  @media print {
+    body { background: #131316; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .card { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<style>
+  .tab-row {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 16px;
+  }
+  .tab-btn {
+    padding: 8px 20px;
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--text-secondary);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .tab-btn:hover {
+    border-color: var(--royal-blue);
+    color: var(--text-primary);
+  }
+  .tab-btn.active {
+    background: var(--blue-glow);
+    border-color: var(--royal-blue);
+    color: var(--royal-blue);
+  }
+</style><script>
+function sortTable(tableId, sortBy) {
+  const data = window[tableId + '_data'];
+  if (!data) return;
+
+  // Update active tab button
+  const card = document.getElementById(tableId).closest('.card');
+  const buttons = card.querySelectorAll('.tab-btn');
+  buttons.forEach(btn => {
+    btn.classList.remove('active');
+    if ((sortBy === 'revenue' && btn.textContent === 'Total Sales') ||
+        (sortBy === 'units' && btn.textContent === 'Units Ordered')) {
+      btn.classList.add('active');
+    }
+  });
+
+  // Sort data
+  const sorted = [...data].sort((a, b) => b[sortBy] - a[sortBy]);
+
+  // Render rows
+  const tbody = document.querySelector('#' + tableId + ' tbody');
+  const currency = '£';
+  tbody.innerHTML = sorted.map(function(p) {
+    var revDeltaCls = p.revenueDelta >= 0 ? 'positive' : 'negative';
+    var unitsDeltaCls = p.unitsDelta >= 0 ? 'positive' : 'negative';
+    var revDeltaStr = (p.revenueDelta >= 0 ? '+' : '') + p.revenueDelta.toFixed(1) + '%';
+    var unitsDeltaStr = (p.unitsDelta >= 0 ? '+' : '') + p.unitsDelta.toFixed(1) + '%';
+    var revFmt = currency + p.revenue.toLocaleString('en-GB', {minimumFractionDigits:2, maximumFractionDigits:2});
+    return '<tr>' +
+      '<td>' + p.name + '</td>' +
+      '<td class="text-right">' + revFmt + '</td>' +
+      '<td class="text-right"><span class="' + revDeltaCls + '">' + revDeltaStr + '</span></td>' +
+      '<td class="text-right">' + p.units.toLocaleString('en-GB') + '</td>' +
+      '<td class="text-right"><span class="' + unitsDeltaCls + '">' + unitsDeltaStr + '</span></td>' +
+      '</tr>';
+  }).join('');
+
+  // Add totals row
+  var totalRev = sorted.reduce(function(s,p){return s+p.revenue},0);
+  var totalUnits = sorted.reduce(function(s,p){return s+p.units},0);
+  var prevTotalRev = sorted.reduce(function(s,p){return s+p.prevRevenue},0);
+  var prevTotalUnits = sorted.reduce(function(s,p){return s+p.prevUnits},0);
+  var totalRevDelta = prevTotalRev === 0 ? (totalRev > 0 ? 100 : 0) : ((totalRev - prevTotalRev) / prevTotalRev) * 100;
+  var totalUnitsDelta = prevTotalUnits === 0 ? (totalUnits > 0 ? 100 : 0) : ((totalUnits - prevTotalUnits) / prevTotalUnits) * 100;
+  var revDeltaCls = totalRevDelta >= 0 ? 'positive' : 'negative';
+  var unitsDeltaCls = totalUnitsDelta >= 0 ? 'positive' : 'negative';
+  tbody.innerHTML += '<tr style="font-weight:700; border-top:2px solid var(--divider);">' +
+    '<td>Total</td>' +
+    '<td class="text-right">' + currency + totalRev.toLocaleString('en-GB', {minimumFractionDigits:2, maximumFractionDigits:2}) + '</td>' +
+    '<td class="text-right"><span class="' + revDeltaCls + '">' + (totalRevDelta >= 0 ? '+' : '') + totalRevDelta.toFixed(1) + '%</span></td>' +
+    '<td class="text-right">' + totalUnits.toLocaleString('en-GB') + '</td>' +
+    '<td class="text-right"><span class="' + unitsDeltaCls + '">' + (totalUnitsDelta >= 0 ? '+' : '') + totalUnitsDelta.toFixed(1) + '%</span></td>' +
+    '</tr>';
+}
+</script>
+<div class="report-header">
+  <div>
+    <div class="brand-name">Nova</div>
+    <div class="brand-sub">Commerce Collective</div>
+  </div>
+  <div class="report-meta">
+    <div style="font-weight:600; color:var(--text-primary);">Weekly Performance Report</div>
+    <div>Pairs Socks</div>
+    <div>9 Mar 2026 - 15 Mar 2026</div>
+  </div>
+</div><p class="section-desc" style="margin-bottom:8px;">9 Mar 2026 - 15 Mar 2026 vs 2 Mar 2026 - 8 Mar 2026</p>
+<div class="section-label">Overview</div>
+<h1>Pairs Socks</h1>
+<p class="section-desc">Weekly performance snapshot across all channels.</p>
+
+<div class="kpi-row"><div class="kpi-box"><div class="kpi-label">Status</div><div class="kpi-value" style="font-size:1rem;">Awaiting Data</div><div class="kpi-delta negative">Shopify + ad platforms not yet connected</div></div></div><div class="section-label">Product Breakdown</div>
+<div class="section-label">Products</div>
+<h2>Sales by Product</h2>
+<div class="card">
+  <p style="color:var(--text-secondary);font-size:0.85rem;">Shopify not yet connected. Product data will appear here once credentials are configured.</p>
+</div>
+<div class="section-label">Products</div>
+<h2>Sales by Product Type</h2>
+<div class="card">
+  <p style="color:var(--text-secondary);font-size:0.85rem;">Shopify not yet connected. Product data will appear here once credentials are configured.</p>
+</div>
+<div class="section-label">Platform Data</div>
+<h2>Channel Performance</h2>
+<div class="card">
+  <p style="color:var(--text-secondary);font-size:0.85rem;">No ad platforms connected yet. Meta and Google campaign data will appear here once configured.</p>
+</div>
+<h2>Meta Campaigns</h2>
+<div class="card">
+  <p style="color:var(--text-secondary);font-size:0.85rem;">Meta Ads not yet connected.</p>
+</div>
+<h2>Google Campaigns</h2>
+<div class="card">
+  <p style="color:var(--text-secondary);font-size:0.85rem;">Google Ads not yet connected.</p>
+</div>
+<div class="section-label">Email</div>
+<h2>Klaviyo</h2>
+<p class="section-desc">Campaigns sent during the reporting period. 9 this week vs 5 previous week.</p>
+<div class="card">
+  <table>
+    <thead><tr><th>Campaign</th><th class="text-right">Sent</th><th class="text-right">Status</th></tr></thead>
+    <tbody><tr>
+        <td>Week 11 - We Love Colour - Sunday 15th March Email</td>
+        <td class="text-right">11 Mar</td>
+        <td class="text-right"><span class="badge badge-green">Sent</span></td>
+      </tr><tr>
+        <td>Week 11 - We Love Colour - Sunday 15th March Email</td>
+        <td class="text-right">15 Mar</td>
+        <td class="text-right"><span class="badge badge-green">Sent</span></td>
+      </tr><tr>
+        <td>Week 11 - All The Greens - Fri 13th March Email</td>
+        <td class="text-right">13 Mar</td>
+        <td class="text-right"><span class="badge badge-green">Sent</span></td>
+      </tr><tr>
+        <td>Week 11 - Last chance for free shipping - Wed 11th March Email</td>
+        <td class="text-right">11 Mar</td>
+        <td class="text-right"><span class="badge badge-green">Sent</span></td>
+      </tr><tr>
+        <td>Week 10 - For Mother’s Day - Sunday 8th March Email</td>
+        <td class="text-right">10 Mar</td>
+        <td class="text-right"><span class="badge badge-green">Sent</span></td>
+      </tr><tr>
+        <td>Week 10 - For Mother’s Day - Sunday 8th March Email</td>
+        <td class="text-right">10 Mar</td>
+        <td class="text-right"><span class="badge badge-green">Sent</span></td>
+      </tr><tr>
+        <td>Week 10 - For Mother’s Day - Sunday 8th March Email</td>
+        <td class="text-right">10 Mar</td>
+        <td class="text-right"><span class="badge badge-green">Sent</span></td>
+      </tr><tr>
+        <td>Week 10 - For Mother’s Day - Sunday 8th March Email</td>
+        <td class="text-right">10 Mar</td>
+        <td class="text-right"><span class="badge badge-green">Sent</span></td>
+      </tr><tr>
+        <td>Week 10 - For Mother’s Day - Sunday 8th March Email</td>
+        <td class="text-right">10 Mar</td>
+        <td class="text-right"><span class="badge badge-green">Sent</span></td>
+      </tr></tbody>
+  </table>
+</div>
+<div class="report-footer">
+  <span>Nova Commerce Collective</span>
+  <span>Confidential</span>
+</div>
+</body>
+</html>
