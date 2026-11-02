@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pairs Socks - Weekly Report - 2026-11-01</title>
+  <style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
+
+  :root {
+    --obsidian-black:   #131316;
+    --obsidian:         #131316;
+    --kova-azure:       #4A6CF7;
+    --kova-cyan:        #8EA2FB;
+    --kova-emerald:     #34D399;
+    --royal-blue:       #4A6CF7;
+    --vivid-violet:     #8B5CF6;
+    --neon-lime:        #34D399;
+    --card-bg:          #1A1A1F;
+    --card-border:      #262630;
+    --text-primary:     #EAEAEA;
+    --text-secondary:   #A1A1AA;
+    --text-muted:       #8A8A94;
+    --divider:          #2A2A30;
+    --line-strong:      #34343F;
+    --positive-glow:    rgba(52,211,153,0.1);
+    --blue-glow:        rgba(74,108,247,0.12);
+    --cyan-glow:        rgba(74,108,247,0.12);
+    --violet-glow:      rgba(139,92,246,0.15);
+    --ahead:            #34D399;
+    --caution:          #F5A524;
+    --behind:           #F87171;
+    --ahead-wash:       rgba(52,211,153,0.1);
+    --caution-wash:     rgba(245,165,36,0.1);
+    --behind-wash:      rgba(248,113,113,0.08);
+    --accent-fill:      #3756E0;
+    --accent-text:      #8EA2FB;
+    --accent-wash:      rgba(74,108,247,0.12);
+    --font-num:         'Montserrat', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  * { scrollbar-color: var(--line-strong) transparent; scrollbar-width: thin; }
+  ::selection { background: rgba(74,108,247,0.35); color: #fff; }
+
+  body {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    background: var(--obsidian);
+    color: var(--text-primary);
+    line-height: 1.6;
+    padding: 32px 40px;
+    -webkit-font-smoothing: antialiased;
+    font-variant-numeric: tabular-nums;
+  }
+  a { color: var(--accent-text); text-underline-offset: 3px; }
+
+  /* ── HEADER BAR ── */
+  .report-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 0 20px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--divider);
+  }
+  .report-header .brand-logo { display: flex; align-items: center; gap: 14px; }
+  .report-header .brand-name {
+    font-weight: 800;
+    font-size: 1.05rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    line-height: 1.2;
+  }
+  .report-header .brand-sub {
+    font-weight: 500;
+    font-size: 0.6875rem;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+  .report-header .report-meta {
+    text-align: right;
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  /* ── SECTION TITLES (sentence case) ── */
+  h1, h2, h3 { font-family: 'Montserrat', sans-serif; color: var(--text-primary); text-transform: none; }
+  h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    margin-bottom: 6px;
+  }
+  h2 {
+    font-size: 1.0625rem;
+    font-weight: 700;
+    letter-spacing: -0.005em;
+    line-height: 1.3;
+    margin-bottom: 14px;
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  }
+  h3 {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--text-secondary);
+  }
+
+  /* ── HEADLINE + DESCRIPTION PAIRING ── */
+  .section-desc {
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 20px;
+    max-width: 72ch;
+  }
+  h1 + .section-desc { margin-top: 2px; }
+  h2 + .section-desc { margin-top: -6px; }
+
+  /* ── SECTION LABELS (small group markers, as the dashboard nav groups) ── */
+  .section-label {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    margin-top: 40px;
+  }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+    transition: border-color 0.2s;
+  }
+  .card:hover { border-color: rgba(255,255,255,0.08); }
+  .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+
+  /* ── KPI ROW ── */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .kpi-box {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: left;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .kpi-box:hover { border-color: rgba(255,255,255,0.1); }
+  .kpi-box .kpi-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+    line-height: 1.35;
+  }
+  .kpi-box .kpi-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .kpi-box .kpi-delta, .kpi-sub { font-size: 0.75rem; margin-top: 4px; color: var(--text-muted); line-height: 1.4; }
+  .kpi-delta.positive { color: var(--ahead); font-weight: 600; }
+  .kpi-delta.negative { color: var(--behind); font-weight: 600; }
+  .kpi-delta.neutral  { color: var(--text-muted); }
+
+  /* ── TABLES ── */
+  table { width: 100%; border-collapse: collapse; font-size: 0.8125rem; font-feature-settings: 'tnum' 1; }
+  thead th {
+    text-align: left;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--text-secondary);
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--line-strong);
+    background: var(--card-bg);
+  }
+  tbody td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--card-border);
+    color: var(--text-primary);
+  }
+  tbody tr:nth-child(even) { background: rgba(255,255,255,0.012); }
+  tbody tr:hover { background: rgba(255,255,255,0.03); }
+  .table-wrapper, .table-scroll-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+  /* Accent values in tables: the old azure/cyan slots become the soft action
+     blue; green stays for good, red is only used by status classes. */
+  .val-blue   { color: var(--accent-text); font-weight: 600; }
+  .val-violet { color: var(--text-primary); font-weight: 600; }
+  .val-cyan   { color: var(--text-primary); font-weight: 600; }
+  .val-green  { color: var(--ahead); font-weight: 600; }
+  .val-red, .val-behind { color: var(--behind); font-weight: 600; }
+  .val-amber, .val-caution { color: var(--caution); font-weight: 600; }
+  .val-muted  { color: var(--text-secondary); font-weight: 600; }
+
+  /* ── BADGES / TAGS ── */
+  .badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 2px 9px;
+    border-radius: 999px;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    line-height: 1.6;
+    text-transform: none;
+    letter-spacing: 0;
+    white-space: nowrap;
+  }
+  .badge-blue   { background: var(--accent-wash); color: var(--accent-text); }
+  .badge-violet { background: rgba(139,92,246,0.15); color: #B79CFA; }
+  .badge-cyan   { background: var(--accent-wash); color: var(--accent-text); }
+  .badge-green, .badge-ahead   { background: var(--ahead-wash); color: var(--ahead); }
+  .badge-caution, .badge-amber { background: var(--caution-wash); color: var(--caution); }
+  .badge-behind, .badge-red    { background: var(--behind-wash); color: var(--behind); }
+  .badge-muted  { background: rgba(255,255,255,0.06); color: var(--text-secondary); }
+
+  /* ── PACE BARS (status-coloured, as the Track tab) ── */
+  .pace-bar { height: 12px; background: var(--card-border); border-radius: 999px; position: relative; overflow: visible; }
+  .pace-fill { position: absolute; top: 0; bottom: 0; left: 0; border-radius: 999px; background: var(--accent-fill); }
+  .pace-fill.ahead { background: var(--ahead); }
+  .pace-fill.caution { background: var(--caution); }
+  .pace-fill.behind { background: var(--behind); }
+  .pace-tick { position: absolute; top: -6px; bottom: -6px; width: 2px; margin-left: -1px; background: var(--text-primary); border-radius: 2px; }
+
+  /* ── BUTTONS ── */
+  .btn, .btn-primary, .btn-secondary {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 9px 16px; border-radius: 8px;
+    font-family: 'Montserrat', sans-serif; font-size: 0.8125rem; font-weight: 600;
+    text-decoration: none; cursor: pointer; border: 1px solid transparent;
+  }
+  .btn-primary { background: var(--accent-fill); color: #fff; border-color: var(--accent-fill); }
+  .btn-primary:hover { background: #2F4CCB; border-color: #2F4CCB; }
+  .btn-secondary { background: transparent; color: var(--text-primary); border-color: var(--line-strong); }
+  .btn-secondary:hover { border-color: #4A4A57; background: rgba(255,255,255,0.04); }
+
+  /* ── IN-PAGE NAV (horizontal; same item style as the dashboard sidebar) ── */
+  .report-nav { position: sticky; top: 0; z-index: 100; background: var(--obsidian); border-bottom: 1px solid var(--divider); padding: 8px 0; margin: 0 -40px 28px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .report-nav-inner { display: flex; gap: 4px; padding: 0 40px; min-width: max-content; }
+  .report-nav a {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 7px 12px; border-radius: 8px;
+    font-size: 0.8125rem; font-weight: 500;
+    text-transform: none; letter-spacing: 0;
+    color: var(--text-secondary); text-decoration: none; border: 0;
+    transition: background-color 0.15s, color 0.15s;
+  }
+  .report-nav a:hover { color: var(--text-primary); background: rgba(255,255,255,0.03); }
+  .report-nav a.active { color: var(--text-primary); font-weight: 600; background: var(--accent-wash); }
+  [id^="sec-"] { scroll-margin-top: 60px; }
+
+  /* ── UTILITY ── */
+  .text-blue    { color: var(--accent-text); }
+  .text-violet  { color: var(--text-primary); }
+  .text-cyan    { color: var(--text-primary); }
+  .text-green, .text-ahead   { color: var(--ahead); }
+  .text-amber, .text-caution { color: var(--caution); }
+  .text-red, .text-behind    { color: var(--behind); }
+  .text-muted   { color: var(--text-muted); }
+  .text-secondary { color: var(--text-secondary); }
+  .text-right   { text-align: right; }
+  .text-sm { font-size: 0.8125rem; }
+  .mt-1 { margin-top: 8px; }
+  .mt-2 { margin-top: 16px; }
+  .mt-3 { margin-top: 24px; }
+  .mb-1 { margin-bottom: 8px; }
+  .mb-2 { margin-bottom: 16px; }
+  .mb-3 { margin-bottom: 24px; }
+
+  /* ── FOOTER ── */
+  .report-footer {
+    margin-top: 48px;
+    padding-top: 16px;
+    border-top: 1px solid var(--divider);
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
+  /* Glows are retired in the refresh; classes kept so old markup is harmless. */
+  .glow-blue, .glow-cyan, .glow-violet { text-shadow: none; }
+
+  /* ── MOBILE (shared shell rules; process in report-responsive-qa skill) ── */
+  @media (max-width: 600px) {
+    body { padding: 18px 12px; }
+    h1 { font-size: 1.25rem; }
+    .report-header { padding: 0 0 14px; gap: 10px; }
+    .report-header .report-meta { font-size: 0.75rem; }
+    .report-nav { margin: 0 -12px 20px; }
+    .report-nav-inner { padding: 0 12px; }
+    .card { padding: 14px 12px; overflow-x: auto; }  /* wide tables scroll inside the card instead of bleeding */
+    .card-grid { grid-template-columns: 1fr; }
+    table { font-size: 0.75rem; }
+    th, td { padding: 8px 8px !important; }
+    .kpi-row { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .kpi-box .kpi-value { font-size: 1.25rem; }
+    .report-footer { flex-wrap: wrap; gap: 4px 16px; }
+  }
+
+  /* ── PRINT / PDF ── */
+  @media print {
+    body { background: #131316; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .card { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<style>
+  .tab-row { display:flex; gap:4px; margin-bottom:16px; }
+  .tab-btn { padding:8px 20px; border:1px solid var(--card-border); border-radius:8px; background:transparent; color:var(--text-secondary); font-family:'Montserrat',sans-serif; font-size:0.75rem; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; cursor:pointer; transition:all 0.15s ease; }
+  .tab-btn:hover { border-color:var(--royal-blue); color:var(--text-primary); }
+  .tab-btn.active { background:var(--blue-glow); border-color:var(--royal-blue); color:var(--royal-blue); }
+  .insight-item { display:flex; align-items:flex-start; gap:12px; padding:12px 0; border-bottom:1px solid var(--card-border); }
+  .insight-item:last-child { border-bottom:none; }
+  .insight-text { font-size:0.85rem; line-height:1.5; color:var(--text-primary); }
+  .trend-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:14px; }
+  .trend-item { background:var(--card-bg); border:1px solid var(--card-border); border-radius:8px; padding:18px; }
+  .trend-label { font-size:0.72rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-secondary); margin-bottom:6px; }
+  .trend-value { font-size:1.4rem; font-weight:700; color:var(--text-primary); }
+  .trend-avg { font-size:0.72rem; color:var(--text-muted); margin-top:3px; }
+  .trend-meta { display:flex; align-items:center; gap:8px; margin-top:10px; }
+  .dir-badge { font-size:0.65rem; font-weight:600; padding:2px 8px; border-radius:4px; text-transform:uppercase; letter-spacing:0.05em; }
+  .dir-up { background:rgba(52,211,153,0.15); color:#34D399; }
+  .dir-down { background:rgba(136,136,136,0.15); color:#888; }
+  .dir-flat { background:rgba(14,134,245,0.12); color:#5AABF7; }
+  .streak-badge { font-size:0.65rem; color:var(--text-muted); }
+  .sparkline-wrap { margin-top:8px; }
+  .badge-spike { background:rgba(34,211,238,0.18); color:#8B5CF6; }
+  .source-bar { display:flex; height:28px; border-radius:6px; overflow:hidden; margin-bottom:16px; gap:2px; }
+  .source-segment { display:flex; align-items:center; justify-content:center; font-size:0.6rem; font-weight:600; color:#fff; min-width:20px; }
+  .source-meta { background:#4A6CF7; }
+  .source-google { background:#8B5CF6; }
+  .source-email { background:#34D399; }
+  .source-direct { background:#888; }
+  .source-organic { background:#5AABF7; }
+  .source-other { background:#555; }
+  .yoy-better { color:#34D399; }
+  .yoy-worse { color:#888; }
+  .tracking-notice { padding:16px; text-align:center; color:var(--text-muted); font-size:0.8rem; border:1px dashed var(--card-border); border-radius:8px; }
+.tab-btn,.trend-label,.dir-badge{text-transform:none;letter-spacing:0}
+</style><script>
+function sortTable(tableId, sortBy) {
+  var data = window[tableId + '_data'];
+  if (!data) return;
+  var card = document.getElementById(tableId).closest('.card');
+  card.querySelectorAll('.tab-btn').forEach(function(btn) {
+    btn.classList.remove('active');
+    if ((sortBy === 'revenue' && btn.textContent === 'Total Sales') || (sortBy === 'units' && btn.textContent === 'Units Ordered')) btn.classList.add('active');
+  });
+  var sorted = data.slice().sort(function(a, b) { return b[sortBy] - a[sortBy]; });
+  var tbody = document.querySelector('#' + tableId + ' tbody');
+  var currency = '£';
+  tbody.innerHTML = sorted.map(function(p) {
+    var revCls = p.revenueDelta >= 0 ? 'positive' : 'negative';
+    var unitCls = p.unitsDelta >= 0 ? 'positive' : 'negative';
+    var revD = (p.prevRevenue === 0 && p.revenue === 0) ? '-' : (p.revenueDelta >= 0 ? '+' : '−') + Math.abs(p.revenueDelta).toFixed(1) + '%';
+    var unitD = (p.prevUnits === 0 && p.units === 0) ? '-' : (p.unitsDelta >= 0 ? '+' : '−') + Math.abs(p.unitsDelta).toFixed(1) + '%';
+    return '<tr><td>' + p.name + '</td><td class="text-right">' + currency + p.revenue.toLocaleString('en-GB',{minimumFractionDigits:2,maximumFractionDigits:2}) + '</td><td class="text-right"><span class="' + revCls + '">' + revD + '</span></td><td class="text-right">' + p.units.toLocaleString('en-GB') + '</td><td class="text-right"><span class="' + unitCls + '">' + unitD + '</span></td></tr>';
+  }).join('');
+  var tR = sorted.reduce(function(s,p){return s+p.revenue},0);
+  var tU = sorted.reduce(function(s,p){return s+p.units},0);
+  var pR = sorted.reduce(function(s,p){return s+p.prevRevenue},0);
+  var pU = sorted.reduce(function(s,p){return s+p.prevUnits},0);
+  var rD = pR===0?(tR>0?100:0):((tR-pR)/pR)*100;
+  var uD = pU===0?(tU>0?100:0):((tU-pU)/pU)*100;
+  tbody.innerHTML += '<tr style="font-weight:700;border-top:2px solid var(--divider);"><td>Total</td><td class="text-right">'+currency+tR.toLocaleString('en-GB',{minimumFractionDigits:2,maximumFractionDigits:2})+'</td><td class="text-right"><span class="'+(rD>=0?'positive':'negative')+'">'+(rD>=0?'+':'')+rD.toFixed(1)+'%</span></td><td class="text-right">'+tU.toLocaleString('en-GB')+'</td><td class="text-right"><span class="'+(uD>=0?'positive':'negative')+'">'+(uD>=0?'+':'')+uD.toFixed(1)+'%</span></td></tr>';
+}
+</script>
+<div class="report-header">
+  <div class="brand-logo">
+    <svg viewBox="0 0 36 36" width="36" height="36">
+  <rect x="0" y="0" width="36" height="36" rx="7" fill="#0D0D14" stroke="rgba(142,162,251,0.14)" stroke-width="1"/>
+  <defs><linearGradient id="kcGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#4A6CF7"/><stop offset="100%" style="stop-color:#8EA2FB"/></linearGradient></defs>
+  <text x="18" y="25" text-anchor="middle" font-family="Montserrat, sans-serif" font-weight="900" font-size="16" letter-spacing="-0.5" fill="url(#kcGrad)">KC</text>
+</svg>
+    <div>
+      <div class="brand-name">Kova</div>
+      <div class="brand-sub">Commerce</div>
+    </div>
+  </div>
+  <div class="report-meta">
+    <div style="font-weight:600; color:var(--text-primary);">Weekly Performance Report</div>
+    <div>Pairs Socks</div>
+    <div>26 Oct 2026 - 1 Nov 2026</div>
+  </div>
+</div><p class="section-desc" style="margin-bottom:8px;">26 Oct 2026 - 1 Nov 2026 vs 19 Oct 2026 - 25 Oct 2026</p><div class="section-label">Overview</div><h1>Pairs Socks</h1><p class="section-desc">Weekly performance snapshot across all channels.</p><div class="story-card" style="margin:0 0 18px;padding:14px 18px;border-radius:12px;background:#1A1A1F;border:1px solid #262630;border-left:3px solid #3756E0;"><div style="font-size:11px;color:#8EA2FB;margin-bottom:6px;">This week</div><div style="font-size:16px;line-height:1.5;color:#EAEAEA;">Sales last week were £74,455, up 6% on the week before. Ad spend was £20,759, and the biggest change was Meta spend, up 42%.</div></div><div class="kpi-row"><div class="kpi-box">
+    <div class="kpi-label">Revenue</div>
+    <div class="kpi-value">£74,455</div>
+    <div class="kpi-delta positive">+5.6% vs prev</div>
+  </div><div class="kpi-box">
+    <div class="kpi-label">Orders</div>
+    <div class="kpi-value">1375</div>
+    <div class="kpi-delta positive">+5.4% vs prev</div>
+  </div><div class="kpi-box">
+    <div class="kpi-label">AOV</div>
+    <div class="kpi-value">£54.15</div>
+    <div class="kpi-delta positive">+0.2% vs prev</div>
+  </div><div class="kpi-box">
+    <div class="kpi-label">New customers</div>
+    <div class="kpi-value">1070</div>
+    <div class="kpi-delta positive">+4.0% vs prev</div>
+  </div><div class="kpi-box">
+    <div class="kpi-label">Blended ROAS</div>
+    <div class="kpi-value">3.59x</div>
+    <div class="kpi-delta negative">−5.7% vs prev</div>
+  </div></div><div class="section-label">Monthly Pace</div><h2>Forecast vs actual - November 2026</h2><p class="section-desc">1 of 30 days reported (3% of month). Click forecast values to adjust.</p><div class="card" id="forecast-pace-card"
+    data-month-key="2026-11"
+    data-storage-key="forecast_2026-11"
+    data-mtd-revenue="10636.38"
+    data-mtd-spend="2965.58"
+    data-days-reported="1"
+    data-days-in-month="30"
+    data-default-rev="385711"
+    data-default-spend="95604"
+    data-currency="£">
+
+    <!-- Track-style pace bars (same look as the daily report); filled by recalc() below -->
+    <div id="forecast-bars" style="margin-bottom:20px;">
+      <div id="fb-rev" style="margin-bottom:24px;"></div>
+      <div id="fb-spend"></div>
+    </div>
+
+    <table><thead><tr><th>Metric</th><th class="text-right">Forecast</th><th class="text-right">MTD actual</th><th class="text-right">Paced target</th><th class="text-right">vs pace</th></tr></thead><tbody>
+      <tr id="forecast-row-revenue">
+        <td style="font-weight:600;">Revenue</td>
+        <td class="text-right"><span class="forecast-input-wrap">£<input type="text" id="forecast-rev-input" class="forecast-editable" inputmode="numeric" /></span></td>
+        <td class="text-right" id="forecast-rev-actual"></td>
+        <td class="text-right" style="color:var(--text-secondary);" id="forecast-rev-paced"></td>
+        <td class="text-right" id="forecast-rev-delta"></td>
+      </tr>
+      <tr id="forecast-row-spend">
+        <td style="font-weight:600;">Ad spend</td>
+        <td class="text-right"><span class="forecast-input-wrap">£<input type="text" id="forecast-spend-input" class="forecast-editable" inputmode="numeric" /></span></td>
+        <td class="text-right" id="forecast-spend-actual"></td>
+        <td class="text-right" style="color:var(--text-secondary);" id="forecast-spend-paced"></td>
+        <td class="text-right" id="forecast-spend-delta"></td>
+      </tr>
+      <tr style="border-top:2px solid var(--divider);">
+        <td colspan="5" id="forecast-projections" style="font-size:0.78rem;color:var(--text-secondary);padding-top:8px;"></td>
+      </tr>
+    </tbody></table>
+    <div style="display:flex;justify-content:flex-end;align-items:center;gap:8px;margin-top:10px;">
+      <button id="forecast-reset-btn" style="font-size:0.72rem;padding:4px 10px;border-radius:4px;border:1px solid var(--divider);background:transparent;color:var(--text-secondary);cursor:pointer;">Reset to default</button>
+      <a href="https://web-production-acb2a.up.railway.app/dashboard/pairssocks?key=kova-pairs-2026" target="_blank" rel="noopener" style="font-size:0.72rem;padding:6px 14px;border-radius:4px;background:var(--kova-azure);color:#fff;text-decoration:none;font-weight:600;display:inline-flex;align-items:center;gap:5px;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">View Full Forecast Dashboard &rarr;</a>
+    </div>
+  </div>
+  <style>
+    .forecast-editable {
+      background: transparent;
+      border: none;
+      border-bottom: 1.5px dashed var(--royal-blue);
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: inherit;
+      font-weight: 700;
+      text-align: right;
+      width: 90px;
+      padding: 2px 0;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .forecast-editable:focus {
+      border-bottom-color: var(--kova-cyan);
+      border-bottom-style: solid;
+    }
+    .forecast-input-wrap {
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    #forecast-reset-btn:hover {
+      border-color: var(--royal-blue);
+      color: var(--text-primary);
+    }
+  </style>
+  <script>
+  (function() {
+    var card = document.getElementById('forecast-pace-card');
+    if (!card) return;
+    var storageKey = card.dataset.storageKey;
+    var mtdRev = parseFloat(card.dataset.mtdRevenue);
+    var mtdSpend = parseFloat(card.dataset.mtdSpend);
+    var daysReported = parseInt(card.dataset.daysReported);
+    var daysInMonth = parseInt(card.dataset.daysInMonth);
+    var defaultRev = parseFloat(card.dataset.defaultRev);
+    var defaultSpend = parseFloat(card.dataset.defaultSpend);
+    var cur = card.dataset.currency;
+
+    var revInput = document.getElementById('forecast-rev-input');
+    var spendInput = document.getElementById('forecast-spend-input');
+
+    function fmtVal(v) {
+      return cur + Math.round(v).toLocaleString('en-GB');
+    }
+
+    function loadSaved() {
+      try {
+        var saved = JSON.parse(localStorage.getItem(storageKey));
+        return saved || {};
+      } catch(e) { return {}; }
+    }
+
+    // Persist the user's override alongside the server default that was in force
+    // when they made it. If the KC Dashboard plan later moves, the stored baseline
+    // no longer matches and the override is discarded on load (see init below).
+    function saveForecast(rev, spend) {
+      localStorage.setItem(storageKey, JSON.stringify({
+        revenue: rev, spend: spend, baseRev: defaultRev, baseSpend: defaultSpend
+      }));
+    }
+
+    // Track-style bar: fill = MTD actual vs month forecast, marker = where we should be today.
+    // Revenue fill is status-coloured (ahead / within 10% / behind); spend uses the accent fill.
+    function renderPaceBar(id, label, actual, forecast, isSpend) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      if (!(forecast > 0)) { el.innerHTML = ''; el.style.display = 'none'; return; }
+      el.style.display = '';
+      var paced = forecast * (daysReported / daysInMonth);
+      var vs = paced > 0 ? ((actual - paced) / paced) * 100 : 0;
+      var fillPct = Math.min((actual / forecast) * 100, 100);
+      var markerPct = (daysReported / daysInMonth) * 100;
+      var fill = isSpend ? 'var(--accent-fill)' : (vs >= 0 ? 'var(--ahead)' : vs >= -10 ? 'var(--caution)' : 'var(--behind)');
+      var cls = isSpend ? (vs <= 0 ? 'positive' : 'negative') : (vs >= 0 ? 'positive' : 'negative');
+      var proj = daysReported > 0 ? (actual / daysReported) * daysInMonth : 0;
+      el.innerHTML =
+        '<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;">' +
+          '<span style="font-size:0.75rem;font-weight:700;color:var(--text-secondary);">' + label + '</span>' +
+          '<span style="font-size:0.85rem;font-weight:600;">' + fmtVal(actual) + ' <span style="color:var(--text-secondary);font-weight:400;">of ' + fmtVal(forecast) + '</span></span>' +
+        '</div>' +
+        '<div style="position:relative;height:28px;background:var(--card-border);border-radius:6px;overflow:visible;">' +
+          '<div style="height:100%;width:' + fillPct.toFixed(1) + '%;background:' + fill + ';border-radius:6px;transition:width 0.3s;"></div>' +
+          '<div style="position:absolute;top:-4px;bottom:-4px;left:' + markerPct.toFixed(1) + '%;width:2px;background:var(--text-secondary);border-radius:1px;" title="Paced target: ' + fmtVal(paced) + '"></div>' +
+        '</div>' +
+        '<div style="display:flex;justify-content:space-between;margin-top:6px;font-size:0.72rem;color:var(--text-secondary);">' +
+          '<span>Paced target: ' + fmtVal(paced) + '</span>' +
+          '<span class="' + cls + '">' + (vs >= 0 ? '+' : '−') + Math.abs(vs).toFixed(1) + '% vs pace</span>' +
+        '</div>' +
+        '<div style="font-size:0.72rem;color:var(--text-muted);margin-top:2px;">Projected EOM: ' + fmtVal(proj) + '</div>';
+    }
+
+    function recalc(persist) {
+      var revForecast = parseFloat(revInput.value.replace(/[^0-9.]/g, '')) || 0;
+      var spendForecast = parseFloat(spendInput.value.replace(/[^0-9.]/g, '')) || 0;
+
+      // Revenue row
+      var revActualEl = document.getElementById('forecast-rev-actual');
+      var revPacedEl = document.getElementById('forecast-rev-paced');
+      var revDeltaEl = document.getElementById('forecast-rev-delta');
+      revActualEl.textContent = fmtVal(mtdRev);
+      if (revForecast > 0) {
+        var revPaced = revForecast * (daysReported / daysInMonth);
+        var revVsPace = revPaced > 0 ? ((mtdRev - revPaced) / revPaced) * 100 : 0;
+        revPacedEl.textContent = fmtVal(revPaced);
+        revDeltaEl.innerHTML = '<span class="' + (revVsPace >= 0 ? 'positive' : 'negative') + '">' + (revVsPace >= 0 ? '+' : '−') + Math.abs(revVsPace).toFixed(1) + '%</span>';
+      } else {
+        revPacedEl.textContent = '-';
+        revDeltaEl.textContent = '-';
+      }
+
+      // Spend row (under pace = good)
+      var spendActualEl = document.getElementById('forecast-spend-actual');
+      var spendPacedEl = document.getElementById('forecast-spend-paced');
+      var spendDeltaEl = document.getElementById('forecast-spend-delta');
+      spendActualEl.textContent = fmtVal(mtdSpend);
+      if (spendForecast > 0) {
+        var spendPaced = spendForecast * (daysReported / daysInMonth);
+        var spendVsPace = spendPaced > 0 ? ((mtdSpend - spendPaced) / spendPaced) * 100 : 0;
+        spendPacedEl.textContent = fmtVal(spendPaced);
+        // Invert: under-spending is positive (green)
+        var spendDeltaClass = spendVsPace <= 0 ? 'positive' : 'negative';
+        spendDeltaEl.innerHTML = '<span class="' + spendDeltaClass + '">' + (spendVsPace >= 0 ? '+' : '−') + Math.abs(spendVsPace).toFixed(1) + '%</span>';
+      } else {
+        spendPacedEl.textContent = '-';
+        spendDeltaEl.textContent = '-';
+      }
+
+      // Projections
+      var projEl = document.getElementById('forecast-projections');
+      var parts = [];
+      if (daysReported > 0) {
+        var projRev = (mtdRev / daysReported) * daysInMonth;
+        var projSpend = (mtdSpend / daysReported) * daysInMonth;
+        if (revForecast > 0) {
+          parts.push('Projected Revenue: ' + fmtVal(projRev) + ' (' + Math.round(projRev / revForecast * 100) + '% of forecast)');
+        }
+        if (spendForecast > 0) {
+          parts.push('Projected Spend: ' + fmtVal(projSpend) + ' (' + Math.round(projSpend / spendForecast * 100) + '% of budget)');
+        }
+      }
+      projEl.textContent = parts.join('. ') + (parts.length ? '.' : '');
+
+      renderPaceBar('fb-rev', 'Revenue', mtdRev, revForecast, false);
+      renderPaceBar('fb-spend', 'Ad spend', mtdSpend, spendForecast, true);
+
+      if (persist) saveForecast(revForecast, spendForecast);
+    }
+
+    // Init. The KC Dashboard number (defaultRev/defaultSpend, mirrored onto disk by
+    // scripts/sync-monthly-targets.mjs at generation time) is the source of truth.
+    // A saved override is only honoured while the server default it was made against
+    // is unchanged; once the plan moves, the override is dropped so the client always
+    // sees the live goal. Legacy entries have no baseline and are treated as stale.
+    var saved = loadSaved();
+    var revOverride = saved.baseRev === defaultRev ? saved.revenue : null;
+    var spendOverride = saved.baseSpend === defaultSpend ? saved.spend : null;
+    revInput.value = Math.round(revOverride || defaultRev) || '';
+    spendInput.value = Math.round(spendOverride || defaultSpend) || '';
+    // Do not persist on load — merely opening the page must never freeze the goal.
+    recalc(false);
+
+    function onEdit() { recalc(true); }
+    revInput.addEventListener('input', onEdit);
+    spendInput.addEventListener('input', onEdit);
+    revInput.addEventListener('focus', function() { this.select(); });
+    spendInput.addEventListener('focus', function() { this.select(); });
+
+    document.getElementById('forecast-reset-btn').addEventListener('click', function() {
+      localStorage.removeItem(storageKey);
+      revInput.value = Math.round(defaultRev) || '';
+      spendInput.value = Math.round(defaultSpend) || '';
+      recalc(false);
+    });
+  })();
+  </script><div class="section-label">Revenue Intelligence</div><h2>Weekly revenue drivers</h2><p class="section-desc">What drove this week's performance. Key differences vs last week across email, paid, and organic channels.</p><div class="card" style="margin-bottom:12px;"><div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap;"><span style="font-size:0.6rem;font-weight:700;padding:2px 7px;border-radius:3px;background:#34D39920;color:#34D399;">high</span><span style="font-size:0.6rem;font-weight:700;padding:2px 7px;border-radius:3px;background:#34D39920;color:#34D399;">EMAIL</span><span style="font-weight:700;font-size:0.95rem;">Email Campaigns Drove £8,060.29 Revenue</span></div><div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:12px;"><div style="background:var(--body-bg);border:1px solid var(--card-border);border-radius:6px;padding:10px 14px;min-width:120px;"><div style="font-size:0.68rem;color:var(--text-secondary);margin-bottom:4px;">Campaigns Sent</div><div style="font-size:1.1rem;font-weight:700;color:var(--text-primary);">4</div><div style="font-size:0.72rem;color:var(--text-muted);">prev: 3</div></div><div style="background:var(--body-bg);border:1px solid var(--card-border);border-radius:6px;padding:10px 14px;min-width:120px;"><div style="font-size:0.68rem;color:var(--text-secondary);margin-bottom:4px;">Total Recipients</div><div style="font-size:1.1rem;font-weight:700;color:var(--text-primary);">84,744</div><div style="font-size:0.72rem;color:var(--text-muted);">prev: 60,417</div></div><div style="background:var(--body-bg);border:1px solid var(--card-border);border-radius:6px;padding:10px 14px;min-width:120px;"><div style="font-size:0.68rem;color:var(--text-secondary);margin-bottom:4px;">Campaign Revenue</div><div style="font-size:1.1rem;font-weight:700;color:var(--text-primary);">£8,060.29</div><div style="font-size:0.72rem;color:var(--text-muted);">prev: £5,722.93</div><div style="font-size:0.72rem;margin-top:2px;"><span class="positive">+40.8%</span></div></div><div style="background:var(--body-bg);border:1px solid var(--card-border);border-radius:6px;padding:10px 14px;min-width:120px;"><div style="font-size:0.68rem;color:var(--text-secondary);margin-bottom:4px;">Conversions</div><div style="font-size:1.1rem;font-weight:700;color:var(--text-primary);">144</div></div></div><div style="margin-bottom:12px;"><table><thead><tr><th>Campaign</th><th class="text-right">Sent</th><th class="text-right">Recipients</th><th class="text-right">Revenue</th><th class="text-right">Conv</th><th class="text-right">Open Rate</th><th class="text-right">Click Rate</th></tr></thead><tbody><tr><td>The wool for sensitive skin - Thurs 29th Oct</td><td class="text-right" style="white-space:nowrap;">Thu 29 Oct</td><td class="text-right">28,906</td><td class="text-right val-blue">£3,479.72</td><td class="text-right">63</td><td class="text-right">66.5%</td><td class="text-right">1.5%</td></tr><tr><td>Sherbet Pink - Tues 27th Oct</td><td class="text-right" style="white-space:nowrap;">Mon 26 Oct</td><td class="text-right">26,898</td><td class="text-right val-blue">£2,368.50</td><td class="text-right">43</td><td class="text-right">69.2%</td><td class="text-right">2.0%</td></tr><tr><td>True Black and Deep Earth Brown - Sun 1st Nov</td><td class="text-right" style="white-space:nowrap;">Sat 31 Oct</td><td class="text-right">27,418</td><td class="text-right val-blue">£1,618.57</td><td class="text-right">31</td><td class="text-right">55.4%</td><td class="text-right">0.6%</td></tr><tr><td>[MISSED AUDIENCE - Active Repeat] Sherbet Pink - Tues 27th Oct (clone)</td><td class="text-right" style="white-space:nowrap;">Tue 27 Oct</td><td class="text-right">1,522</td><td class="text-right val-blue">£593.50</td><td class="text-right">7</td><td class="text-right">63.2%</td><td class="text-right">4.5%</td></tr></tbody></table></div><div style="font-size:0.82rem;line-height:1.6;color:var(--text-primary);margin-bottom:0px;">4 campaigns sent (vs 3 last week). Campaign revenue up 41% to £8,060.29.</div></div><div class="card" style="margin-bottom:12px;"><div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap;"><span style="font-size:0.6rem;font-weight:700;padding:2px 7px;border-radius:3px;background:#34D39920;color:#34D399;">high</span><span style="font-size:0.6rem;font-weight:700;padding:2px 7px;border-radius:3px;background:#A78BFA20;color:#A78BFA;">CROSS-CHANNEL</span><span style="font-weight:700;font-size:0.95rem;">Email Driving 29% of Total Revenue</span></div><div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:12px;"><div style="background:var(--body-bg);border:1px solid var(--card-border);border-radius:6px;padding:10px 14px;min-width:120px;"><div style="font-size:0.68rem;color:var(--text-secondary);margin-bottom:4px;">Email Revenue</div><div style="font-size:1.1rem;font-weight:700;color:var(--text-primary);">£21,343.48</div></div><div style="background:var(--body-bg);border:1px solid var(--card-border);border-radius:6px;padding:10px 14px;min-width:120px;"><div style="font-size:0.68rem;color:var(--text-secondary);margin-bottom:4px;">% of Store Revenue</div><div style="font-size:1.1rem;font-weight:700;color:var(--text-primary);">28.7%</div></div><div style="background:var(--body-bg);border:1px solid var(--card-border);border-radius:6px;padding:10px 14px;min-width:120px;"><div style="font-size:0.68rem;color:var(--text-secondary);margin-bottom:4px;">% of Revenue Uplift</div><div style="font-size:1.1rem;font-weight:700;color:var(--text-primary);">544%</div></div></div><div style="font-size:0.82rem;line-height:1.6;color:var(--text-primary);margin-bottom:8px;">Total email revenue (campaigns + flows): £21,343.48, accounting for 29% of store revenue. Email accounts for an estimated 544% of the total revenue uplift vs last week. Shopify email-attributed orders also up +100.0%.</div><div style="font-size:0.82rem;line-height:1.6;padding:10px 14px;border-left:3px solid var(--royal-blue);background:rgba(14,134,245,0.06);border-radius:0 6px 6px 0;margin-top:8px;color:var(--text-secondary);">The combination of heavier email sends, increased branded search, and rising direct traffic suggests a halo effect: email campaigns are driving awareness that converts across all channels.</div></div><div class="card" style="margin-bottom:12px;"><div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap;"><span style="font-size:0.6rem;font-weight:700;padding:2px 7px;border-radius:3px;background:#4A6CF720;color:#4A6CF7;">medium</span><span style="font-size:0.6rem;font-weight:700;padding:2px 7px;border-radius:3px;background:#8B5CF620;color:#8B5CF6;">FLOWS</span><span style="font-weight:700;font-size:0.95rem;">Flows Spiked: £450.50 from 2 flows</span></div><div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:12px;"><div style="background:var(--body-bg);border:1px solid var(--card-border);border-radius:6px;padding:10px 14px;min-width:120px;"><div style="font-size:0.68rem;color:var(--text-secondary);margin-bottom:4px;">US Welcome</div><div style="font-size:1.1rem;font-weight:700;color:var(--text-primary);">£388.10</div><div style="font-size:0.68rem;color:var(--text-muted);margin-top:2px;">70 recipients | £5.54/recip</div></div><div style="background:var(--body-bg);border:1px solid var(--card-border);border-radius:6px;padding:10px 14px;min-width:120px;"><div style="font-size:0.68rem;color:var(--text-secondary);margin-bottom:4px;">Churn series</div><div style="font-size:1.1rem;font-weight:700;color:var(--text-primary);">£62.40</div><div style="font-size:0.68rem;color:var(--text-muted);margin-top:2px;">261 recipients | £0.24/recip</div></div></div><div style="margin-bottom:12px;"><table><thead><tr><th>Flow</th><th class="text-right">Recipients</th><th class="text-right">Revenue</th><th class="text-right">Rev/Recip</th><th class="text-right">Conv</th><th class="text-right">vs Last Week</th></tr></thead><tbody><tr><td>US Welcome</td><td class="text-right">70</td><td class="text-right val-blue">£388.10</td><td class="text-right">£5.54</td><td class="text-right">4</td><td class="text-right"><span class="positive">+32.9%</span></td></tr><tr><td>Churn series</td><td class="text-right">261</td><td class="text-right val-blue">£62.40</td><td class="text-right">£0.24</td><td class="text-right">1</td><td class="text-right"><span class="positive">NEW</span></td></tr></tbody></table></div><div style="font-size:0.82rem;line-height:1.6;color:var(--text-primary);margin-bottom:0px;">2 flows spiked significantly. US Welcome: £388.10 (+32.9% WoW). Churn series: £62.40 (vs £0.00 last week). </div></div><div class="section-label">Attribution Gap</div><h2>Platform vs actual revenue</h2><p class="section-desc">Without a third-party attribution tool, we compare platform-reported conversions against actual Shopify revenue to understand the gap. Blended ROAS uses actual store revenue / total ad spend.</p><div class="kpi-row"><div class="kpi-box">
+    <div class="kpi-label">Platform revenue</div>
+    <div class="kpi-value">£66,326</div>
+    <div class="kpi-delta positive">+13.1% vs prev</div>
+  </div><div class="kpi-box">
+    <div class="kpi-label">Actual revenue</div>
+    <div class="kpi-value">£74,455</div>
+    <div class="kpi-delta positive">+5.6% vs prev</div>
+  </div><div class="kpi-box">
+    <div class="kpi-label">Platform ROAS</div>
+    <div class="kpi-value">3.20x</div>
+    <div class="kpi-delta positive">+1.0% vs prev</div>
+  </div><div class="kpi-box">
+    <div class="kpi-label">Blended ROAS</div>
+    <div class="kpi-value">3.59x</div>
+    <div class="kpi-delta negative">−5.7% vs prev</div>
+  </div><div class="kpi-box">
+    <div class="kpi-label">Report rate</div>
+    <div class="kpi-value">89%</div>
+    <div class="kpi-delta positive">+6.0% vs prev</div>
+  </div></div><div class="card" style="margin-bottom:16px;"><div style="font-size:0.7rem;color:var(--text-secondary);margin-bottom:10px;">Revenue attribution breakdown</div><div style="display:flex;gap:3px;height:32px;border-radius:6px;overflow:hidden;margin-bottom:12px;"><div style="width:47.4%;background:#4A6CF7;display:flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:600;color:#fff;">Meta 47%</div><div style="width:41.7%;background:#8B5CF6;display:flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:600;color:#fff;">Google 42%</div><div style="width:10.9%;background:#374151;display:flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:600;color:#9CA3AF;">Unattributed 11%</div></div><div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:12px;"><div style="font-size:0.72rem;display:flex;align-items:center;gap:4px;"><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#4A6CF7;"></span>Meta: £35,292</div><div style="font-size:0.72rem;display:flex;align-items:center;gap:4px;"><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#8B5CF6;"></span>Google: £31,034</div><div style="font-size:0.72rem;display:flex;align-items:center;gap:4px;"><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#374151;"></span>Unattributed: £8,128</div></div><table><thead><tr><th>Metric</th><th class="text-right">Meta</th><th class="text-right">Google</th><th class="text-right">Combined</th></tr></thead><tbody><tr><td>Platform Spend</td><td class="text-right">£12,045</td><td class="text-right">£8,714</td><td class="text-right">£20,759</td></tr><tr><td>Platform-Reported Revenue</td><td class="text-right">£35,292</td><td class="text-right">£31,034</td><td class="text-right">£66,326</td></tr><tr><td>Platform-Reported Conversions</td><td class="text-right">625</td><td class="text-right">619</td><td class="text-right">1244</td></tr><tr><td>Platform ROAS</td><td class="text-right val-blue">2.93x</td><td class="text-right val-blue">3.56x</td><td class="text-right val-blue">3.20x</td></tr><tr style="border-top:2px solid var(--divider);font-weight:600;"><td>Actual Shopify Revenue</td><td colspan="2"></td><td class="text-right">£74,455</td></tr><tr style="font-weight:600;"><td>Blended ROAS (Actual Rev / Spend)</td><td colspan="2"></td><td class="text-right" style="font-size:1.05rem;"><span class="val-blue">3.59x</span></td></tr><tr><td>CPA (Platform-Reported)</td><td colspan="2"></td><td class="text-right">£16.69</td></tr><tr><td>CPA (Actual Orders)</td><td colspan="2"></td><td class="text-right">£15.10</td></tr></tbody></table></div><div class="card"><div style="font-size:0.7rem;color:var(--text-secondary);margin-bottom:10px;">Daily spend vs revenue correlation</div><table><thead><tr><th>Day</th><th class="text-right">Spend</th><th class="text-right">Plat Rev</th><th class="text-right">Actual Rev</th><th class="text-right">Orders</th><th class="text-right">Plat Conv</th><th class="text-right">Plat ROAS</th><th class="text-right">Blended ROAS</th><th class="text-right">Report Rate</th></tr></thead><tbody><tr>
+        <td>Mon 26</td>
+        <td class="text-right">£2,740</td>
+        <td class="text-right">£9,168</td>
+        <td class="text-right">£10,253</td>
+        <td class="text-right">194</td>
+        <td class="text-right">188</td>
+        <td class="text-right val-blue">3.35x</td>
+        <td class="text-right" style="font-weight:600;">3.74x</td>
+        <td class="text-right" style="color:var(--text-secondary);">89%</td>
+      </tr><tr>
+        <td>Tue 27</td>
+        <td class="text-right">£2,588</td>
+        <td class="text-right">£10,657</td>
+        <td class="text-right">£11,716</td>
+        <td class="text-right">201</td>
+        <td class="text-right">186</td>
+        <td class="text-right val-blue">4.12x</td>
+        <td class="text-right" style="font-weight:600;">4.53x</td>
+        <td class="text-right" style="color:var(--text-secondary);">91%</td>
+      </tr><tr>
+        <td>Wed 28</td>
+        <td class="text-right">£2,615</td>
+        <td class="text-right">£9,148</td>
+        <td class="text-right">£10,270</td>
+        <td class="text-right">186</td>
+        <td class="text-right">169</td>
+        <td class="text-right val-blue">3.50x</td>
+        <td class="text-right" style="font-weight:600;">3.93x</td>
+        <td class="text-right" style="color:var(--text-secondary);">89%</td>
+      </tr><tr>
+        <td>Thu 29</td>
+        <td class="text-right">£2,906</td>
+        <td class="text-right">£8,178</td>
+        <td class="text-right">£8,660</td>
+        <td class="text-right">163</td>
+        <td class="text-right">149</td>
+        <td class="text-right val-blue">2.81x</td>
+        <td class="text-right" style="font-weight:600;">2.98x</td>
+        <td class="text-right" style="color:var(--text-secondary);">94%</td>
+      </tr><tr>
+        <td>Fri 30</td>
+        <td class="text-right">£2,936</td>
+        <td class="text-right">£9,738</td>
+        <td class="text-right">£10,759</td>
+        <td class="text-right">198</td>
+        <td class="text-right">186</td>
+        <td class="text-right val-blue">3.32x</td>
+        <td class="text-right" style="font-weight:600;">3.66x</td>
+        <td class="text-right" style="color:var(--text-secondary);">91%</td>
+      </tr><tr>
+        <td>Sat 31</td>
+        <td class="text-right">£2,977</td>
+        <td class="text-right">£7,949</td>
+        <td class="text-right">£9,762</td>
+        <td class="text-right">178</td>
+        <td class="text-right">153</td>
+        <td class="text-right val-blue">2.67x</td>
+        <td class="text-right" style="font-weight:600;">3.28x</td>
+        <td class="text-right" style="color:var(--text-secondary);">81%</td>
+      </tr><tr>
+        <td>Sun 1</td>
+        <td class="text-right">£3,997</td>
+        <td class="text-right">£11,488</td>
+        <td class="text-right">£13,742</td>
+        <td class="text-right">255</td>
+        <td class="text-right">213</td>
+        <td class="text-right val-blue">2.87x</td>
+        <td class="text-right" style="font-weight:600;">3.44x</td>
+        <td class="text-right" style="color:var(--text-secondary);">84%</td>
+      </tr><tr style="font-weight:700; border-top:2px solid var(--divider);">
+      <td>Total</td>
+      <td class="text-right">£20,759</td>
+      <td class="text-right">£66,326</td>
+      <td class="text-right">£74,455</td>
+      <td class="text-right">1375</td>
+      <td class="text-right">1244</td>
+      <td class="text-right val-blue">3.20x</td>
+      <td class="text-right" style="font-weight:700;">3.59x</td>
+      <td class="text-right">89%</td>
+    </tr></tbody></table></div><div class="section-label">Anomaly Detection</div><h2>Spike analysis</h2><p class="section-desc">Significant daily anomalies. Single-day spikes (&ge;100% deviation) are flagged immediately. Smaller deviations (50-99%) only appear if they persist for 2+ days.</p><div class="card" style="margin-bottom:12px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:6px;"><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;"><span class="dir-badge dir-up">&#9650; SPEND UP</span><span style="font-size:0.6rem;font-weight:700;padding:2px 7px;border-radius:3px;background:#4A6CF725;color:#4A6CF7;">SPIKE</span><span style="font-weight:700;font-size:0.95rem;">Sunday 1 Nov</span></div><div style="font-size:0.8rem;color:var(--text-secondary);">£3,997 vs £733 30d avg (Meta) (+445% above)</div></div><div style="margin-bottom:12px;"><div style="font-size:0.7rem;color:var(--text-secondary);margin-bottom:6px;">Platform split</div><div style="display:flex;gap:3px;height:22px;border-radius:4px;overflow:hidden;margin-bottom:4px;"><div style="width:56%;background:#4A6CF7;display:flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:600;color:#fff;">Meta 56%</div><div style="width:44%;background:#8B5CF6;display:flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:600;color:#fff;">Google 44%</div></div><div style="font-size:0.78rem;color:var(--text-secondary);">Meta: £2,246 | Google: £1,751 | vs 30d daily avg: <span class="positive">+128%</span></div></div><div style="margin-bottom:12px;"><div style="font-size:0.7rem;color:var(--text-secondary);margin-bottom:6px;">Top campaign contributors</div><div style="font-size:0.82rem;line-height:1.6;padding-left:12px;border-left:2px solid var(--card-border);"><span style="font-size:0.6rem;font-weight:600;padding:1px 5px;border-radius:2px;background:#4A6CF720;color:#4A6CF7;margin-right:4px;">Meta</span>CS | Cold/Warm/Hot | Purchases | Post Rebrand | Evergreen: £1,828 spent (46% of total) -- +£428 vs £1,400 daily avg | Day ROAS: 3.04x</div><div style="font-size:0.82rem;line-height:1.6;padding-left:12px;border-left:2px solid var(--card-border);"><span style="font-size:0.6rem;font-weight:600;padding:1px 5px;border-radius:2px;background:#8B5CF620;color:#8B5CF6;margin-right:4px;">Google</span>CS | Shopping | High | All Products 25: £1,089 spent (27% of total) -- +£365 vs £723 daily avg | Day ROAS: 1.66x</div><div style="font-size:0.82rem;line-height:1.6;padding-left:12px;border-left:2px solid var(--card-border);"><span style="font-size:0.6rem;font-weight:600;padding:1px 5px;border-radius:2px;background:#8B5CF620;color:#8B5CF6;margin-right:4px;">Google</span>CS | Performance Max | All Products Post Rebrand: £398 spent (10% of total) -- +£109 vs £289 daily avg | Day ROAS: 1.66x</div><div style="font-size:0.82rem;line-height:1.6;padding-left:12px;border-left:2px solid var(--card-border);"><span style="font-size:0.6rem;font-weight:600;padding:1px 5px;border-radius:2px;background:#4A6CF720;color:#4A6CF7;margin-right:4px;">Meta</span>CS | Cold/Warm | Purchases | Build Your Drawer | ABO: £222 spent (6% of total) -- +£54 vs £168 daily avg | Day ROAS: 2.28x</div><div style="font-size:0.82rem;line-height:1.6;padding-left:12px;border-left:2px solid var(--card-border);"><span style="font-size:0.6rem;font-weight:600;padding:1px 5px;border-radius:2px;background:#4A6CF720;color:#4A6CF7;margin-right:4px;">Meta</span>CS | Cold/Warm | Purchases | Q4 Test Arena | ABO: £168 spent (4% of total) -- +£36 vs £132 daily avg | Day ROAS: 4.00x</div></div><div style="display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:6px;background:#34D39915;"><span style="color:#34D399;font-weight:700;font-size:0.8rem;white-space:nowrap;">&#9650; SCALE</span><span style="font-size:0.82rem;line-height:1.5;">Day ROAS was 2.87x. Consider increasing budgets on top performers.</span></div></div><div class="card" style="margin-bottom:12px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:6px;"><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;"><span class="dir-badge dir-up">&#9650; REVENUE UP</span><span style="font-size:0.6rem;font-weight:700;padding:2px 7px;border-radius:3px;background:#4A6CF725;color:#4A6CF7;">SPIKE</span><span style="font-weight:700;font-size:0.95rem;">Sunday 1 Nov</span></div><div style="font-size:0.8rem;color:var(--text-secondary);">£11,488 vs £2,410 30d avg (Meta) (+377% above)</div></div><div style="margin-bottom:12px;"><div style="font-size:0.7rem;color:var(--text-secondary);margin-bottom:6px;">Platform split</div><div style="display:flex;gap:3px;height:22px;border-radius:4px;overflow:hidden;margin-bottom:4px;"><div style="width:59%;background:#4A6CF7;display:flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:600;color:#fff;">Meta 59%</div><div style="width:41%;background:#8B5CF6;display:flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:600;color:#fff;">Google 41%</div></div><div style="font-size:0.78rem;color:var(--text-secondary);">Meta: £6,741 | Google: £4,747 | vs 30d daily avg: <span class="positive">+112%</span></div></div><div style="margin-bottom:12px;"><div style="font-size:0.7rem;color:var(--text-secondary);margin-bottom:6px;">Top campaign contributors</div><div style="font-size:0.82rem;line-height:1.6;padding-left:12px;border-left:2px solid var(--card-border);"><span style="font-size:0.6rem;font-weight:600;padding:1px 5px;border-radius:2px;background:#4A6CF720;color:#4A6CF7;margin-right:4px;">Meta</span>CS | Cold/Warm/Hot | Purchases | Post Rebrand | Evergreen: £1,828 spent (16% of total) -- +£428 vs £1,400 daily avg | Day ROAS: 3.04x</div><div style="font-size:0.82rem;line-height:1.6;padding-left:12px;border-left:2px solid var(--card-border);"><span style="font-size:0.6rem;font-weight:600;padding:1px 5px;border-radius:2px;background:#8B5CF620;color:#8B5CF6;margin-right:4px;">Google</span>CS | Shopping | High | All Products 25: £1,089 spent (9% of total) -- +£365 vs £723 daily avg | Day ROAS: 1.66x</div><div style="font-size:0.82rem;line-height:1.6;padding-left:12px;border-left:2px solid var(--card-border);"><span style="font-size:0.6rem;font-weight:600;padding:1px 5px;border-radius:2px;background:#8B5CF620;color:#8B5CF6;margin-right:4px;">Google</span>CS | Performance Max | All Products Post Rebrand: £398 spent (3% of total) -- +£109 vs £289 daily avg | Day ROAS: 1.66x</div><div style="font-size:0.82rem;line-height:1.6;padding-left:12px;border-left:2px solid var(--card-border);"><span style="font-size:0.6rem;font-weight:600;padding:1px 5px;border-radius:2px;background:#4A6CF720;color:#4A6CF7;margin-right:4px;">Meta</span>CS | Cold/Warm | Purchases | Build Your Drawer | ABO: £222 spent (2% of total) -- +£54 vs £168 daily avg | Day ROAS: 2.28x</div><div style="font-size:0.82rem;line-height:1.6;padding-left:12px;border-left:2px solid var(--card-border);"><span style="font-size:0.6rem;font-weight:600;padding:1px 5px;border-radius:2px;background:#4A6CF720;color:#4A6CF7;margin-right:4px;">Meta</span>CS | Cold/Warm | Purchases | Q4 Test Arena | ABO: £168 spent (1% of total) -- +£36 vs £132 daily avg | Day ROAS: 4.00x</div></div><div style="margin-bottom:12px;"><div style="font-size:0.7rem;color:var(--text-secondary);margin-bottom:6px;">Why this likely happened</div><div style="font-size:0.82rem;line-height:1.6;padding-left:12px;border-left:2px solid var(--card-border);margin-bottom:4px;">59% of revenue came from Meta.</div></div><div style="display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:6px;background:#88815;"><span style="color:#888;font-weight:700;font-size:0.8rem;white-space:nowrap;">&#9654; HOLD</span><span style="font-size:0.82rem;line-height:1.5;">Positive revenue spike. Check which product or campaign drove it.</span></div></div><div class="card" style="margin-bottom:12px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:6px;"><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;"><span class="dir-badge dir-up">&#9650; SPEND UP</span><span style="font-size:0.6rem;font-weight:700;padding:2px 7px;border-radius:3px;background:#4A6CF725;color:#4A6CF7;">SPIKE</span><span style="font-weight:700;font-size:0.95rem;">Thursday 29 Oct</span></div><div style="font-size:0.8rem;color:var(--text-secondary);">£2,906 vs £733 30d avg (Meta) (+296% above)</div></div><div style="margin-bottom:12px;"><div style="font-size:0.7rem;color:var(--text-secondary);margin-bottom:6px;">Platform split</div><div style="display:flex;gap:3px;height:22px;border-radius:4px;overflow:hidden;margin-bottom:4px;"><div style="width:63%;background:#4A6CF7;display:flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:600;color:#fff;">Meta 63%</div><div style="width:37%;background:#8B5CF6;display:flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:600;color:#fff;">Google 37%</div></div><div style="font-size:0.78rem;color:var(--text-secondary);">Meta: £1,835 | Google: £1,071 | vs 30d daily avg: <span class="positive">+66%</span></div></div><div style="margin-bottom:12px;"><div style="font-size:0.7rem;color:var(--text-secondary);margin-bottom:6px;">Top campaign contributors</div><div style="font-size:0.82rem;line-height:1.6;padding-left:12px;border-left:2px solid var(--card-border);"><span style="font-size:0.6rem;font-weight:600;padding:1px 5px;border-radius:2px;background:#8B5CF620;color:#8B5CF6;margin-right:4px;">Google</span>CS | Performance Max | All Products Post Rebrand: £193 spent (7% of total) -- £-96 vs £289 daily avg | Day ROAS: 3.14x</div><div style="font-size:0.82rem;line-height:1.6;padding-left:12px;border-left:2px solid var(--card-border);"><span style="font-size:0.6rem;font-weight:600;padding:1px 5px;border-radius:2px;background:#4A6CF720;color:#4A6CF7;margin-right:4px;">Meta</span>CS | Cold/Warm/Hot | Purchases | Post Rebrand | Evergreen: £1,481 spent (51% of total) -- +£81 vs £1,400 daily avg | Day ROAS: 2.50x</div><div style="font-size:0.82rem;line-height:1.6;padding-left:12px;border-left:2px solid var(--card-border);"><span style="font-size:0.6rem;font-weight:600;padding:1px 5px;border-radius:2px;background:#8B5CF620;color:#8B5CF6;margin-right:4px;">Google</span>CS | Search | All Fibres: £105 spent (4% of total) -- £-38 vs £143 daily avg | Day ROAS: 0.68x</div><div style="font-size:0.82rem;line-height:1.6;padding-left:12px;border-left:2px solid var(--card-border);"><span style="font-size:0.6rem;font-weight:600;padding:1px 5px;border-radius:2px;background:#4A6CF720;color:#4A6CF7;margin-right:4px;">Meta</span>CS | Cold/Warm | Purchases | Build Your Drawer | ABO: £199 spent (7% of total) -- +£32 vs £168 daily avg | Day ROAS: 5.10x</div><div style="font-size:0.82rem;line-height:1.6;padding-left:12px;border-left:2px solid var(--card-border);"><span style="font-size:0.6rem;font-weight:600;padding:1px 5px;border-radius:2px;background:#8B5CF620;color:#8B5CF6;margin-right:4px;">Google</span>CS | Shopping | High | All Products 25: £695 spent (24% of total) -- £-28 vs £723 daily avg | Day ROAS: 1.40x</div></div><div style="display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:6px;background:#34D39915;"><span style="color:#34D399;font-weight:700;font-size:0.8rem;white-space:nowrap;">&#9650; SCALE</span><span style="font-size:0.82rem;line-height:1.5;">Day ROAS was 2.81x. Consider increasing budgets on top performers.</span></div></div><div class="card" style="margin-bottom:12px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:6px;"><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;"><span class="dir-badge dir-up">&#9650; SPEND UP</span><span style="font-size:0.6rem;font-weight:700;padding:2px 7px;border-radius:3px;background:#4A6CF725;color:#4A6CF7;">SPIKE</span><span style="font-weight:700;font-size:0.95rem;">Saturday 31 Oct</span></div><div style="font-size:0.8rem;color:var(--text-secondary);">£2,977 vs £733 30d avg (Meta) (+306% above)</div></div><div style="margin-bottom:12px;"><div style="font-size:0.7rem;color:var(--text-secondary);margin-bottom:6px;">Platform split</div><div style="display:flex;gap:3px;height:22px;border-radius:4px;overflow:hidden;margin-bottom:4px;"><div style="width:60%;background:#4A6CF7;display:flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:600;color:#fff;">Meta 60%</div><div style="width:40%;background:#8B5CF6;display:flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:600;color:#fff;">Google 40%</div></div><div style="font-size:0.78rem;color:var(--text-secondary);">Meta: £1,792 | Google: £1,185 | vs 30d daily avg: <span class="positive">+70%</span></div></div><div style="margin-bottom:12px;"><div style="font-size:0.7rem;color:var(--text-secondary);margin-bottom:6px;">Top campaign contributors</div><div style="font-size:0.82rem;line-height:1.6;padding-left:12px;border-left:2px solid var(--card-border);"><span style="font-size:0.6rem;font-weight:600;padding:1px 5px;border-radius:2px;background:#4A6CF720;color:#4A6CF7;margin-right:4px;">Meta</span>CS | Cold/Warm/Hot | Purchases | Post Rebrand | Evergreen: £1,479 spent (50% of total) -- +£79 vs £1,400 daily avg | Day ROAS: 2.58x</div><div style="font-size:0.82rem;line-height:1.6;padding-left:12px;border-left:2px solid var(--card-border);"><span style="font-size:0.6rem;font-weight:600;padding:1px 5px;border-radius:2px;background:#8B5CF620;color:#8B5CF6;margin-right:4px;">Google</span>CS | Shopping | High | All Products 25: £661 spent (22% of total) -- £-62 vs £723 daily avg | Day ROAS: 1.35x</div><div style="font-size:0.82rem;line-height:1.6;padding-left:12px;border-left:2px solid var(--card-border);"><span style="font-size:0.6rem;font-weight:600;padding:1px 5px;border-radius:2px;background:#8B5CF620;color:#8B5CF6;margin-right:4px;">Google</span>CS | Performance Max | All Products Post Rebrand: £321 spent (11% of total) -- +£32 vs £289 daily avg | Day ROAS: 2.35x</div><div style="font-size:0.82rem;line-height:1.6;padding-left:12px;border-left:2px solid var(--card-border);"><span style="font-size:0.6rem;font-weight:600;padding:1px 5px;border-radius:2px;background:#8B5CF620;color:#8B5CF6;margin-right:4px;">Google</span>CS | Search | Brand: £73 spent (2% of total) -- £-17 vs £89 daily avg | Day ROAS: 16.25x</div><div style="font-size:0.82rem;line-height:1.6;padding-left:12px;border-left:2px solid var(--card-border);"><span style="font-size:0.6rem;font-weight:600;padding:1px 5px;border-radius:2px;background:#8B5CF620;color:#8B5CF6;margin-right:4px;">Google</span>CS | Search | All Fibres: £130 spent (4% of total) -- £-13 vs £143 daily avg | Day ROAS: 3.52x</div></div><div style="display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:6px;background:#34D39915;"><span style="color:#34D399;font-weight:700;font-size:0.8rem;white-space:nowrap;">&#9650; SCALE</span><span style="font-size:0.82rem;line-height:1.5;">Day ROAS was 2.67x. Consider increasing budgets on top performers.</span></div></div><div class="card" style="margin-bottom:12px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:6px;"><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;"><span class="dir-badge dir-up">&#9650; SPEND UP</span><span style="font-size:0.6rem;font-weight:700;padding:2px 7px;border-radius:3px;background:#4A6CF725;color:#4A6CF7;">SPIKE</span><span style="font-weight:700;font-size:0.95rem;">Friday 30 Oct</span></div><div style="font-size:0.8rem;color:var(--text-secondary);">£2,936 vs £733 30d avg (Meta) (+301% above)</div></div><div style="margin-bottom:12px;"><div style="font-size:0.7rem;color:var(--text-secondary);margin-bottom:6px;">Platform split</div><div style="display:flex;gap:3px;height:22px;border-radius:4px;overflow:hidden;margin-bottom:4px;"><div style="width:59%;background:#4A6CF7;display:flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:600;color:#fff;">Meta 59%</div><div style="width:41%;background:#8B5CF6;display:flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:600;color:#fff;">Google 41%</div></div><div style="font-size:0.78rem;color:var(--text-secondary);">Meta: £1,738 | Google: £1,198 | vs 30d daily avg: <span class="positive">+68%</span></div></div><div style="margin-bottom:12px;"><div style="font-size:0.7rem;color:var(--text-secondary);margin-bottom:6px;">Top campaign contributors</div><div style="font-size:0.82rem;line-height:1.6;padding-left:12px;border-left:2px solid var(--card-border);"><span style="font-size:0.6rem;font-weight:600;padding:1px 5px;border-radius:2px;background:#8B5CF620;color:#8B5CF6;margin-right:4px;">Google</span>CS | Shopping | High | All Products 25: £689 spent (23% of total) -- £-34 vs £723 daily avg | Day ROAS: 2.63x</div><div style="font-size:0.82rem;line-height:1.6;padding-left:12px;border-left:2px solid var(--card-border);"><span style="font-size:0.6rem;font-weight:600;padding:1px 5px;border-radius:2px;background:#4A6CF720;color:#4A6CF7;margin-right:4px;">Meta</span>CS | Cold/Warm/Hot | Purchases | Post Rebrand | Evergreen: £1,426 spent (49% of total) -- +£26 vs £1,400 daily avg | Day ROAS: 2.74x</div><div style="font-size:0.82rem;line-height:1.6;padding-left:12px;border-left:2px solid var(--card-border);"><span style="font-size:0.6rem;font-weight:600;padding:1px 5px;border-radius:2px;background:#8B5CF620;color:#8B5CF6;margin-right:4px;">Google</span>CS | Performance Max | All Products Post Rebrand: £265 spent (9% of total) -- £-24 vs £289 daily avg | Day ROAS: 2.73x</div><div style="font-size:0.82rem;line-height:1.6;padding-left:12px;border-left:2px solid var(--card-border);"><span style="font-size:0.6rem;font-weight:600;padding:1px 5px;border-radius:2px;background:#8B5CF620;color:#8B5CF6;margin-right:4px;">Google</span>CS | Search | All Fibres: £163 spent (6% of total) -- +£20 vs £143 daily avg | Day ROAS: 3.20x</div><div style="font-size:0.82rem;line-height:1.6;padding-left:12px;border-left:2px solid var(--card-border);"><span style="font-size:0.6rem;font-weight:600;padding:1px 5px;border-radius:2px;background:#4A6CF720;color:#4A6CF7;margin-right:4px;">Meta</span>CS | Cold/Warm | Purchases | Build Your Drawer | ABO: £156 spent (5% of total) -- £-12 vs £168 daily avg | Day ROAS: 1.97x</div></div><div style="display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:6px;background:#34D39915;"><span style="color:#34D399;font-weight:700;font-size:0.8rem;white-space:nowrap;">&#9650; SCALE</span><span style="font-size:0.82rem;line-height:1.5;">Day ROAS was 3.32x. Consider increasing budgets on top performers.</span></div></div><div class="section-label">Trends</div><h2>Trend watch</h2><p class="section-desc">Rolling trends across key metrics. Compared to 6-week rolling average.</p><div class="card"><div class="trend-grid"><div class="trend-item">
+      <div class="trend-label">Revenue</div>
+      <div class="trend-value">£74,455</div>
+      <div class="trend-avg">Avg: £35,254</div>
+      <div class="trend-meta"><span class="dir-badge dir-up">&#9650; UP</span><span class="streak-badge">7w streak</span></div>
+      <svg width="150" height="36" class="sparkline-wrap"><polyline points="2.0,34.0 26.3,32.9 50.7,29.9 75.0,20.3 99.3,12.9 123.7,4.4 148.0,2.0" fill="none" stroke="#34D399" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="148.0" cy="2.0" r="2.5" fill="#34D399"/></svg>
+    </div><div class="trend-item">
+      <div class="trend-label">Orders</div>
+      <div class="trend-value">1,375</div>
+      <div class="trend-avg">Avg: 693</div>
+      <div class="trend-meta"><span class="dir-badge dir-up">&#9650; UP</span><span class="streak-badge">7w streak</span></div>
+      <svg width="150" height="36" class="sparkline-wrap"><polyline points="2.0,34.0 26.3,33.1 50.7,29.5 75.0,19.8 99.3,12.8 123.7,4.5 148.0,2.0" fill="none" stroke="#34D399" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="148.0" cy="2.0" r="2.5" fill="#34D399"/></svg>
+    </div><div class="trend-item">
+      <div class="trend-label">AOV</div>
+      <div class="trend-value">£54.15</div>
+      <div class="trend-avg">Avg: £49.70</div>
+      <div class="trend-meta"><span class="dir-badge dir-up">&#9650; UP</span><span class="streak-badge">4w streak</span></div>
+      <svg width="150" height="36" class="sparkline-wrap"><polyline points="2.0,34.0 26.3,29.0 50.7,29.5 75.0,16.9 99.3,8.0 123.7,2.4 148.0,2.0" fill="none" stroke="#34D399" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="148.0" cy="2.0" r="2.5" fill="#34D399"/></svg>
+    </div><div class="trend-item">
+      <div class="trend-label">Total Spend</div>
+      <div class="trend-value">£20,759</div>
+      <div class="trend-avg">Avg: £8,523</div>
+      <div class="trend-meta"><span class="dir-badge dir-up">&#9650; UP</span><span class="streak-badge">8w streak</span></div>
+      <svg width="150" height="36" class="sparkline-wrap"><polyline points="2.0,34.0 26.3,30.8 50.7,26.7 75.0,23.5 99.3,16.9 123.7,6.4 148.0,2.0" fill="none" stroke="#34D399" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="148.0" cy="2.0" r="2.5" fill="#34D399"/></svg>
+    </div><div class="trend-item">
+      <div class="trend-label">Blended ROAS</div>
+      <div class="trend-value">3.59x</div>
+      <div class="trend-avg">Avg: 4.23x</div>
+      <div class="trend-meta"><span class="dir-badge dir-down">&#9660; DOWN</span><span class="streak-badge">3w streak</span></div>
+      <svg width="150" height="36" class="sparkline-wrap"><polyline points="2.0,2.0 26.3,23.9 50.7,33.0 75.0,13.6 99.3,19.2 123.7,29.4 148.0,34.0" fill="none" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="148.0" cy="34.0" r="2.5" fill="#888"/></svg>
+    </div><div class="trend-item">
+      <div class="trend-label">Meta Spend</div>
+      <div class="trend-value">£12,045</div>
+      <div class="trend-avg">Avg: £3,151</div>
+      <div class="trend-meta"><span class="dir-badge dir-up">&#9650; UP</span><span class="streak-badge">8w streak</span></div>
+      <svg width="150" height="36" class="sparkline-wrap"><polyline points="2.0,34.0 26.3,30.9 50.7,29.0 75.0,25.2 99.3,19.1 123.7,12.2 148.0,2.0" fill="none" stroke="#34D399" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="148.0" cy="2.0" r="2.5" fill="#34D399"/></svg>
+    </div><div class="trend-item">
+      <div class="trend-label">Meta ROAS (as reported by Meta)</div>
+      <div class="trend-value">2.93x</div>
+      <div class="trend-avg">Avg: 3.75x</div>
+      <div class="trend-meta"><span class="dir-badge dir-down">&#9660; DOWN</span><span class="streak-badge">2w streak</span></div>
+      <svg width="150" height="36" class="sparkline-wrap"><polyline points="2.0,2.0 26.3,31.9 50.7,34.0 75.0,26.9 99.3,25.4 123.7,27.7 148.0,31.0" fill="none" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="148.0" cy="31.0" r="2.5" fill="#888"/></svg>
+    </div><div class="trend-item">
+      <div class="trend-label">Meta CPC</div>
+      <div class="trend-value">£0.71</div>
+      <div class="trend-avg">Avg: £0.61</div>
+      <div class="trend-meta"><span class="dir-badge dir-up">&#9650; UP</span><span class="streak-badge">2w streak</span></div>
+      <svg width="150" height="36" class="sparkline-wrap"><polyline points="2.0,26.3 26.3,2.0 50.7,7.4 75.0,24.1 99.3,34.0 123.7,30.4 148.0,9.2" fill="none" stroke="#34D399" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="148.0" cy="9.2" r="2.5" fill="#34D399"/></svg>
+    </div></div></div><div class="section-label">Channel Mix</div><h2>Channel x revenue daily mix</h2><p class="section-desc">Side-by-side daily view of platform spend and revenue type. Use this to spot drift between what platforms claim and what shows up in Shopify.</p><div class="card"><div class="table-wrapper"><table><thead><tr><th>Date</th><th class="text-right">Meta spend</th><th class="text-right">Google spend</th><th class="text-right">Klaviyo attrib rev</th><th class="text-right">NC rev</th><th class="text-right">Returning rev</th><th class="text-right">Total rev</th><th class="text-right">Blended ROAS</th></tr></thead><tbody><tr><td>Mon 5 Oct</td><td class="text-right">£509</td><td class="text-right">£843</td><td class="text-right">£822</td><td class="text-right">£2,609</td><td class="text-right">£842</td><td class="text-right val-blue">£3,451</td><td class="text-right val-cyan">2.55x</td></tr><tr><td>Tue 6 Oct</td><td class="text-right">£494</td><td class="text-right">£606</td><td class="text-right">£615</td><td class="text-right">£3,743</td><td class="text-right">£911</td><td class="text-right val-blue">£4,654</td><td class="text-right val-cyan">4.23x</td></tr><tr><td>Wed 7 Oct</td><td class="text-right">£532</td><td class="text-right">£646</td><td class="text-right">£3,231</td><td class="text-right">£3,144</td><td class="text-right">£1,784</td><td class="text-right val-blue">£4,928</td><td class="text-right val-cyan">4.18x</td></tr><tr><td>Thu 8 Oct</td><td class="text-right">£579</td><td class="text-right">£843</td><td class="text-right">£920</td><td class="text-right">£5,346</td><td class="text-right">£1,450</td><td class="text-right val-blue">£6,796</td><td class="text-right val-cyan">4.78x</td></tr><tr><td>Fri 9 Oct</td><td class="text-right">£588</td><td class="text-right">£880</td><td class="text-right">£4,744</td><td class="text-right">£7,264</td><td class="text-right">£3,356</td><td class="text-right val-blue">£10,620</td><td class="text-right val-cyan">7.24x</td></tr><tr><td>Sat 10 Oct</td><td class="text-right">£541</td><td class="text-right">£976</td><td class="text-right">£1,244</td><td class="text-right">£5,460</td><td class="text-right">£1,705</td><td class="text-right val-blue">£7,165</td><td class="text-right val-cyan">4.72x</td></tr><tr><td>Sun 11 Oct</td><td class="text-right">£761</td><td class="text-right">£1,117</td><td class="text-right">£3,125</td><td class="text-right">£5,729</td><td class="text-right">£2,199</td><td class="text-right val-blue">£7,928</td><td class="text-right val-cyan">4.22x</td></tr><tr><td>Mon 12 Oct</td><td class="text-right">£632</td><td class="text-right">£1,203</td><td class="text-right">£1,204</td><td class="text-right">£6,196</td><td class="text-right">£2,334</td><td class="text-right val-blue">£8,530</td><td class="text-right val-cyan">4.65x</td></tr><tr><td>Tue 13 Oct</td><td class="text-right">£540</td><td class="text-right">£1,004</td><td class="text-right">£1,942</td><td class="text-right">£5,110</td><td class="text-right">£2,102</td><td class="text-right val-blue">£7,212</td><td class="text-right val-cyan">4.67x</td></tr><tr><td>Wed 14 Oct</td><td class="text-right">£956</td><td class="text-right">£965</td><td class="text-right">£754</td><td class="text-right">£7,151</td><td class="text-right">£1,469</td><td class="text-right val-blue">£8,620</td><td class="text-right val-cyan">4.49x</td></tr><tr><td>Thu 15 Oct</td><td class="text-right">£964</td><td class="text-right">£845</td><td class="text-right">£4,164</td><td class="text-right">£4,410</td><td class="text-right">£1,398</td><td class="text-right val-blue">£5,808</td><td class="text-right val-cyan">3.21x</td></tr><tr><td>Fri 16 Oct</td><td class="text-right">£818</td><td class="text-right">£749</td><td class="text-right">£1,299</td><td class="text-right">£5,679</td><td class="text-right">£1,839</td><td class="text-right val-blue">£7,518</td><td class="text-right val-cyan">4.80x</td></tr><tr><td>Sat 17 Oct</td><td class="text-right">£827</td><td class="text-right">£1,004</td><td class="text-right">£1,476</td><td class="text-right">£6,352</td><td class="text-right">£1,497</td><td class="text-right val-blue">£7,849</td><td class="text-right val-cyan">4.29x</td></tr><tr><td>Sun 18 Oct</td><td class="text-right">£1,365</td><td class="text-right">£1,394</td><td class="text-right">£1,618</td><td class="text-right">£10,182</td><td class="text-right">£1,360</td><td class="text-right val-blue">£11,542</td><td class="text-right val-cyan">4.18x</td></tr><tr><td>Mon 19 Oct</td><td class="text-right">£1,031</td><td class="text-right">£1,289</td><td class="text-right">£1,954</td><td class="text-right">£7,578</td><td class="text-right">£2,169</td><td class="text-right val-blue">£9,747</td><td class="text-right val-cyan">4.20x</td></tr><tr><td>Tue 20 Oct</td><td class="text-right">£968</td><td class="text-right">£1,332</td><td class="text-right">£3,087</td><td class="text-right">£7,780</td><td class="text-right">£1,591</td><td class="text-right val-blue">£9,371</td><td class="text-right val-cyan">4.07x</td></tr><tr><td>Wed 21 Oct</td><td class="text-right">£1,060</td><td class="text-right">£1,486</td><td class="text-right">£1,981</td><td class="text-right">£7,432</td><td class="text-right">£2,437</td><td class="text-right val-blue">£9,869</td><td class="text-right val-cyan">3.88x</td></tr><tr><td>Thu 22 Oct</td><td class="text-right">£1,284</td><td class="text-right">£1,396</td><td class="text-right">£4,100</td><td class="text-right">£7,987</td><td class="text-right">£1,652</td><td class="text-right val-blue">£9,639</td><td class="text-right val-cyan">3.60x</td></tr><tr><td>Fri 23 Oct</td><td class="text-right">£1,208</td><td class="text-right">£1,338</td><td class="text-right">£1,784</td><td class="text-right">£8,019</td><td class="text-right">£2,510</td><td class="text-right val-blue">£10,529</td><td class="text-right val-cyan">4.14x</td></tr><tr><td>Sat 24 Oct</td><td class="text-right">£1,289</td><td class="text-right">£1,542</td><td class="text-right">£1,429</td><td class="text-right">£8,399</td><td class="text-right">£1,936</td><td class="text-right val-blue">£10,335</td><td class="text-right val-cyan">3.65x</td></tr><tr><td>Sun 25 Oct</td><td class="text-right">£1,666</td><td class="text-right">£1,648</td><td class="text-right">£4,094</td><td class="text-right">£8,983</td><td class="text-right">£2,316</td><td class="text-right val-blue">£11,299</td><td class="text-right val-cyan">3.41x</td></tr><tr><td>Mon 26 Oct</td><td class="text-right">£1,378</td><td class="text-right">£1,362</td><td class="text-right">£1,938</td><td class="text-right">£7,858</td><td class="text-right">£2,020</td><td class="text-right val-blue">£9,879</td><td class="text-right val-cyan">3.61x</td></tr><tr><td>Tue 27 Oct</td><td class="text-right">£1,542</td><td class="text-right">£1,045</td><td class="text-right">£4,981</td><td class="text-right">£9,493</td><td class="text-right">£2,217</td><td class="text-right val-blue">£11,710</td><td class="text-right val-cyan">4.53x</td></tr><tr><td>Wed 28 Oct</td><td class="text-right">£1,514</td><td class="text-right">£1,102</td><td class="text-right">£2,349</td><td class="text-right">£7,905</td><td class="text-right">£2,139</td><td class="text-right val-blue">£10,044</td><td class="text-right val-cyan">3.84x</td></tr><tr><td>Thu 29 Oct</td><td class="text-right">£1,835</td><td class="text-right">£1,071</td><td class="text-right">£5,142</td><td class="text-right">£6,582</td><td class="text-right">£2,010</td><td class="text-right val-blue">£8,591</td><td class="text-right val-cyan">2.96x</td></tr><tr><td>Fri 30 Oct</td><td class="text-right">£1,738</td><td class="text-right">£1,198</td><td class="text-right">£1,947</td><td class="text-right">£8,029</td><td class="text-right">£2,656</td><td class="text-right val-blue">£10,685</td><td class="text-right val-cyan">3.64x</td></tr><tr><td>Sat 31 Oct</td><td class="text-right">£1,792</td><td class="text-right">£1,185</td><td class="text-right">£1,534</td><td class="text-right">£7,750</td><td class="text-right">£2,012</td><td class="text-right val-blue">£9,762</td><td class="text-right val-cyan">3.28x</td></tr><tr><td>Sun 1 Nov</td><td class="text-right">£2,246</td><td class="text-right">£1,751</td><td class="text-right">£3,453</td><td class="text-right">£10,803</td><td class="text-right">£2,939</td><td class="text-right val-blue">£13,742</td><td class="text-right val-cyan">3.44x</td></tr><tr style="font-weight:700;border-top:2px solid var(--divider);"><td>Total</td><td class="text-right">£30,657</td><td class="text-right">£31,821</td><td class="text-right">£66,933</td><td class="text-right">£192,973</td><td class="text-right">£54,850</td><td class="text-right val-blue">£247,824</td><td class="text-right val-cyan">3.97x</td></tr></tbody></table></div></div><div class="section-label">Year-over-Year</div><h2>YoY comparison</h2><p class="section-desc">Current week vs same week last year (27 Oct 2025 - 2 Nov 2025).</p><div class="card"><table><thead><tr><th>Metric</th><th class="text-right">This week</th><th class="text-right">Last year</th><th class="text-right">Change</th></tr></thead><tbody><tr><td>Revenue</td><td class="text-right">£74,455</td><td class="text-right" style="color:var(--text-secondary)">£31,795</td><td class="text-right"><span class="yoy-better">+134.2%</span></td></tr><tr><td>Orders</td><td class="text-right">1375</td><td class="text-right" style="color:var(--text-secondary)">682</td><td class="text-right"><span class="yoy-better">+101.6%</span></td></tr><tr><td>AOV</td><td class="text-right">£54.15</td><td class="text-right" style="color:var(--text-secondary)">£46.62</td><td class="text-right"><span class="yoy-better">+16.1%</span></td></tr><tr><td>Total Spend</td><td class="text-right">£20,759</td><td class="text-right" style="color:var(--text-secondary)">£9,534</td><td class="text-right"><span class="yoy-better">+117.7%</span></td></tr><tr><td>Blended ROAS</td><td class="text-right">3.59x</td><td class="text-right" style="color:var(--text-secondary)">3.33x</td><td class="text-right"><span class="yoy-better">+7.5%</span></td></tr><tr><td>Meta Spend</td><td class="text-right">£12,045</td><td class="text-right" style="color:var(--text-secondary)">£3,162</td><td class="text-right"><span class="yoy-better">+280.9%</span></td></tr><tr><td>Meta ROAS (as reported by Meta)</td><td class="text-right">2.93x</td><td class="text-right" style="color:var(--text-secondary)">2.22x</td><td class="text-right"><span class="yoy-better">+32.1%</span></td></tr><tr><td>Google Spend</td><td class="text-right">£8,714</td><td class="text-right" style="color:var(--text-secondary)">£6,372</td><td class="text-right"><span class="yoy-better">+36.8%</span></td></tr><tr><td>Google ROAS (as reported by Google)</td><td class="text-right">3.56x</td><td class="text-right" style="color:var(--text-secondary)">3.44x</td><td class="text-right"><span class="yoy-better">+3.4%</span></td></tr></tbody></table></div><div class="section-label">Analysis</div><h2>Key findings</h2>
+<p class="section-desc">Automated analysis of this week's performance. Items flagged for attention based on WoW changes and performance thresholds.</p>
+<div class="card"><div class="insight-item">
+      <span class="badge badge-green" style="min-width:fit-content;">Revenue</span>
+      <span class="insight-text">Store revenue up +5.6% WoW (£74,455 vs £70,533).</span>
+    </div><div class="insight-item">
+      <span class="badge badge-green" style="min-width:fit-content;">Product Growth</span>
+      <span class="insight-text">The Merino Gift Set Two revenue up +219.0% (£1,500 vs £470).</span>
+    </div><div class="insight-item">
+      <span class="badge badge-green" style="min-width:fit-content;">Product Growth</span>
+      <span class="insight-text">The Knee High Wool Set Two revenue up +78.3% (£1,132 vs £635).</span>
+    </div><div class="insight-item">
+      <span class="badge badge-green" style="min-width:fit-content;">Product Growth</span>
+      <span class="insight-text">Inky Blue Mohair Socks revenue up +57.7% (£552 vs £350).</span>
+    </div><div class="insight-item">
+      <span class="badge badge-green" style="min-width:fit-content;">Category</span>
+      <span class="insight-text">Mohair category up +45.7% (£2,387 vs £1,638).</span>
+    </div><div class="insight-item">
+      <span class="badge badge-green" style="min-width:fit-content;">Category</span>
+      <span class="insight-text">Lambswool category up +30.7% (£1,053 vs £805).</span>
+    </div><div class="insight-item">
+      <span class="badge badge-green" style="min-width:fit-content;">Meta Ad</span>
+      <span class="insight-text">Ad 494 | Video | Build Your Drawer | Build Your Drawer | UGC Lead Ad | BYD 3 Pairs | Emily BYD Silent delivering 3.21x ROAS on £933 spend (46 purchases).</span>
+    </div><div class="insight-item">
+      <span class="badge badge-green" style="min-width:fit-content;">Meta Ad</span>
+      <span class="insight-text">Ad 264 | Video | All Products | Seasonal | Studio Lifestyle | No Offer | OG delivering 4.47x ROAS on £653 spend (53 purchases).</span>
+    </div><div class="insight-item">
+      <span class="badge badge-green" style="min-width:fit-content;">Meta Ad</span>
+      <span class="insight-text">Ad 465 | Image | All Products | Autumn 2026 | Lifestyle with Text Overlay | No Offer | Back to Good Pairs delivering 3.67x ROAS on £417 spend (26 purchases).</span>
+    </div><div class="insight-item">
+      <span class="badge badge-green" style="min-width:fit-content;">Meta Campaign</span>
+      <span class="insight-text">CS | Cold/Warm | Purchases | USA Test ROAS up from 0.92x to 2.30x. Spend: £144.</span>
+    </div><div class="insight-item">
+      <span class="badge badge-green" style="min-width:fit-content;">Google Ad Group</span>
+      <span class="insight-text">Bed Socks ROAS improved from 0.59x to 2.34x.</span>
+    </div><div class="insight-item">
+      <span class="badge badge-green" style="min-width:fit-content;">Google Ad Group</span>
+      <span class="insight-text">Brand (new URL) ROAS improved from 17.99x to 19.44x.</span>
+    </div><div class="insight-item">
+      <span class="badge badge-green" style="min-width:fit-content;">Google Ad Group</span>
+      <span class="insight-text">Alpaca ROAS improved from 1.34x to 2.87x.</span>
+    </div><div class="insight-item">
+      <span class="badge badge-green" style="min-width:fit-content;">Google Ad Group</span>
+      <span class="insight-text">Bed Socks ROAS improved from 0.59x to 3.23x.</span>
+    </div><div class="insight-item">
+      <span class="badge badge-green" style="min-width:fit-content;">Shopping Shift</span>
+      <span class="insight-text">Wool Knee High Socks Dark Berry Red | Pairs Socks ROAS improved from 1.44x to 3.84x WoW (spend: £106 vs £132).</span>
+    </div></div><div class="section-label">Efficiency</div><h2>Conversion rates</h2><p class="section-desc">Daily conversion rates by platform (conversions / clicks).</p><div class="card"><svg width="100%" viewBox="0 0 720 240" style="max-width:720px;display:block;margin:0 auto;"><line x1="44" y1="20" x2="700" y2="20" stroke="rgba(255,255,255,0.06)" stroke-width="1"/><text x="38" y="23" fill="#666" font-size="9" text-anchor="end">9.6%</text><line x1="44" y1="67" x2="700" y2="67" stroke="rgba(255,255,255,0.06)" stroke-width="1"/><text x="38" y="70" fill="#666" font-size="9" text-anchor="end">7.9%</text><line x1="44" y1="114" x2="700" y2="114" stroke="rgba(255,255,255,0.06)" stroke-width="1"/><text x="38" y="117" fill="#666" font-size="9" text-anchor="end">6.2%</text><line x1="44" y1="161" x2="700" y2="161" stroke="rgba(255,255,255,0.06)" stroke-width="1"/><text x="38" y="164" fill="#666" font-size="9" text-anchor="end">4.5%</text><line x1="44" y1="208" x2="700" y2="208" stroke="rgba(255,255,255,0.06)" stroke-width="1"/><text x="38" y="211" fill="#666" font-size="9" text-anchor="end">2.8%</text><text x="44" y="236" fill="#666" font-size="9" text-anchor="middle">Mon</text><text x="153.33333333333331" y="236" fill="#666" font-size="9" text-anchor="middle">Tue</text><text x="262.66666666666663" y="236" fill="#666" font-size="9" text-anchor="middle">Wed</text><text x="372" y="236" fill="#666" font-size="9" text-anchor="middle">Thu</text><text x="481.3333333333333" y="236" fill="#666" font-size="9" text-anchor="middle">Fri</text><text x="590.6666666666667" y="236" fill="#666" font-size="9" text-anchor="middle">Sat</text><text x="700" y="236" fill="#666" font-size="9" text-anchor="middle">Sun</text><polyline points="44.0,167.6 153.3,163.4 262.7,188.3 372.0,194.2 481.3,183.0 590.7,193.0 700.0,187.3" fill="none" stroke="#4A6CF7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="700.0" cy="187.3" r="3" fill="#4A6CF7"/><polyline points="44.0,69.9 153.3,43.3 262.7,33.8 372.0,107.1 481.3,38.2 590.7,121.4 700.0,107.5" fill="none" stroke="#8B5CF6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="700.0" cy="107.5" r="3" fill="#8B5CF6"/><polyline points="44.0,129.2 153.3,120.2 262.7,133.8 372.0,169.5 481.3,140.6 590.7,171.2 700.0,162.8" fill="none" stroke="#34D399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="700.0" cy="162.8" r="3" fill="#34D399"/></svg><div style="display:flex;gap:24px;justify-content:center;margin:12px 0 8px;"><div style="font-size:0.78rem;"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#4A6CF7;margin-right:4px;vertical-align:middle;"></span>Meta: 3.68% <span class="positive">(+0.24pp)</span></div><div style="font-size:0.78rem;"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#8B5CF6;margin-right:4px;vertical-align:middle;"></span>Google: 7.58% <span class="positive">(+1.37pp)</span></div><div style="font-size:0.78rem;"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#34D399;margin-right:4px;vertical-align:middle;"></span>Blended: 4.95% <span class="positive">(+0.43pp)</span></div></div></div><div class="section-label">Product Intelligence</div><h2>Product mix shifts</h2><p class="section-desc">Product types that have shifted significantly vs rolling average share.</p><div class="card"><table><thead><tr><th>Product Type</th><th class="text-right">Current Share</th><th class="text-right">Avg Share</th><th class="text-right">Shift</th></tr></thead><tbody><tr><td>Merino</td><td class="text-right">41.2%</td><td class="text-right" style="color:var(--text-secondary)">46.6%</td><td class="text-right"><span class="negative">-5.3pp</span></td></tr></tbody></table></div><div class="section-label">Platform Data</div><h2>Channel Performance</h2><div class="card"><table>
+      <thead><tr><th>Channel</th><th class="text-right">Spend</th><th class="text-right">Revenue</th><th class="text-right">ROAS</th><th class="text-right">Clicks</th><th class="text-right">CPC</th><th class="text-right">Spend &Delta;</th><th class="text-right">ROAS &Delta;</th></tr></thead><tbody><tr>
+    <td><span class="badge badge-blue">Meta</span></td>
+    <td class="text-right">£12,045</td>
+    <td class="text-right">£35,292</td>
+    <td class="text-right val-blue">2.93x</td>
+    <td class="text-right">16,974</td>
+    <td class="text-right">£0.71</td>
+    <td class="text-right"><span class="positive">+41.6%</span></td>
+    <td class="text-right"><span class="negative">−11.6%</span></td>
+  </tr><tr>
+    <td><span class="badge badge-violet">Google</span></td>
+    <td class="text-right">£8,714</td>
+    <td class="text-right">£31,034</td>
+    <td class="text-right val-blue">3.56x</td>
+    <td class="text-right">8,171</td>
+    <td class="text-right">£1.07</td>
+    <td class="text-right"><span class="negative">−13.1%</span></td>
+    <td class="text-right"><span class="positive">+17.4%</span></td>
+  </tr><tr style="font-weight:700; border-top:2px solid var(--divider);"><td>Total</td>
+        <td class="text-right">£20,759</td><td class="text-right">£66,326</td>
+        <td class="text-right val-blue">3.20x</td><td class="text-right">25,145</td>
+        <td class="text-right">£0.83</td>
+        <td class="text-right"><span class="positive">+12.0%</span></td>
+        <td class="text-right"><span class="positive">+1.0%</span></td></tr></tbody></table></div><div class="section-label">Customers</div><h2>New vs returning</h2><div class="card">
+      <div style="display:flex; gap:4px; height:28px; border-radius:6px; overflow:hidden; margin-bottom:16px;">
+        <div style="width:77.81818181818181%; background:var(--royal-blue); display:flex; align-items:center; justify-content:center; font-size:0.65rem; font-weight:600;">New 78%</div>
+        <div style="width:22.181818181818183%; background:var(--vivid-violet); display:flex; align-items:center; justify-content:center; font-size:0.65rem; font-weight:600;">Returning 22%</div>
+      </div>
+      <table><thead><tr><th>Segment</th><th class="text-right">Customers</th><th class="text-right">Cust &Delta;</th></tr></thead><tbody>
+        <tr><td><span class="badge badge-blue">New</span></td><td class="text-right">1070</td><td class="text-right"><span class="positive">+4.0%</span></td></tr>
+        <tr><td><span class="badge badge-violet">Returning</span></td><td class="text-right">305</td><td class="text-right"><span class="positive">+10.5%</span></td></tr>
+        <tr style="font-weight:700; border-top:2px solid var(--divider);"><td>Total</td><td class="text-right">1375</td><td class="text-right"><span class="positive">+5.4%</span></td></tr>
+      </tbody></table></div><div class="section-label">Product Breakdown</div>
+<h2>Sales by Product Type</h2>
+<p class="section-desc">7-day performance grouped by product type vs previous period.</p>
+<div class="card">
+  <div class="tab-row">
+    <button class="tab-btn active" onclick="sortTable('product-type-table', 'revenue')">Total Sales</button>
+    <button class="tab-btn" onclick="sortTable('product-type-table', 'units')">Units Ordered</button>
+  </div>
+  <table id="product-type-table">
+    <thead><tr><th>Product Type</th><th class="text-right">Revenue</th><th class="text-right">Rev &Delta;</th><th class="text-right">Units</th><th class="text-right">Units &Delta;</th></tr></thead>
+    <tbody></tbody>
+  </table>
+</div>
+<script>window['product-type-table_data'] = [{"name":"Wool knee high","revenue":6480.37,"units":206,"prevRevenue":6100.48,"prevUnits":202,"revenueDelta":6.227214907679402,"unitsDelta":1.9801980198019802},{"name":"Merino","revenue":30857.760000000002,"units":1875,"prevRevenue":30022.000000000004,"prevUnits":1871,"revenueDelta":2.783825194857099,"unitsDelta":0.2137894174238375},{"name":"UK alpaca everyday","revenue":5679.76,"units":237,"prevRevenue":5149.3099999999995,"prevUnits":215,"revenueDelta":10.301380184917996,"unitsDelta":10.232558139534884},{"name":"Lambswool","revenue":1052.96,"units":87,"prevRevenue":805.46,"prevUnits":67,"revenueDelta":30.7277828818315,"unitsDelta":29.850746268656714},{"name":"Bamboo","revenue":13586.719999999998,"units":1192,"prevRevenue":11464,"prevUnits":990,"revenueDelta":18.51639916259593,"unitsDelta":20.404040404040405},{"name":"Merino bed sock","revenue":5574.95,"units":266,"prevRevenue":5352.63,"prevUnits":272,"revenueDelta":4.153472218330049,"unitsDelta":-2.2058823529411766},{"name":"Ultra Soft - ribbed bed","revenue":4811.700000000001,"units":148,"prevRevenue":5075.050000000001,"prevUnits":152,"revenueDelta":-5.189111437325747,"unitsDelta":-2.631578947368421},{"name":"Mohair","revenue":2387.16,"units":95,"prevRevenue":1638.38,"prevUnits":65,"revenueDelta":45.70246218825911,"unitsDelta":46.15384615384615},{"name":"Ultra Soft - everyday","revenue":2394.36,"units":133,"prevRevenue":2635.44,"prevUnits":146,"revenueDelta":-9.14761861396958,"unitsDelta":-8.904109589041095},{"name":"Ultra Soft - plain bed","revenue":1879.8899999999999,"units":78,"prevRevenue":1975.6899999999998,"prevUnits":74,"revenueDelta":-4.8489388517429335,"unitsDelta":5.405405405405405},{"name":"Other","revenue":139.89,"units":66,"prevRevenue":106,"prevUnits":44,"revenueDelta":31.971698113207538,"unitsDelta":50},{"name":"Gift Cards","revenue":30,"units":1,"prevRevenue":0,"prevUnits":0,"revenueDelta":100,"unitsDelta":100}]; sortTable('product-type-table', 'revenue');</script>
+<h2>Sales by Product</h2>
+<p class="section-desc">7-day product performance vs previous period. Toggle between revenue and units ordered. Showing top 10 of 124.</p>
+<div class="card">
+  <div class="tab-row">
+    <button class="tab-btn active" onclick="sortTable('product-table', 'revenue')">Total Sales</button>
+    <button class="tab-btn" onclick="sortTable('product-table', 'units')">Units Ordered</button>
+  </div>
+  <table id="product-table">
+    <thead><tr><th>Product</th><th class="text-right">Revenue</th><th class="text-right">Rev &Delta;</th><th class="text-right">Units</th><th class="text-right">Units &Delta;</th></tr></thead>
+    <tbody></tbody>
+  </table>
+</div>
+<script>window['product-table_data'] = [{"name":"The Merino Set - Pinks and Greys","revenue":3278.12,"units":81,"prevRevenue":2850.05,"prevUnits":71,"revenueDelta":15.019736495850939,"unitsDelta":14.084507042253522},{"name":"The Merino Set - Classic","revenue":2880.2899999999995,"units":71,"prevRevenue":3072.96,"prevUnits":76,"revenueDelta":-6.269850567530997,"unitsDelta":-6.578947368421052},{"name":"The Merino Set - Blues and Greens","revenue":2848.62,"units":71,"prevRevenue":2256.52,"prevUnits":56,"revenueDelta":26.23951925974509,"unitsDelta":26.785714285714285},{"name":"The Merino Set - Neutral","revenue":1914.86,"units":47,"prevRevenue":2673.9799999999996,"prevUnits":66,"revenueDelta":-28.38914277593699,"unitsDelta":-28.78787878787879},{"name":"The Bamboo Set - Classic","revenue":1878.6599999999999,"units":67,"prevRevenue":1568,"prevUnits":56,"revenueDelta":19.812499999999993,"unitsDelta":19.642857142857142},{"name":"Postbox Red Merino Socks","revenue":1779.68,"units":147,"prevRevenue":1824.3999999999999,"prevUnits":150,"revenueDelta":-2.451216838412618,"unitsDelta":-2},{"name":"Dark Plum Merino Socks","revenue":1717.7,"units":142,"prevRevenue":1718.7600000000002,"prevUnits":141,"revenueDelta":-0.061672368451684514,"unitsDelta":0.7092198581560284},{"name":"The Bamboo Set - Everyday Mix","revenue":1689.55,"units":60,"prevRevenue":1409.09,"prevUnits":50,"revenueDelta":19.903625744274677,"unitsDelta":20},{"name":"The Merino Gift Set Two","revenue":1500.18,"units":23,"prevRevenue":470.32,"prevUnits":7,"revenueDelta":218.97006293587347,"unitsDelta":228.57142857142856},{"name":"The Knee High Wool Set Three","revenue":1353.57,"units":30,"prevRevenue":913.19,"prevUnits":20,"revenueDelta":48.22435637709566,"unitsDelta":50}]; sortTable('product-table', 'revenue');</script><h2>Meta Ads</h2><div class="card"><p class="section-desc">Top 20 of 83 active ads by spend. Grouped by campaign.</p>
+  <table><thead><tr><th>Ad</th><th class="text-right">Spend</th><th class="text-right">Revenue</th><th class="text-right">ROAS</th><th class="text-right">Purch</th><th class="text-right">CPC</th><th class="text-right">CTR</th></tr></thead><tbody><tr><td colspan="7" style="padding:12px 12px 6px; font-weight:700; font-size:0.75rem; color:var(--text-secondary); border-bottom:none;">CS | Cold/Warm/Hot | Purchases | Post Rebrand | Evergreen</td></tr><tr>
+        <td style="padding-left:24px; max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Ad 485 | Video | All Products | Q4 2026 | Founder Story | No Offer | Why I Started Pairs">Ad 485 | Video | All Products | Q4 2026 | Founder Story | No Offer | Why I Started Pairs</td>
+        <td class="text-right">£6,105</td>
+        <td class="text-right">£16,736</td>
+        <td class="text-right val-blue">2.74x <span class="val-muted">(-0.56)</span></td>
+        <td class="text-right">288</td>
+        <td class="text-right">£0.67</td>
+        <td class="text-right">3.01%</td>
+      </tr><tr>
+        <td style="padding-left:24px; max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Ad 264 | Video | All Products | Seasonal | Studio Lifestyle | No Offer | OG">Ad 264 | Video | All Products | Seasonal | Studio Lifestyle | No Offer | OG</td>
+        <td class="text-right">£653</td>
+        <td class="text-right">£2,920</td>
+        <td class="text-right val-blue">4.47x <span class="val-green">(+0.14)</span></td>
+        <td class="text-right">53</td>
+        <td class="text-right">£0.96</td>
+        <td class="text-right">1.25%</td>
+      </tr><tr>
+        <td style="padding-left:24px; max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Ad 488 | Image | Bed Socks | Q4 2026 | Customer Review with Text Overlay | No Offer | SN4-B Clare M Alpaca Bed Socks">Ad 488 | Image | Bed Socks | Q4 2026 | Customer Review with Text Overlay | No Offer | SN4-B Clare M Alpaca Bed Socks</td>
+        <td class="text-right">£631</td>
+        <td class="text-right">£1,707</td>
+        <td class="text-right val-blue">2.70x <span class="val-green">(+0.09)</span></td>
+        <td class="text-right">28</td>
+        <td class="text-right">£0.50</td>
+        <td class="text-right">2.38%</td>
+      </tr><tr>
+        <td style="padding-left:24px; max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Ad 446 | Image | All Products | Summer Phase 4 | Lifestyle with Text Overlay | No Offer | Best of British Grey">Ad 446 | Image | All Products | Summer Phase 4 | Lifestyle with Text Overlay | No Offer | Best of British Grey</td>
+        <td class="text-right">£495</td>
+        <td class="text-right">£1,420</td>
+        <td class="text-right val-blue">2.87x <span class="val-green">(+0.20)</span></td>
+        <td class="text-right">30</td>
+        <td class="text-right">£0.64</td>
+        <td class="text-right">3.24%</td>
+      </tr><tr>
+        <td style="padding-left:24px; max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Ad 465 | Image | All Products | Autumn 2026 | Lifestyle with Text Overlay | No Offer | Back to Good Pairs">Ad 465 | Image | All Products | Autumn 2026 | Lifestyle with Text Overlay | No Offer | Back to Good Pairs</td>
+        <td class="text-right">£417</td>
+        <td class="text-right">£1,531</td>
+        <td class="text-right val-blue">3.67x <span class="val-green">(+0.64)</span></td>
+        <td class="text-right">26</td>
+        <td class="text-right">£0.55</td>
+        <td class="text-right">2.44%</td>
+      </tr><tr>
+        <td style="padding-left:24px; max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Ad 473 | Image | All Products | Autumn 2026 | Lifestyle with Text Overlay | No Offer | Lifes Little Luxuries">Ad 473 | Image | All Products | Autumn 2026 | Lifestyle with Text Overlay | No Offer | Lifes Little Luxuries</td>
+        <td class="text-right">£231</td>
+        <td class="text-right">£722</td>
+        <td class="text-right val-blue">3.12x <span class="val-green">(+1.07)</span></td>
+        <td class="text-right">15</td>
+        <td class="text-right">£0.70</td>
+        <td class="text-right">3.31%</td>
+      </tr><tr>
+        <td style="padding-left:24px; max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Ad 486 | Image | All Products | Q4 2026 | Press Quote with Text Overlay | No Offer | PR5-B The Guardian Correct Grey">Ad 486 | Image | All Products | Q4 2026 | Press Quote with Text Overlay | No Offer | PR5-B The Guardian Correct Grey</td>
+        <td class="text-right">£195</td>
+        <td class="text-right">£901</td>
+        <td class="text-right val-blue">4.63x <span class="val-green">(+0.16)</span></td>
+        <td class="text-right">18</td>
+        <td class="text-right">£0.61</td>
+        <td class="text-right">1.93%</td>
+      </tr><tr>
+        <td style="padding-left:24px; max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Ad 254 | Image | All Products | Elevate Basics | Studio Lifestyle | No Offer | OG">Ad 254 | Image | All Products | Elevate Basics | Studio Lifestyle | No Offer | OG</td>
+        <td class="text-right">£171</td>
+        <td class="text-right">£559</td>
+        <td class="text-right val-blue">3.28x <span class="val-green">(+1.66)</span></td>
+        <td class="text-right">11</td>
+        <td class="text-right">£0.72</td>
+        <td class="text-right">1.95%</td>
+      </tr><tr>
+        <td style="padding-left:24px; max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Ad 257 | Image | All Products | Social Proof | Testimonial | No Offer | OG">Ad 257 | Image | All Products | Social Proof | Testimonial | No Offer | OG</td>
+        <td class="text-right">£168</td>
+        <td class="text-right">£482</td>
+        <td class="text-right val-blue">2.86x <span class="val-muted">(-1.04)</span></td>
+        <td class="text-right">11</td>
+        <td class="text-right">£1.34</td>
+        <td class="text-right">1.57%</td>
+      </tr><tr>
+        <td style="padding-left:24px; max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Ad 476 | Image | All Products | Autumn 2026 | Lifestyle with Text Overlay | No Offer | The Return">Ad 476 | Image | All Products | Autumn 2026 | Lifestyle with Text Overlay | No Offer | The Return</td>
+        <td class="text-right">£157</td>
+        <td class="text-right">£455</td>
+        <td class="text-right val-blue">2.90x <span class="val-muted">(-0.63)</span></td>
+        <td class="text-right">6</td>
+        <td class="text-right">£0.82</td>
+        <td class="text-right">1.83%</td>
+      </tr><tr>
+        <td style="padding-left:24px; max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Ad 261 | Video | All Products | Seasonal | Studio Lifestyle | No Offer | OG">Ad 261 | Video | All Products | Seasonal | Studio Lifestyle | No Offer | OG</td>
+        <td class="text-right">£132</td>
+        <td class="text-right">£177</td>
+        <td class="text-right val-blue">1.34x <span class="val-green">(+0.78)</span></td>
+        <td class="text-right">5</td>
+        <td class="text-right">£0.96</td>
+        <td class="text-right">1.61%</td>
+      </tr><tr>
+        <td style="padding-left:24px; max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Ad 260 | Video | All Products | Seasonal | Studio Lifestyle | No Offer | OG">Ad 260 | Video | All Products | Seasonal | Studio Lifestyle | No Offer | OG</td>
+        <td class="text-right">£90</td>
+        <td class="text-right">£17</td>
+        <td class="text-right val-blue">0.19x <span class="val-muted">(-6.38)</span></td>
+        <td class="text-right">1</td>
+        <td class="text-right">£1.29</td>
+        <td class="text-right">0.99%</td>
+      </tr><tr>
+        <td style="padding-left:24px; max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Ad 258 | Image | All Products | Social Proof | Testimonial | No Offer | OG">Ad 258 | Image | All Products | Social Proof | Testimonial | No Offer | OG</td>
+        <td class="text-right">£87</td>
+        <td class="text-right">£416</td>
+        <td class="text-right val-blue">4.77x <span class="val-green">(+1.48)</span></td>
+        <td class="text-right">8</td>
+        <td class="text-right">£0.51</td>
+        <td class="text-right">3.59%</td>
+      </tr><tr><td colspan="7" style="padding:12px 12px 6px; font-weight:700; font-size:0.75rem; color:var(--text-secondary); border-bottom:none;">CS | Cold/Warm | Purchases | Build Your Drawer | ABO</td></tr><tr>
+        <td style="padding-left:24px; max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Ad 494 | Video | Build Your Drawer | Build Your Drawer | UGC Lead Ad | BYD 3 Pairs | Emily BYD Silent">Ad 494 | Video | Build Your Drawer | Build Your Drawer | UGC Lead Ad | BYD 3 Pairs | Emily BYD Silent</td>
+        <td class="text-right">£933</td>
+        <td class="text-right">£2,994</td>
+        <td class="text-right val-blue">3.21x <span class="val-muted">(-1.94)</span></td>
+        <td class="text-right">46</td>
+        <td class="text-right">£0.92</td>
+        <td class="text-right">1.77%</td>
+      </tr><tr>
+        <td style="padding-left:24px; max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Ad 492 | Video | Build Your Drawer | Build Your Drawer | UGC Lead Ad | BYD 3 Pairs | Daisy BYD">Ad 492 | Video | Build Your Drawer | Build Your Drawer | UGC Lead Ad | BYD 3 Pairs | Daisy BYD</td>
+        <td class="text-right">£183</td>
+        <td class="text-right">£521</td>
+        <td class="text-right val-blue">2.85x <span class="val-muted">(-0.73)</span></td>
+        <td class="text-right">8</td>
+        <td class="text-right">£1.06</td>
+        <td class="text-right">2.02%</td>
+      </tr><tr><td colspan="7" style="padding:12px 12px 6px; font-weight:700; font-size:0.75rem; color:var(--text-secondary); border-bottom:none;">CS | Cold/Warm | Purchases | Q4 Test Arena | ABO</td></tr><tr>
+        <td style="padding-left:24px; max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Ad 513 | Image | All Products | Q4 Test Reviews | Customer Review with Text Overlay | No Offer | RV2-B Lily">Ad 513 | Image | All Products | Q4 Test Reviews | Customer Review with Text Overlay | No Offer | RV2-B Lily</td>
+        <td class="text-right">£176</td>
+        <td class="text-right">£496</td>
+        <td class="text-right val-blue">2.81x <span class="val-green">(+0.62)</span></td>
+        <td class="text-right">8</td>
+        <td class="text-right">£0.53</td>
+        <td class="text-right">2.51%</td>
+      </tr><tr>
+        <td style="padding-left:24px; max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Ad 531 | Video | All Products | Q4 Test Brand Films | Brand Film | No Offer | Make Your Day">Ad 531 | Video | All Products | Q4 Test Brand Films | Brand Film | No Offer | Make Your Day</td>
+        <td class="text-right">£176</td>
+        <td class="text-right">£437</td>
+        <td class="text-right val-blue">2.49x <span class="val-muted">(-0.09)</span></td>
+        <td class="text-right">9</td>
+        <td class="text-right">£0.96</td>
+        <td class="text-right">1.39%</td>
+      </tr><tr>
+        <td style="padding-left:24px; max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Ad 521 | Image | All Products | Q4 Test Brand Images | Studio with Text Overlay | No Offer | BR2-A Find Your Pairs">Ad 521 | Image | All Products | Q4 Test Brand Images | Studio with Text Overlay | No Offer | BR2-A Find Your Pairs</td>
+        <td class="text-right">£161</td>
+        <td class="text-right">£429</td>
+        <td class="text-right val-blue">2.67x <span class="val-green">(+0.19)</span></td>
+        <td class="text-right">8</td>
+        <td class="text-right">£0.67</td>
+        <td class="text-right">1.94%</td>
+      </tr><tr>
+        <td style="padding-left:24px; max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Ad 503 | Image | All Products | Q4 Test Press | Press Quote with Text Overlay | No Offer | PR3-B Elle">Ad 503 | Image | All Products | Q4 Test Press | Press Quote with Text Overlay | No Offer | PR3-B Elle</td>
+        <td class="text-right">£157</td>
+        <td class="text-right">£486</td>
+        <td class="text-right val-blue">3.11x <span class="val-muted">(-1.61)</span></td>
+        <td class="text-right">10</td>
+        <td class="text-right">£0.59</td>
+        <td class="text-right">2.35%</td>
+      </tr><tr>
+        <td style="padding-left:24px; max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Ad 537 | GIF | All Products | Q4 Test Brand GIFs | Lifestyle Slideshow | No Offer | GIF3 Socks in Shoes Short">Ad 537 | GIF | All Products | Q4 Test Brand GIFs | Lifestyle Slideshow | No Offer | GIF3 Socks in Shoes Short</td>
+        <td class="text-right">£94</td>
+        <td class="text-right">£409</td>
+        <td class="text-right val-blue">4.36x <span class="val-green">(+0.71)</span></td>
+        <td class="text-right">6</td>
+        <td class="text-right">£1.14</td>
+        <td class="text-right">1.02%</td>
+      </tr></tbody></table></div><h2>Google campaigns</h2><div class="card"><table><thead><tr><th>Campaign</th><th class="text-right">Spend</th><th class="text-right">Revenue</th><th class="text-right">ROAS</th><th class="text-right">Conv</th><th class="text-right">CPC</th><th class="text-right">CTR</th><th class="text-right">Spend &Delta;</th><th class="text-right">IS%</th><th class="text-right">Budget Lost</th><th class="text-right">Rank Lost</th></tr></thead><tbody><tr>
+      <td>CS | Shopping | High | All Products 25</td>
+      <td class="text-right">£5,064</td>
+      <td class="text-right">£11,604</td>
+      <td class="text-right val-blue">2.29x <span class="val-green">(+0.42)</span></td>
+      <td class="text-right">232</td>
+      <td class="text-right">£1.42</td>
+      <td class="text-right">0.84%</td>
+      <td class="text-right"><span class="negative">−18.8%</span></td>
+      <td class="text-right">86.4%</td><td class="text-right">0.3%</td><td class="text-right">13.3%</td>
+    </tr><tr>
+      <td>CS | Performance Max | All Products Post Rebrand</td>
+      <td class="text-right">£2,023</td>
+      <td class="text-right">£4,723</td>
+      <td class="text-right val-blue">2.33x <span class="val-muted">(-0.25)</span></td>
+      <td class="text-right">98</td>
+      <td class="text-right">£1.06</td>
+      <td class="text-right">1.57%</td>
+      <td class="text-right"><span class="positive">+7.1%</span></td>
+      <td class="text-right">17.1%</td><td class="text-right">2.1%</td><td class="text-right">80.8%</td>
+    </tr><tr>
+      <td>CS | Search | All Fibres</td>
+      <td class="text-right">£1,002</td>
+      <td class="text-right">£2,543</td>
+      <td class="text-right val-blue">2.54x <span class="val-green">(+0.36)</span></td>
+      <td class="text-right">52</td>
+      <td class="text-right">£1.01</td>
+      <td class="text-right">4.62%</td>
+      <td class="text-right"><span class="negative">−22.5%</span></td>
+      <td class="text-right">16.7%</td><td class="text-right">0.0%</td><td class="text-right">83.3%</td>
+    </tr><tr>
+      <td>CS | Search | Brand</td>
+      <td class="text-right">£626</td>
+      <td class="text-right">£12,165</td>
+      <td class="text-right val-blue">19.44x <span class="val-green">(+1.46)</span></td>
+      <td class="text-right">236</td>
+      <td class="text-right">£0.36</td>
+      <td class="text-right">38.93%</td>
+      <td class="text-right"><span class="positive">+1.9%</span></td>
+      <td class="text-right">99.5%</td><td class="text-right">0.0%</td><td class="text-right">0.5%</td>
+    </tr><tr style="font-weight:700; border-top:2px solid var(--divider);">
+    <td>Total</td>
+    <td class="text-right">£8,714</td>
+    <td class="text-right">£31,034</td>
+    <td class="text-right val-blue">3.56x</td>
+    <td class="text-right">619</td>
+    <td class="text-right">£1.07</td>
+    <td class="text-right">1.42%</td>
+    <td class="text-right"><span class="negative">−13.1%</span></td>
+    <td></td><td></td><td></td>
+  </tr></tbody></table></div><h2>Google Shopping products</h2><p class="section-desc">Top 5 by spend.</p><div class="card"><p class="section-desc">Top 5 of 5 shopping products by spend.</p>
+  <table><thead><tr><th>Product</th><th class="text-right">Spend</th><th class="text-right">Revenue</th><th class="text-right">ROAS</th><th class="text-right">Conv</th><th class="text-right">Clicks</th><th class="text-right">Spend &Delta;</th><th class="text-right">Rev &Delta;</th><th class="text-right">ROAS &Delta;</th></tr></thead><tbody><tr>
+    <td style="max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Merino Wool Socks Four Pairs | Pairs Socks">Merino Wool Socks Four Pairs | Pairs Socks</td>
+    <td class="text-right">£1,366</td>
+    <td class="text-right">£3,061</td>
+    <td class="text-right val-blue">2.24x</td>
+    <td class="text-right">54</td>
+    <td class="text-right">713</td>
+    <td class="text-right"><span class="negative">−3.3%</span></td>
+    <td class="text-right"><span class="positive">+6.4%</span></td>
+    <td class="text-right"><span class="positive">+10.0%</span></td>
+  </tr><tr>
+    <td style="max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Merino Wool Socks Grass Green | Pairs Socks">Merino Wool Socks Grass Green | Pairs Socks</td>
+    <td class="text-right">£303</td>
+    <td class="text-right">£667</td>
+    <td class="text-right val-blue">2.20x</td>
+    <td class="text-right">12</td>
+    <td class="text-right">205</td>
+    <td class="text-right"><span class="negative">−24.7%</span></td>
+    <td class="text-right"><span class="negative">−7.6%</span></td>
+    <td class="text-right"><span class="positive">+22.7%</span></td>
+  </tr><tr>
+    <td style="max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Alpaca Bed Socks Smoke Grey | Pairs Socks">Alpaca Bed Socks Smoke Grey | Pairs Socks</td>
+    <td class="text-right">£260</td>
+    <td class="text-right">£422</td>
+    <td class="text-right val-blue">1.62x</td>
+    <td class="text-right">11</td>
+    <td class="text-right">234</td>
+    <td class="text-right"><span class="negative">−24.9%</span></td>
+    <td class="text-right"><span class="negative">−34.9%</span></td>
+    <td class="text-right"><span class="negative">−13.3%</span></td>
+  </tr><tr>
+    <td style="max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Merino Wool Socks Red | Pairs Socks">Merino Wool Socks Red | Pairs Socks</td>
+    <td class="text-right">£259</td>
+    <td class="text-right">£743</td>
+    <td class="text-right val-blue">2.87x</td>
+    <td class="text-right">15</td>
+    <td class="text-right">252</td>
+    <td class="text-right"><span class="negative">−52.1%</span></td>
+    <td class="text-right"><span class="negative">−19.1%</span></td>
+    <td class="text-right"><span class="positive">+68.9%</span></td>
+  </tr><tr>
+    <td style="max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="Alpaca Socks Dandelion Yellow | Pairs Socks">Alpaca Socks Dandelion Yellow | Pairs Socks</td>
+    <td class="text-right">£252</td>
+    <td class="text-right">£732</td>
+    <td class="text-right val-blue">2.90x</td>
+    <td class="text-right">19</td>
+    <td class="text-right">273</td>
+    <td class="text-right"><span class="positive">+8.6%</span></td>
+    <td class="text-right"><span class="positive">+76.7%</span></td>
+    <td class="text-right"><span class="positive">+62.8%</span></td>
+  </tr><tr style="font-weight:700; border-top:2px solid var(--divider);">
+    <td>Total (5 products)</td>
+    <td class="text-right">£2,441</td>
+    <td class="text-right">£5,624</td>
+    <td class="text-right val-blue">2.30x</td>
+    <td class="text-right">111</td>
+    <td class="text-right">1,677</td>
+    <td class="text-right"><span class="negative">−64.0%</span></td>
+    <td class="text-right"><span class="negative">−57.3%</span></td>
+    <td class="text-right"><span class="positive">+18.8%</span></td>
+  </tr></tbody></table></div><div class="section-label">Email</div><h2>Klaviyo campaigns</h2><p class="section-desc">4 campaigns sent this period with performance metrics.</p><div class="card"><table>
+        <thead><tr><th>Campaign</th><th class="text-right">Recipients</th><th class="text-right">Open Rate</th><th class="text-right">Click Rate</th><th class="text-right">CTOR</th><th class="text-right">Revenue</th><th class="text-right">Conv</th><th class="text-right">Unsubs</th></tr></thead><tbody><tr>
+          <td>Sherbet Pink - Tues 27th Oct</td>
+          <td class="text-right">26,898</td>
+          <td class="text-right">69.2%</td>
+          <td class="text-right">2.0%</td>
+          <td class="text-right">2.9%</td>
+          <td class="text-right val-blue">£2,368.50</td>
+          <td class="text-right">43</td>
+          <td class="text-right">163</td>
+        </tr><tr>
+          <td>The wool for sensitive skin - Thurs 29th Oct</td>
+          <td class="text-right">28,906</td>
+          <td class="text-right">66.5%</td>
+          <td class="text-right">1.5%</td>
+          <td class="text-right">2.3%</td>
+          <td class="text-right val-blue">£3,479.72</td>
+          <td class="text-right">63</td>
+          <td class="text-right">158</td>
+        </tr><tr>
+          <td>True Black and Deep Earth Brown - Sun 1st Nov</td>
+          <td class="text-right">27,418</td>
+          <td class="text-right">55.4%</td>
+          <td class="text-right">0.6%</td>
+          <td class="text-right">1.1%</td>
+          <td class="text-right val-blue">£1,618.57</td>
+          <td class="text-right">31</td>
+          <td class="text-right">137</td>
+        </tr><tr>
+          <td>[MISSED AUDIENCE - Active Repeat] Sherbet Pink - Tues 27th Oct (clone)</td>
+          <td class="text-right">1,522</td>
+          <td class="text-right">63.2%</td>
+          <td class="text-right">4.5%</td>
+          <td class="text-right">7.2%</td>
+          <td class="text-right val-blue">£593.50</td>
+          <td class="text-right">7</td>
+          <td class="text-right">14</td>
+        </tr><tr style="font-weight:700; border-top:2px solid var(--divider);">
+        <td>Total</td><td class="text-right">84,744</td><td></td><td></td><td></td>
+        <td class="text-right val-blue">£8,060.29</td>
+        <td class="text-right">144</td><td class="text-right">472</td>
+      </tr></tbody></table></div><h2>Klaviyo flows</h2><p class="section-desc">Automated flow performance for the reporting period, compared to the rolling 30-day weekly average (2026-10-03 to 2026-11-01).</p><div class="card"><table>
+        <thead><tr><th>Flow</th><th class="text-right">Recipients</th><th class="text-right">Open Rate</th><th class="text-right">Click Rate</th><th class="text-right">Revenue</th><th class="text-right">Rev/Recipient</th><th class="text-right">Rev vs 30d Avg</th><th class="text-right">RPR vs 30d Avg</th></tr></thead><tbody><tr>
+          <td>Welcome flow | Rebrand | Sep 2025</td>
+          <td class="text-right">2,929</td>
+          <td class="text-right">64.9%</td>
+          <td class="text-right">5.1%</td>
+          <td class="text-right val-blue">£7,512.79</td>
+          <td class="text-right">£2.56</td>
+          <td class="text-right"><span class="positive">+39.7%</span></td>
+          <td class="text-right"><span class="positive">+9.3%</span></td>
+        </tr><tr>
+          <td>Abandoned Cart  | Rebrand | Sep 2025 | Littledata</td>
+          <td class="text-right">1,170</td>
+          <td class="text-right">62.3%</td>
+          <td class="text-right">7.1%</td>
+          <td class="text-right val-blue">£1,685.36</td>
+          <td class="text-right">£1.44</td>
+          <td class="text-right"><span class="positive">+20.2%</span></td>
+          <td class="text-right"><span class="negative">−4.9%</span></td>
+        </tr><tr>
+          <td>Abandoned Checkout | Rebrand | Sep 2025 | Littledata</td>
+          <td class="text-right">646</td>
+          <td class="text-right">55.8%</td>
+          <td class="text-right">8.5%</td>
+          <td class="text-right val-blue">£1,606.19</td>
+          <td class="text-right">£2.49</td>
+          <td class="text-right"><span class="positive">+3.8%</span></td>
+          <td class="text-right"><span class="negative">−11.6%</span></td>
+        </tr><tr>
+          <td>Browse Abandonment  | Rebrand | Sep 2025 | Littledata</td>
+          <td class="text-right">1,649</td>
+          <td class="text-right">69.6%</td>
+          <td class="text-right">3.8%</td>
+          <td class="text-right val-blue">£1,496.85</td>
+          <td class="text-right">£0.91</td>
+          <td class="text-right"><span class="positive">+49.8%</span></td>
+          <td class="text-right"><span class="negative">−6.7%</span></td>
+        </tr><tr>
+          <td>Post Purchase Flow | Rebrand 2025</td>
+          <td class="text-right">2,842</td>
+          <td class="text-right">62.3%</td>
+          <td class="text-right">1.9%</td>
+          <td class="text-right val-blue">£531.50</td>
+          <td class="text-right">£0.19</td>
+          <td class="text-right"><span class="positive">+12.8%</span></td>
+          <td class="text-right"><span class="negative">−15.9%</span></td>
+        </tr><tr>
+          <td>US Welcome</td>
+          <td class="text-right">70</td>
+          <td class="text-right">61.0%</td>
+          <td class="text-right">4.4%</td>
+          <td class="text-right val-blue">£388.10</td>
+          <td class="text-right">£5.54</td>
+          <td class="text-right"><span class="positive">+18.6%</span></td>
+          <td class="text-right"><span class="positive">+72.8%</span></td>
+        </tr><tr>
+          <td>Churn series</td>
+          <td class="text-right">261</td>
+          <td class="text-right">26.0%</td>
+          <td class="text-right">1.9%</td>
+          <td class="text-right val-blue">£62.40</td>
+          <td class="text-right">£0.24</td>
+          <td class="text-right"><span class="positive">+328.6%</span></td>
+          <td class="text-right"><span class="positive">+278.2%</span></td>
+        </tr><tr>
+          <td>(KRC) First-to-Second Purchase</td>
+          <td class="text-right">161</td>
+          <td class="text-right">41.5%</td>
+          <td class="text-right">0.0%</td>
+          <td class="text-right val-blue">£0.00</td>
+          <td class="text-right">£0.00</td>
+          <td class="text-right"><span class="positive">-</span></td>
+          <td class="text-right"><span class="positive">0.0%</span></td>
+        </tr><tr>
+          <td>(KRC) Non-Purchaser Conversion</td>
+          <td class="text-right">31</td>
+          <td class="text-right">30.0%</td>
+          <td class="text-right">0.0%</td>
+          <td class="text-right val-blue">£0.00</td>
+          <td class="text-right">£0.00</td>
+          <td class="text-right"><span class="positive">-</span></td>
+          <td class="text-right"><span class="positive">0.0%</span></td>
+        </tr></tbody></table></div><div class="section-label">Acquisition</div><h2>Traffic source mix</h2><p class="section-desc">Orders attributed by traffic source from Shopify referral data.</p><div class="card"><div class="source-bar"><div class="source-segment source-meta" style="width:6.6909090909090905%">Meta 7%</div><div class="source-segment source-google" style="width:10.327272727272726%">Google 10%</div><div class="source-segment source-direct" style="width:66.69090909090909%">Direct 67%</div><div class="source-segment source-organic" style="width:3.272727272727273%">Organic 3%</div><div class="source-segment source-other" style="width:12.872727272727271%">Other 13%</div></div><table><thead><tr><th>Channel</th><th class="text-right">Orders</th><th class="text-right">Revenue</th><th class="text-right">% of Orders</th><th class="text-right">% of Revenue</th><th class="text-right">Orders &Delta;</th></tr></thead><tbody><tr><td><span class="badge badge-blue">Meta</span></td><td class="text-right">92</td><td class="text-right">£5,416</td><td class="text-right">6.7%</td><td class="text-right">7.2%</td><td class="text-right"><span class="positive">+5.7%</span></td></tr><tr><td><span class="badge badge-blue">Google</span></td><td class="text-right">142</td><td class="text-right">£7,497</td><td class="text-right">10.3%</td><td class="text-right">10.0%</td><td class="text-right"><span class="negative">−27.6%</span></td></tr><tr><td><span class="badge badge-blue">Email</span></td><td class="text-right">2</td><td class="text-right">£65</td><td class="text-right">0.1%</td><td class="text-right">0.1%</td><td class="text-right"><span class="positive">+100.0%</span></td></tr><tr><td><span class="badge badge-blue">Direct</span></td><td class="text-right">917</td><td class="text-right">£49,171</td><td class="text-right">66.7%</td><td class="text-right">65.5%</td><td class="text-right"><span class="positive">+14.6%</span></td></tr><tr><td><span class="badge badge-blue">Organic</span></td><td class="text-right">45</td><td class="text-right">£2,757</td><td class="text-right">3.3%</td><td class="text-right">3.7%</td><td class="text-right"><span class="positive">+32.4%</span></td></tr><tr><td><span class="badge badge-blue">Other</span></td><td class="text-right">177</td><td class="text-right">£10,174</td><td class="text-right">12.9%</td><td class="text-right">13.6%</td><td class="text-right"><span class="negative">−5.9%</span></td></tr></tbody></table></div>
+<div class="report-footer">
+  <span>Kova Commerce</span>
+  <span>kovacommerce.ai</span>
+  <span>Confidential</span>
+</div>
+</body>
+</html>
